@@ -1,33 +1,38 @@
-package com.example.prm392_project;
+package com.example.prm392_project.Activities;
 
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.prm392_project.Bean.User;
-import com.example.prm392_project.DAO.ProductDao;
-import com.example.prm392_project.DAO.UserDao;
-import com.example.prm392_project.Database.AppDatabase;
-import com.example.prm392_project.Repositories.UserRepository;
+import com.example.prm392_project.R;
 
-public class MainActivity extends AppCompatActivity {
+public class UserDetailActivity extends AppCompatActivity {
 
-    private UserRepository userRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user_detail);
+        Toolbar toolbar = findViewById(R.id.toolbarUserDetail);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        userRepository = new UserRepository(this);
+    }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Đóng Activity và quay lại màn hình trước đó
+        return true;
     }
 }

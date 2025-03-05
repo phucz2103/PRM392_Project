@@ -12,7 +12,21 @@ public class UserRepository {
         AppDatabase db = AppDatabase.getInstance(context);
         userDao = db.userDao();
     }
+
+    public User login(String email, String password){
+        return userDao.login(email,password);
+    }
+    public User getUserByID(String userID){
+        return userDao.getUserByID(userID);
+    }
+    public void updateUser(User user){
+        userDao.updateUser(user);
+    }
     public void insertUser(User user){
         userDao.insert(user);
+    }
+
+    public void deleteUser(String userID){
+        userDao.deleteUser(userID);
     }
 }
