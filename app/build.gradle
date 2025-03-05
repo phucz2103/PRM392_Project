@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.example.prm392_project'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.example.prm392_project"
         minSdk 27
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -29,6 +29,15 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+
+    // ViewModel và LiveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.7.0'
+
+    // Material Design
+    implementation 'com.google.android.material:material:1.11.0'
 
     implementation libs.appcompat
     implementation libs.material
