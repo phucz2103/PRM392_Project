@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">PRM392_Project</string>
+    <string-array name="filter_options">
+        <item>All</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="sort_options">
+        <item>ASC</item>
+        <item>DESC</item>
+    </string-array>
+
 </resources>

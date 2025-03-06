@@ -18,7 +18,7 @@ public interface UserDao {
     @Query("SELECT * FROM User WHERE Email = :email AND Password = :password")
     User login(String email, String password);
 
-    @Query("SELECT * FROM User")
+    @Query("SELECT * FROM User WHERE IsAdmin = 0")
     List<User> getAllUsers();
 
     @Query("SELECT * FROM User WHERE UserID = :userID")
@@ -29,6 +29,12 @@ public interface UserDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateUser(User user);
+
+    @Query("SELECT * FROM User WHERE FullName LIKE :fullName AND Gender LIKE :gender AND IsAdmin = 0 ORDER BY FullName ASC")
+    List<User> searchUserAsc(String fullName, String gender);
+
+    @Query("SELECT * FROM User WHERE FullName LIKE :fullName AND Gender LIKE :gender AND IsAdmin = 0 ORDER BY FullName DESC")
+    List<User> searchUserDesc(String fullName, String gender);
 
 
 }

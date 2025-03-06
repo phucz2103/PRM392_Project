@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PRM392_Project"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.UserListActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activities.UserDetailActivity"
             android:exported="true" />
         <activity

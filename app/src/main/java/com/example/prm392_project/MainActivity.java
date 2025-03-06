@@ -28,6 +28,18 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         userRepository = new UserRepository(this);
+//        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
+//        userRepository.insertUser(new User("Nguyen Van A", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
+//        userRepository.insertUser(new User("Nguyen Van B", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
+//        userRepository.insertUser(new User("Nguyen Van C", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
 
     }
 }
