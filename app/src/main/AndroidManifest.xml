@@ -30,6 +30,21 @@
             android:name=".Activities.LoginActivity"
             android:exported="true" />
         <activity
+            android:name=".Activities.UserListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.UserDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.ChangePasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.EditProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.UserProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>

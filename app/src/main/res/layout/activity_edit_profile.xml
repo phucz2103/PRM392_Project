@@ -1,0 +1,184 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9E6E6"
+    tools:context=".Activities.EditProfileActivity">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#F9E6E6"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="#F9E6E6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Full Name -->
+    <TextView
+        android:id="@+id/tvFullNameLabel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FullName"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarEditProfile"
+        android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/etFullNameEditProfile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="CAO DUY QUAN"
+        android:background="@drawable/rounded_edittext"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFullNameLabel1"
+        android:layout_marginHorizontal="16dp"/>
+
+    <!-- Mobile -->
+    <TextView
+        android:id="@+id/tvMobileLabel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mobile"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etFullNameEditProfile"
+        android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/etMobileEditProfile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="0987654321"
+        android:background="@drawable/rounded_edittext"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMobileLabel1"
+        android:layout_marginHorizontal="16dp"/>
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/tvEmailLabel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etMobileEditProfile"
+        android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/etEmailEditProfile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="user@gmail.com"
+        android:background="@color/cardview_dark_background"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:focusable="false"
+        android:inputType="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEmailLabel1"
+        android:layout_marginHorizontal="16dp"/>
+
+    <!-- Address -->
+    <TextView
+        android:id="@+id/tvAddressLabel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEmailEditProfile"
+        android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/etAddressEditProfile"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="Huyen Thach That, Xa Thach Hoa"
+        android:background="@drawable/rounded_edittext"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAddressLabel1"
+        android:layout_marginHorizontal="16dp"/>
+
+    <!-- Gender -->
+    <TextView
+        android:id="@+id/tvGenderLabel1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAddressEditProfile"
+        android:layout_margin="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgGenderEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvGenderLabel1"
+        android:layout_marginStart="16dp">
+
+        <RadioButton
+            android:id="@+id/rbMaleEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:checked="true"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:layout_marginEnd="20dp"/>
+
+        <RadioButton
+            android:id="@+id/rbFemaleEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female"
+            android:textSize="14sp"
+            android:textColor="#000000"/>
+    </RadioGroup>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/btnSaveUserProfile"
+        android:layout_width="172dp"
+        android:layout_height="56dp"
+        android:padding="12dp"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rgGenderEditProfile"
+        android:layout_marginTop="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

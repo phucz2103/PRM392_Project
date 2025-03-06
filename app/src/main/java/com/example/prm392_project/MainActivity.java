@@ -1,8 +1,6 @@
 package com.example.prm392_project;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +16,7 @@ import com.example.prm392_project.Repositories.UserRepository;
 
 public class MainActivity extends AppCompatActivity {
 
+    private UserRepository userRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +27,19 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        userRepository = new UserRepository(this);
+//        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
+//        userRepository.insertUser(new User("Nguyen Van A", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
+//        userRepository.insertUser(new User("Nguyen Van B", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
+//        userRepository.insertUser(new User("Nguyen Van C", "0987654321",
+//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","abc",true,false));
 
     }
 }

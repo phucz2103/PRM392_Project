@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5E2E0"
+    tools:context=".Activities.UserDetailActivity">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarUserDetail"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#F9E6E6"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="#F9E6E6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tiêu đề Full Name -->
+    <TextView
+        android:id="@+id/tvFullNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FullName"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarUserDetail"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Ô nhập Full Name -->
+    <EditText
+        android:id="@+id/edtFullNameUserDetail"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_edittext"
+        android:text="Cao Duy Quan"
+        android:textColor="@color/black"
+        android:focusable="false"
+        android:inputType="none"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:enabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFullNameLabel"
+        android:layout_marginHorizontal="16dp" />
+
+    <!-- Tiêu đề Mobile -->
+    <TextView
+        android:id="@+id/tvMobileLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mobile"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtFullNameUserDetail"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Ô nhập Mobile -->
+    <EditText
+        android:id="@+id/edtMobileUserDetail"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_edittext"
+        android:textColor="@color/black"
+        android:focusable="false"
+        android:inputType="none"
+        android:text="0987654321"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:enabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMobileLabel"
+        android:layout_marginHorizontal="16dp" />
+
+    <!-- Tiêu đề Email -->
+    <TextView
+        android:id="@+id/tvEmailLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtMobileUserDetail"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Ô nhập Email -->
+    <EditText
+        android:id="@+id/edtEmailUserDetail"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_edittext"
+        android:text="user@gmail.com"
+        android:textColor="@color/black"
+        android:focusable="false"
+        android:inputType="none"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:enabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvEmailLabel"
+        android:layout_marginHorizontal="16dp" />
+
+    <!-- Tiêu đề Address -->
+    <TextView
+        android:id="@+id/tvAddressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtEmailUserDetail"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Ô nhập Address -->
+    <EditText
+        android:id="@+id/edtAddressUserDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edittext"
+        android:text="Huyen Thach That, Xa Thach Hoa"
+        android:textColor="@color/black"
+        android:focusable="false"
+        android:inputType="none"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:enabled="false"
+        android:minHeight="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAddressLabel"
+        android:layout_marginHorizontal="16dp" />
+
+    <!-- Tiêu đề Gender -->
+    <TextView
+        android:id="@+id/tvGenderLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtAddressUserDetail"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Nhóm Radio Button cho Gender -->
+    <RadioGroup
+        android:id="@+id/rgGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvGenderLabel"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbMaleUserDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="Male"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbFemaleUserDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="Female"
+            android:layout_marginStart="16dp"/>
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

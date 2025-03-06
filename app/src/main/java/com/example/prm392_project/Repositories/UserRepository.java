@@ -10,6 +10,8 @@ import com.example.prm392_project.Helpers.Validation;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.List;
+
 public class UserRepository {
     private UserDao userDao;
     private String generatedOtp;
@@ -109,5 +111,29 @@ public class UserRepository {
 
     public long getOtpGeneratedTime() {
         return otpGeneratedTime;
+
+    public List<User> getAllUsers(){
+        return userDao.getAllUsers();
     }
+
+    public User login(String email, String password){
+        return userDao.login(email,password);
+    }
+    public User getUserByID(String userID){
+        return userDao.getUserByID(userID);
+    }
+    public void updateUser(User user){
+        userDao.updateUser(user);
+    }
+    public void insertUser(User user){
+        userDao.insert(user);
+    }
+
+    public List<User> searchUserAsc(String fullName, String gender){
+        return userDao.searchUserAsc(fullName,gender);
+    }
+    public List<User> searchUserDesc(String fullName, String gender){
+        return userDao.searchUserDesc(fullName,gender);
+    }
+
 }

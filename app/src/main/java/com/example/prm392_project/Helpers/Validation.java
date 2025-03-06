@@ -23,7 +23,7 @@ public class Validation {
         return PASSWORD_PATTERN.matcher(password).matches();
     }
     public static boolean isValidPhone(String phone) {
-        if (phone == null ) return false;
+        if (phone == null) return false;
         return PHONE_PATTERN.matcher(phone).matches();
     }
 }
