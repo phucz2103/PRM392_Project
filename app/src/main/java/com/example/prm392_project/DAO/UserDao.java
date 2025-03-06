@@ -19,6 +19,8 @@ public interface UserDao {
     User login(String email, String password);
 
     @Query("SELECT * FROM User WHERE IsAdmin = 0")
+    List<User> getAllUsers();
+
     @Query("SELECT * FROM User WHERE Email = :email")
     User getUserByEmail(String email);
 
@@ -27,9 +29,6 @@ public interface UserDao {
 
     @Query("UPDATE User SET Password = :newPassword WHERE Email = :email")
     void resetPassword(String newPassword, String email);
-
-    @Query("SELECT * FROM User")
-    List<User> getAllUsers();
 
     @Query("SELECT * FROM User WHERE UserID = :userID")
     User getUserByID(String userID);

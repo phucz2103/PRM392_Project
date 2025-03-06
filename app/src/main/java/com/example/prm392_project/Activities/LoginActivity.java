@@ -51,9 +51,10 @@ public class LoginActivity extends AppCompatActivity {
             if (user != null) {
                 if(user.getIsAdmin()) {
                     Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
-
                     //chuyen huong sang admin
-//                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                startActivity(intent);
+                finish();
                 }else{
                     Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
                     //chuyen huong sang user
