@@ -1,13 +1,18 @@
 package com.example.prm392_project.Activities;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.prm392_project.Adapter.MonthRevenue;
 import com.example.prm392_project.R;
+import com.example.prm392_project.Repositories.OrderRepository;
+import com.example.prm392_project.Repositories.UserRepository;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -15,9 +20,13 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
-
+    private TextView tvUsers;
+    private UserRepository userRepository;
+    private OrderRepository orderRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,32 +37,36 @@ public class DashboardActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        userRepository = new UserRepository(this);
+        orderRepository = new OrderRepository(this);
         setupBarChart();
+        tvUsers = findViewById(R.id.tvUsers);
+        tvUsers.setText(String.valueOf(userRepository.getAllUsers().stream().count()));
     }
         private void setupBarChart() {
+
             BarChart barChart = findViewById(R.id.barChart);
 
             // Dữ liệu mẫu cho lượt truy cập theo tháng
+            List<MonthRevenue> result = orderRepository.getMonthRevenue("2024");
+            float[] monthlyRevenue = new float[12];
+            Arrays.fill(monthlyRevenue, 0);
+
+            for (MonthRevenue monthRevenue : result) {
+                int month = monthRevenue.month - 1;
+                monthlyRevenue[month] = monthRevenue.revenue;
+            }
+
             ArrayList<BarEntry> entries = new ArrayList<>();
-            entries.add(new BarEntry(0, 8f));  // Jan
-            entries.add(new BarEntry(1, 16f)); // Feb
-            entries.add(new BarEntry(2, 28f)); // Mar
-            entries.add(new BarEntry(3, 8f));  // Apr
-            entries.add(new BarEntry(4, 20f)); // May
-            entries.add(new BarEntry(5, 24f)); // Jun
-            entries.add(new BarEntry(6, 16f)); // Jul
-            entries.add(new BarEntry(7, 8f));  // Aug
-            entries.add(new BarEntry(8, 20f)); // Sep
-            entries.add(new BarEntry(9, 16f)); // Oct
-            entries.add(new BarEntry(10, 12f)); // Nov
-            entries.add(new BarEntry(11, 16f)); // Dec
+            for (int i = 0; i < 12; i++) {
+                entries.add(new BarEntry(i, monthlyRevenue[i]));
+            }
 
             // Thiết lập dataset
             BarDataSet dataSet = new BarDataSet(entries, "Profile Visits");
             dataSet.setColor(getResources().getColor(android.R.color.holo_blue_dark));
             dataSet.setValueTextSize(12f);
 
-            // Thiết lập dữ liệu cho biểu đồ
             BarData barData = new BarData(dataSet);
             barData.setBarWidth(0.5f); // Độ rộng cột
 
@@ -64,11 +77,10 @@ public class DashboardActivity extends AppCompatActivity {
             barChart.getXAxis().setGranularity(1f);
             barChart.getXAxis().setLabelCount(12);
 
-            // Tùy chỉnh trục Y
             barChart.getAxisLeft().setAxisMinimum(0f);
-            barChart.getAxisLeft().setAxisMaximum(32f);
+            barChart.getAxisLeft().setAxisMaximum(10000f);
             barChart.getAxisLeft().setLabelCount(5);
-            barChart.getAxisRight().setEnabled(false); // Ẩn trục Y bên phải
+            barChart.getAxisRight().setEnabled(false);
 
             // Tắt mô tả và legend
             barChart.getDescription().setEnabled(false);
@@ -76,6 +88,6 @@ public class DashboardActivity extends AppCompatActivity {
 
             // Hiển thị dữ liệu
             barChart.setData(barData);
-            barChart.invalidate(); // Cập nhật biểu đồ
+            barChart.invalidate();
         }
 }

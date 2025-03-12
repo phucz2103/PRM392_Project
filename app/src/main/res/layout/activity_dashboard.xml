@@ -73,10 +73,10 @@
               android:textColor="#000000"/>
 
           <TextView
-              android:id="@+id/tvProfileViews"
+              android:id="@+id/tvUsers"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="112,000"
+              android:text=""
               android:textSize="18sp"
               android:textStyle="bold"
               android:textColor="#000000"/>
@@ -122,10 +122,10 @@
               android:textColor="#000000"/>
 
           <TextView
-              android:id="@+id/tvFollowers"
+              android:id="@+id/tvOrders"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="183,000"
+              android:text=""
               android:textSize="18sp"
               android:textStyle="bold"
               android:textColor="#000000"/>
@@ -237,7 +237,7 @@
       android:id="@+id/tvProfileVisit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Profile Visit"
+      android:text="Revenue"
       android:textSize="16sp"
       android:textStyle="bold"
       android:textColor="#000000"

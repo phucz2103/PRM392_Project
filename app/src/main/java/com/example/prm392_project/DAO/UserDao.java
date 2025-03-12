@@ -33,9 +33,6 @@ public interface UserDao {
     @Query("SELECT * FROM User WHERE UserID = :userID")
     User getUserByID(String userID);
 
-    @Query("DELETE FROM User WHERE UserID = :userID")
-    void deleteUser(String userID);
-
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateUser(User user);
 
