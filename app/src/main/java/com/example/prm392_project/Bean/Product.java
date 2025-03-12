@@ -22,7 +22,7 @@ public class Product {
     private int CategoryID; // FK
 
     // Constructor
-    public Product(String ProductName, String Description, double price, String IMAGE_URL,
+    public Product(String ProductName, String Description, double Price, String IMAGE_URL,
                    String CreatedAt, String UpdatedAt, boolean IsAvailable, int CategoryID,
                    int quantity, boolean IsSaled) {
         this.ProductName = ProductName;

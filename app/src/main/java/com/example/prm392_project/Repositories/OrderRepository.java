@@ -32,16 +32,18 @@ public class OrderRepository implements IOrderRepository {
     @Override
     public List<Order> getOrderPurchasedByUser(int userID) {
         return orderDao.getOrderPurchasedByUser(userID);
-    public void insertOrder(Order order){
-        orderDao.insert(order);
+    }
+
+    @Override
+    public void updateOrderStatus(int orderID, int status) {
+        orderDao.updateOrderStatus(orderID, status);
+    }
+    @Override
+    public List<Order> getOrderByUser(int userID) {
+        return orderDao.getOrdersByUser(userID);
     }
 
     public List<MonthRevenue> getMonthRevenue(String year){
         return orderDao.getMonthRevenue(year);
-    }
-
-    @Override
-    public List<Order> getOrderByUser(int userID) {
-        return orderDao.getOrdersByUser(userID);
     }
 }

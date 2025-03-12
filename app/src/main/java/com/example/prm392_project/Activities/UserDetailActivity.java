@@ -31,7 +31,7 @@ public class UserDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_detail);
-        
+
         Toolbar toolbar = findViewById(R.id.toolbarUserDetail);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
