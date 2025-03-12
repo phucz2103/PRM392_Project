@@ -17,10 +17,14 @@ public class Product {
     private String CreatedAt;
     private String UpdatedAt;
     private boolean IsAvailable;
+    private int quantity;
+    private boolean IsSaled;
     private int CategoryID; // FK
 
     // Constructor
-    public Product(String ProductName, String Description, double price, String IMAGE_URL, String CreatedAt, String UpdatedAt, boolean IsAvailable, int CategoryID) {
+    public Product(String ProductName, String Description, double price, String IMAGE_URL,
+                   String CreatedAt, String UpdatedAt, boolean IsAvailable, int CategoryID,
+                   int quantity, boolean IsSaled) {
         this.ProductName = ProductName;
         this.Description = Description;
         this.price = price;
@@ -29,6 +33,8 @@ public class Product {
         this.UpdatedAt = UpdatedAt;
         this.IsAvailable = IsAvailable;
         this.CategoryID = CategoryID;
+        this.quantity = quantity;
+        this.IsSaled = IsSaled;
     }
 
     // Getters and Setters
@@ -50,4 +56,8 @@ public class Product {
     public void setIsAvailable(boolean IsAvailable) { this.IsAvailable = IsAvailable; }
     public int getCategoryID() { return CategoryID; }
     public void setCategoryID(int CategoryID) { this.CategoryID = CategoryID; }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public boolean getIsSaled() { return IsSaled; }
+    public void setIsSaled(boolean IsSaled) { this.IsSaled = IsSaled; }
 }
