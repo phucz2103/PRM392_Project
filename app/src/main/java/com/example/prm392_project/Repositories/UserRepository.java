@@ -1,6 +1,7 @@
 package com.example.prm392_project.Repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.DAO.UserDao;
@@ -26,8 +27,11 @@ public class UserRepository {
         if(email == null || password == null){
             return null;
         }
-        User user = userDao.login(email, password);
-        return user ;
+        User user = userDao.getUserByEmail(email);
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+            return user;
+        }
+        return null;
     }
     public String insertUser(User user, String confirmPassword) {
         String error = "";

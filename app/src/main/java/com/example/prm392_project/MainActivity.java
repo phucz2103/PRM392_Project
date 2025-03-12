@@ -12,10 +12,12 @@ import com.example.prm392_project.Bean.Order;
 import com.example.prm392_project.Bean.OrderDetail;
 import com.example.prm392_project.Bean.Product;
 import com.example.prm392_project.Bean.User;
+import com.example.prm392_project.DAO.CategoryDao;
 import com.example.prm392_project.DAO.OrderDao;
 import com.example.prm392_project.DAO.ProductDao;
 import com.example.prm392_project.DAO.UserDao;
 import com.example.prm392_project.Database.AppDatabase;
+import com.example.prm392_project.Repositories.CategoryRepository;
 import com.example.prm392_project.Repositories.OrderDetailRepository;
 import com.example.prm392_project.Repositories.OrderRepository;
 import com.example.prm392_project.Repositories.ProductRepository;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
     private ProductRepository productRepository;
+    private CategoryRepository categoryRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-//        userRepository = new UserRepository(this);
+
+        userRepository = new UserRepository(this);
 //        orderRepository = new OrderRepository(this);
 //        orderDetailRepository = new OrderDetailRepository(this);
 //        productRepository = new ProductRepository(this);
@@ -57,18 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
-//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-//                "Male","abc",true,false));
-//        userRepository.insertUser(new User("Nguyen Van A", "0987654321",
-//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-//                "Male","abc",true,false));
-//        userRepository.insertUser(new User("Nguyen Van B", "0987654321",
-//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-//                "Male","abc",true,false));
-//        userRepository.insertUser(new User("Nguyen Van C", "0987654321",
-//                "user@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-//                "Male","abc",true,false));
+        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
+                "user1@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+                "Male","Abc123456@",true,false), "Abc123456@" );
+        userRepository.insertUser(new User("Nguyen Van A", "0987654322",
+                "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+                "Male","Abc123456@",true,false),"Abc123456@");
+
 
     }
 }
