@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "OrderDetail",
         foreignKeys = {
+                @ForeignKey(entity = User.class, parentColumns = "UserID", childColumns = "UserID"),
                 @ForeignKey(entity = Product.class, parentColumns = "ProductID", childColumns = "ProductID"),
                 @ForeignKey(entity = Order.class, parentColumns = "OrderID", childColumns = "OrderID")
         })

@@ -12,7 +12,7 @@ public class Product {
     private int ProductID;
     private String ProductName;
     private String Description;
-    private double price;
+    private double Price;
     private String IMAGE_URL;
     private String CreatedAt;
     private String UpdatedAt;
@@ -27,7 +27,7 @@ public class Product {
                    int quantity, boolean IsSaled) {
         this.ProductName = ProductName;
         this.Description = Description;
-        this.price = price;
+        this.Price = Price;
         this.IMAGE_URL = IMAGE_URL;
         this.CreatedAt = CreatedAt;
         this.UpdatedAt = UpdatedAt;
@@ -44,8 +44,8 @@ public class Product {
     public void setProductName(String ProductName) { this.ProductName = ProductName; }
     public String getDescription() { return Description; }
     public void setDescription(String Description) { this.Description = Description; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public double getPrice() { return Price; }
+    public void setPrice(double price) { this.Price = price; }
     public String getIMAGE_URL() { return IMAGE_URL; }
     public void setIMAGE_URL(String IMAGE_URL) { this.IMAGE_URL = IMAGE_URL; }
     public String getCreatedAt() { return CreatedAt; }

@@ -28,6 +28,15 @@
             android:name=".Activities.CreateProductActivity"
             android:exported="true" />
         <activity
+            android:name=".Activities.OrderListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.OrderHistoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.CustomerOrderDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.DashboardActivity"
             android:exported="true" />
         <activity

@@ -14,4 +14,5 @@ public interface OrderDetailDao {
 
     @Query("SELECT * FROM OrderDetail WHERE OrderID = :orderID")
     List<OrderDetail> getOrderDetailsByOrder(int orderID);
+
 }
