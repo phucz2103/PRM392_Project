@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@android:color/white"
+            android:background="#F9E6E6"
             android:paddingTop="8dp">
 
             <!-- Filter Label -->
@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="Filter:"
                 android:textSize="16sp"
+                android:background="@color/white"
                 android:paddingEnd="8dp"/>
 
             <!-- Filter Spinner -->
@@ -59,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sort:"
                 android:textSize="16sp"
+                android:background="@color/white"
                 android:paddingStart="16dp"
                 android:paddingEnd="8dp"/>
 

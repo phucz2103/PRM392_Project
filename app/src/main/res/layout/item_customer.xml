@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:text="View"
         android:textColor="@color/white"
-        android:background="@color/design_default_color_primary_dark"
         android:layout_marginEnd="5dp"/>
 
     <!-- Ban Button -->
@@ -32,6 +31,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ban"
-        android:textColor="@color/white"
-        android:background="@color/cardview_dark_background"/>
+        android:textColor="@color/white"/>
 </LinearLayout>
