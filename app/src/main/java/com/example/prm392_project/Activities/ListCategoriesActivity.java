@@ -34,8 +34,8 @@ public class ListCategoriesActivity extends AppCompatActivity {
             CategoryDao categoryDao = AppDatabase.getInstance(this).categoryDao();
             categoryRepository = new CategoryRepository(this);
             categoryDao.deleteAllCategories();
-            for (String s : Arrays.asList("Thực phẩm", "Đồ uống", "Đồ gia dụng", "Thời trang"))
-                categoryRepository.insertCategory(new Category(s));
+            //for (String s : Arrays.asList("Thực phẩm", "Đồ uống", "Đồ gia dụng", "Thời trang"))
+               // categoryRepository.insert(new Category(s));
 
             List<Category> categoryList = categoryDao.getAllCategories();
 

@@ -20,3 +20,4 @@ public interface CategoryDao {
     List<Category> getAllCategories();
 
 }
+

@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +18,54 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRM392_Project"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.UpdateProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.CreateProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.OrderListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.OrderHistoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.CustomerOrderDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.DashboardActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.ResetPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.ForgotPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.UserListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.UserDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.ChangePasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.EditProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.UserProfileActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

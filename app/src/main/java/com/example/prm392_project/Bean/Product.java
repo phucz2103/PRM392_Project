@@ -12,23 +12,29 @@ public class Product {
     private int ProductID;
     private String ProductName;
     private String Description;
-    private double price;
+    private double Price;
     private String IMAGE_URL;
     private String CreatedAt;
     private String UpdatedAt;
     private boolean IsAvailable;
+    private int quantity;
+    private boolean IsSaled;
     private int CategoryID; // FK
 
     // Constructor
-    public Product(String ProductName, String Description, double price, String IMAGE_URL, String CreatedAt, String UpdatedAt, boolean IsAvailable, int CategoryID) {
+    public Product(String ProductName, String Description, double Price, String IMAGE_URL,
+                   String CreatedAt, String UpdatedAt, boolean IsAvailable, int CategoryID,
+                   int quantity, boolean IsSaled) {
         this.ProductName = ProductName;
         this.Description = Description;
-        this.price = price;
+        this.Price = Price;
         this.IMAGE_URL = IMAGE_URL;
         this.CreatedAt = CreatedAt;
         this.UpdatedAt = UpdatedAt;
         this.IsAvailable = IsAvailable;
         this.CategoryID = CategoryID;
+        this.quantity = quantity;
+        this.IsSaled = IsSaled;
     }
 
     // Getters and Setters
@@ -38,8 +44,8 @@ public class Product {
     public void setProductName(String ProductName) { this.ProductName = ProductName; }
     public String getDescription() { return Description; }
     public void setDescription(String Description) { this.Description = Description; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public double getPrice() { return Price; }
+    public void setPrice(double price) { this.Price = price; }
     public String getIMAGE_URL() { return IMAGE_URL; }
     public void setIMAGE_URL(String IMAGE_URL) { this.IMAGE_URL = IMAGE_URL; }
     public String getCreatedAt() { return CreatedAt; }
@@ -50,4 +56,8 @@ public class Product {
     public void setIsAvailable(boolean IsAvailable) { this.IsAvailable = IsAvailable; }
     public int getCategoryID() { return CategoryID; }
     public void setCategoryID(int CategoryID) { this.CategoryID = CategoryID; }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public boolean getIsSaled() { return IsSaled; }
+    public void setIsSaled(boolean IsSaled) { this.IsSaled = IsSaled; }
 }
