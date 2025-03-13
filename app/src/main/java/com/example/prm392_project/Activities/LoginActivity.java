@@ -47,26 +47,33 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString();
             String password = etPassword.getText().toString();
-            User user = userRepository.login(email,password);
-            if (user != null) {
-                if(user.getIsAdmin()) {
-                    Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
-                    //chuyen huong sang admin
-                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                startActivity(intent);
-                finish();
-                }else{
-                    Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
-                    //chuyen huong sang user
-//                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            if(validateInput()) {
+                User user = userRepository.login(email, password);
+
+                if (user != null) {
+                    if (user.getIsAdmin()) {
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        //chuyen huong sang admin
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("userId", user.getUserID());
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        //chuyen huong sang user
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.putExtra("userId", user.getUserID());
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle("Error")
+                            .setMessage("Email and password incorrect!")
+                            .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                            .setIcon(R.drawable.error)
+                            .show();
                 }
-            } else {
-                new AlertDialog.Builder(LoginActivity.this)
-                        .setTitle("Error")
-                        .setMessage("Email and password incorrect!")
-                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
             }
         });
 
@@ -79,6 +86,16 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity .class);
             startActivity(intent);
         });
-
+    }
+    private boolean validateInput() {
+        if (etEmail.getText().toString().trim().isEmpty()) {
+            etEmail.setError("Email is required");
+            return false;
+        }
+        if (etPassword.getText().toString().trim().isEmpty()) {
+            etPassword.setError("Password is required");
+            return false;
+        }
+        return true;
     }
 }
