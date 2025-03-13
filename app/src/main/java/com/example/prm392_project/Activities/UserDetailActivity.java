@@ -69,7 +69,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish(); // Đóng Activity và quay lại màn hình trước đó
+        finish();
         return true;
     }
 }

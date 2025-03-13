@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,6 +38,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
+        Toolbar toolbar = findViewById(R.id.toolbarForgotPassword);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -51,6 +57,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnConfirmOtp = findViewById(R.id.btnVerify);
         btnSendOtp.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
+            if (email.isEmpty()) {
+                etEmail.setError("Email is required");
+                return;
+            }
             executorService.execute(() -> {
                 String error = userRepository.receiveOTP(email);
                 runOnUiThread(() -> {
@@ -62,7 +72,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 .setTitle("Error")
                                 .setMessage(error)
                                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setIcon(R.drawable.error)
                                 .show();
                     }
                 });
@@ -71,6 +81,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         btnConfirmOtp.setOnClickListener(v -> {
             String otp = etOtp.getText().toString();
+            if (otp.isEmpty()) {
+                etOtp.setError("OTP is required");
+                return;
+            }
             if (userRepository.checkOTP(otp)) {
                 Toast.makeText(this, "OTP is correct", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, ResetPasswordActivity.class);
@@ -106,4 +120,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 handler.removeCallbacks(countdownRunnable);
             }
         }
+
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

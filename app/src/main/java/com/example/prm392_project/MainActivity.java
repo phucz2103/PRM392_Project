@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //        orderDetailRepository.insertOrderDetail(new OrderDetail(1,500.00, 2, 101,3));
 
 
+
         userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
                 "user1@gmail.com", "Huyen Thach That, Xa Thach Hoa",
                 "Male","Abc123456@",true,false), "Abc123456@" );
