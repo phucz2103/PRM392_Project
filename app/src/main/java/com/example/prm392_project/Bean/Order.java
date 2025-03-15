@@ -16,7 +16,7 @@ public class Order {
     private UUID OrderCode;
     private String OrderDate;
     private double TotalPrice;
-    private int status; // 0 la pending, 1 la confirmed, 2 la rejected, 4 la nguoi dung huy
+    private int status; // 0 la pending, 1 la confirmed, 2 la rejected, 3 la nguoi dung huy
     private int UserID; // FK
 
     // Constructor

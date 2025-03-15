@@ -3,9 +3,12 @@ package com.example.prm392_project.DAO;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.prm392_project.Bean.Order;
+import com.example.prm392_project.Bean.POJO.OrderDetailWithProduct;
+import com.example.prm392_project.Bean.POJO.OrderWithUser;
 
 import java.util.List;
 
@@ -23,10 +26,21 @@ public interface OrderDao {
     @Query("SELECT * FROM `Order` WHERE status = 0 and UserID = :userID")
     List<Order>  getOrderPendingByUser(int userID);
 
-    @Query("SELECT * FROM `Order` WHERE status = 1 and UserID = :userID")
+    @Query("SELECT * FROM `Order` WHERE status > 0 and UserID = :userID")
     List<Order>  getOrderPurchasedByUser(int userID);
 
     @Query("UPDATE `Order` SET status = :status WHERE OrderID = :orderID")
     void updateOrderStatus(int orderID, int status);
 
+    @Transaction
+    @Query("SELECT * FROM `Order`")
+    List<OrderWithUser> getAllOrdersWithUsers();
+
+    @Transaction
+    @Query("SELECT * FROM `Order` WHERE OrderID = :orderID")
+    OrderWithUser getOrderWithUserByID(int orderID);
+
+    @Transaction
+    @Query("SELECT * FROM `OrderDetail` WHERE OrderID = :orderID")
+    List<OrderDetailWithProduct> getOrderDetailsWithProduct(int orderID);
 }
