@@ -1,22 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FADBD8"
     android:padding="16dp">
 
-    <!-- Logo and Search Bar -->
+    <!-- Logo và Thanh tìm kiếm -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
+        <!-- Logo -->
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/logopage" />
 
+        <!-- Tên cửa hàng -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,24 +27,21 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="16dp" />
-
+        <!-- Thanh tìm kiếm -->
         <EditText
+            android:id="@+id/search"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="Search"
             android:background="#FFFFFF"
             android:layout_marginStart="8dp"
             android:padding="8dp"
             android:layout_marginEnd="8dp"
-            android:minHeight="48dp"/>
+            android:minHeight="48dp" />
     </LinearLayout>
 
-    <!-- Add Category Button -->
+    <!-- Button Add Category -->
     <Button
         android:id="@+id/btn_add_category"
         android:layout_width="wrap_content"
@@ -54,17 +53,25 @@
         android:text="Add Category"
         android:textColor="#FFFFFF" />
 
-    <!-- Categories List -->
-    <ListView
+    <!-- Tiêu đề Categories -->
+    <TextView
+        android:id="@+id/tv_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_add_category"
+        android:layout_marginTop="10dp"
+        android:text="Categories"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- RecyclerView để hiển thị danh sách -->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="150dp"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:clipToPadding="false"
-        android:divider="#E0E0E0"
-        android:dividerHeight="1dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_categories"
+        android:layout_marginTop="10dp"
         android:padding="8dp" />
 
 </RelativeLayout>

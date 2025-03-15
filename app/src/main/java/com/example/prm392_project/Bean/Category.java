@@ -10,15 +10,9 @@ public class Category {
     private String CategoryName;
     private boolean IsAvailable;
 
-    // Constructor
-    @Ignore
     public Category(String CategoryName, boolean IsAvailable) {
         this.CategoryName = CategoryName;
         this.IsAvailable = IsAvailable;
-    }
-
-    public Category(String CategoryName) {
-        this.CategoryName = CategoryName;
     }
 
     // Getters and Setters
@@ -32,4 +26,6 @@ public class Category {
     public String getName() {
         return this.CategoryName;
     }
+
+
 }

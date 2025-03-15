@@ -25,4 +25,6 @@ public interface ProductDao {
 
     @Query("SELECT * FROM Product WHERE ProductID = :productId")
     Product getProductById(int productId);
+
+
 }

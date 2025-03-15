@@ -18,6 +18,10 @@ public interface CategoryDao {
 
     @Query("SELECT * FROM Category")
     List<Category> getAllCategories();
+    @Query("DELETE FROM Cart WHERE UserID = :userID")
+    void deleteCartByUserId(int userID);
 
+    @Query("UPDATE category SET CategoryName = :name, IsAvailable = :active WHERE CategoryID = :id")
+    void updateCategory(int id, String name, boolean active);
 }
 

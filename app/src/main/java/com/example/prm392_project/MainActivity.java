@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
     private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository = new CategoryRepository(this);
 
 
     @Override
@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
                 "Male","Abc123456@",true,false),"Abc123456@");
 
-
+//        categoryRepository.AddCategory("Foods",true);
+//        categoryRepository.AddCategory("Drinks",true);
+//        categoryRepository.AddCategory("Toys",true);
+//        categoryRepository.AddCategory("Healthcare",true);
     }
 }

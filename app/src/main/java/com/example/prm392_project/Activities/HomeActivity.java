@@ -1,5 +1,6 @@
 package com.example.prm392_project.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -93,13 +94,14 @@ public class HomeActivity extends AppCompatActivity {
         recyclerProducts.setLayoutManager(productLayoutManager);
 
         productAdapter = new ProductAdapter(this, new ArrayList<>(), product -> {
-            // Handle product click
-            Toast.makeText(this, "Selected: " + product.getProductName(), Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to product details activity
-            // Intent intent = new Intent(HomeActivity.this, ProductDetailActivity.class);
-            // intent.putExtra("product_id", product.getProductID());
-            // startActivity(intent);
+            // Chuyển sang ProductDetailActivity
+            Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+            intent.putExtra("product_id", product.getProductID());
+            //Can userid chuyen sang
+            //intent.putExtra("user_id", );
+            startActivity(intent);
         });
+
         recyclerProducts.setAdapter(productAdapter);
     }
 
