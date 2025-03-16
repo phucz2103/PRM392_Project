@@ -23,7 +23,7 @@ import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.UserRepository;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
     private UserRepository userRepository;
     private EditText edtFullName;
     private EditText edtMobile;
@@ -60,6 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile);
 
+        setupBottomNavigation();
         Toolbar toolbar = findViewById(R.id.toolbarUserProfile);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

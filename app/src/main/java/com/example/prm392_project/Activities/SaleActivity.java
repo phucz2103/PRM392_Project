@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,9 +28,8 @@ import com.example.prm392_project.Repositories.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class HomeActivity extends BaseActivity {
+public class SaleActivity extends BaseActivity {
     private RecyclerView recyclerCategories, recyclerProducts;
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
@@ -40,7 +38,6 @@ public class HomeActivity extends BaseActivity {
     private EditText edtSearch;
     private Button btnSearch;
     private List<Product> allProducts = new ArrayList<>();
-    private List<Product> currentFilteredProducts = new ArrayList<>();
     private int currentCategoryId = 0; // 0 means "All Products"
     private String currentSearchQuery = "";
     private static final int PAGE_SIZE = 6;
@@ -51,10 +48,10 @@ public class HomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_sale);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // Set bottom padding to 0
             return insets;
         });
 
@@ -85,7 +82,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupRecyclerViews() {
-
         // Setup Category RecyclerView
         LinearLayoutManager categoryLayoutManager = new LinearLayoutManager(
                 this, LinearLayoutManager.HORIZONTAL, false);
@@ -129,13 +125,12 @@ public class HomeActivity extends BaseActivity {
         recyclerProducts.setAdapter(productAdapter);
     }
 
-
     private void loadCategories() {
         List<Category> categories = categoryRepository.getAllCategories();
         categoryAdapter.setCategoryList(categories);
 
         // Add "All" category at the beginning
-        Category allCategory = new Category("All Products", true);
+        Category allCategory = new Category("All Sale Products", true);
         allCategory.setCategoryID(0); // Special ID for "All"
 
         List<Category> categoriesWithAll = new ArrayList<>();
@@ -147,7 +142,8 @@ public class HomeActivity extends BaseActivity {
 
     private void loadProducts(int page) {
         int offset = page * PAGE_SIZE;
-        List<Product> newProducts = productRepository.getProducts(PAGE_SIZE, offset);
+        // Use getSaleProducts instead of getProducts
+        List<Product> newProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
 
         if (newProducts != null && !newProducts.isEmpty()) {
             allProducts.addAll(newProducts);
@@ -173,17 +169,17 @@ public class HomeActivity extends BaseActivity {
         List<Product> filteredProducts;
 
         if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
-            // No filters applied, get all products
-            filteredProducts = productRepository.getProducts(PAGE_SIZE, offset);
+            // No filters applied, get all sale products
+            filteredProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
         } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
             // Only filter by category
-            filteredProducts = productRepository.getProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
+            filteredProducts = productRepository.getSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
         } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
             // Only filter by search query
-            filteredProducts = productRepository.searchProducts(currentSearchQuery, PAGE_SIZE, offset);
+            filteredProducts = productRepository.searchSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
         } else {
             // Filter by both category and search query
-            filteredProducts = productRepository.searchProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+            filteredProducts = productRepository.searchSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
         }
 
         if (filteredProducts != null && !filteredProducts.isEmpty()) {
@@ -194,7 +190,7 @@ public class HomeActivity extends BaseActivity {
             productAdapter.setShowLoadingButton(filteredProducts.size() == PAGE_SIZE);
 
             if (page == 0 && filteredProducts.isEmpty()) {
-                Toast.makeText(HomeActivity.this, "No products found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SaleActivity.this, "No sale products found", Toast.LENGTH_SHORT).show();
             }
         } else {
             productAdapter.setShowLoadingButton(false);

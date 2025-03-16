@@ -9,4 +9,15 @@ public interface IProductRepository {
     void updateProduct(Product product);
     Product getProductById(int productId);
     List<Product> getAllProducts();
+
+    List<Product> getAllAvailableProducts();
+    List<Product> getProducts(int limit, int offset);
+    List<Product> getProductsByCategory(int categoryID, int limit, int offset);
+
+    List<Product> searchProducts(String query, int limit, int offset);
+    List<Product> searchProductsByCategory(String query, int categoryID, int limit, int offset);
+    List<Product> getSaleProducts(int limit, int offset);
+    List<Product> getSaleProductsByCategory(int categoryID, int limit, int offset);
+    List<Product> searchSaleProducts(String query, int limit, int offset);
+    List<Product> searchSaleProductsByCategory(String query, int categoryID, int limit, int offset);
 }

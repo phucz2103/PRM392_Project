@@ -22,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -51,11 +52,13 @@ public class UpdateProductActivity extends AppCompatActivity {
     private Button btnUpdate;
     private ImageView imgProduct;
     private ImageButton btnSelectImage;
+    private EditText edtPrice;
     private ICategoryRepository categoryRepository;
     private List<Category> categories;
     private RadioGroup rgIsSaled, rgIsAvailable;
     private IProductRepository productRepository;
     private int productId;
+
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
 
@@ -99,6 +102,11 @@ public class UpdateProductActivity extends AppCompatActivity {
             return insets;
         });
 
+        Toolbar toolbar = findViewById(R.id.toolbarUpdateProduct);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         initViews();
         checkPermissions();
         loadCategories();
@@ -118,6 +126,7 @@ public class UpdateProductActivity extends AppCompatActivity {
         btnSelectImage = findViewById(R.id.btnSelectImage);
         rgIsSaled = findViewById(R.id.rgIsSaled);
         rgIsAvailable = findViewById(R.id.rgIsAvailable);
+        edtPrice = findViewById(R.id.edtPrice);
     }
 
     private void loadCategories() {
@@ -143,6 +152,7 @@ public class UpdateProductActivity extends AppCompatActivity {
             edtProductName.setText(product.getProductName());
             edtDescription.setText(product.getDescription());
             edtQuantity.setText(String.valueOf(product.getQuantity()));
+            edtPrice.setText(String.valueOf(product.getPrice()));
 
             btnSelectImage.setVisibility(View.VISIBLE);
             if (product.getIMAGE_URL() != null && !product.getIMAGE_URL().isEmpty()) {
@@ -197,7 +207,6 @@ public class UpdateProductActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
 
     private void openImageChooser() {
@@ -235,6 +244,10 @@ public class UpdateProductActivity extends AppCompatActivity {
             edtQuantity.setError("Quantity is required");
             return false;
         }
+        if (edtPrice.getText().toString().trim().isEmpty()) {
+            edtPrice.setError("Price is required");
+            return false;
+        }
         if (imageUri == null) {
             Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
             return false;
@@ -246,20 +259,20 @@ public class UpdateProductActivity extends AppCompatActivity {
         String name = edtProductName.getText().toString();
         String description = edtDescription.getText().toString();
         int quantity = Integer.parseInt(edtQuantity.getText().toString());
+        double price = Double.parseDouble(edtPrice.getText().toString());
         int selectedPosition = spnCategory.getSelectedItemPosition();
         int categoryID = categories.get(selectedPosition).getCategoryID();
         String imageUrl = imageUri.toString();
         boolean isSaled = rgIsSaled.getCheckedRadioButtonId() == R.id.rbSaledTrue;
         boolean isAvailable = rgIsAvailable.getCheckedRadioButtonId() == R.id.rbAvailableTrue;
 
-        Product updatedProduct = new Product(name, description, quantity, imageUrl,
+        Product updatedProduct = new Product(name, description, price, imageUrl,
                 LocalDateTime.now().toString(), LocalDateTime.now().toString(), isAvailable, categoryID, quantity, isSaled);
         updatedProduct.setProductID(productId);
-        updatedProduct.setIsSaled(isSaled);
 
         productRepository.updateProduct(updatedProduct);
         Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show();
-//        finish();
+        //finish();
     }
     private void checkPermissions() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
@@ -277,5 +290,11 @@ public class UpdateProductActivity extends AppCompatActivity {
                         PERMISSION_REQUEST_CODE);
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Đóng Activity và quay lại màn hình trước đó
+        return true;
     }
 }
