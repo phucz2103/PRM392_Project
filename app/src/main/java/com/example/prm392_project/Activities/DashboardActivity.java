@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prm392_project.Adapter.MonthRevenue;
+import com.example.prm392_project.Bean.Order;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.OrderRepository;
 import com.example.prm392_project.Repositories.UserRepository;
@@ -25,6 +26,8 @@ import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
     private TextView tvUsers;
+    private TextView tvOrders;
+    private TextView tvRevenue;
     private UserRepository userRepository;
     private OrderRepository orderRepository;
     @Override
@@ -41,7 +44,16 @@ public class DashboardActivity extends AppCompatActivity {
         orderRepository = new OrderRepository(this);
         setupBarChart();
         tvUsers = findViewById(R.id.tvUsers);
+        tvOrders = findViewById(R.id.tvOrders);
+        tvRevenue = findViewById(R.id.tvRevenue);
+        List<Order> orders = orderRepository.getAll();
+        int totalRevenue = 0;
+        for (Order order : orders) {
+            totalRevenue += (int)order.getTotalPrice();
+        }
+        tvOrders.setText(String.valueOf(orders.stream().count()));
         tvUsers.setText(String.valueOf(userRepository.getAllUsers().stream().count()));
+        tvRevenue.setText(String.valueOf(totalRevenue));
     }
         private void setupBarChart() {
 

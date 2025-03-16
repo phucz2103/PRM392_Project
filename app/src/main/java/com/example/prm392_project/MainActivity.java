@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
     private ProductRepository productRepository;
+
     private CategoryRepository categoryRepository = new CategoryRepository(this);
 
 
