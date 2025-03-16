@@ -17,7 +17,6 @@ import java.util.List;
 public interface OrderDao {
     @Insert
     void insert(Order order);
-
     @Query("SELECT * FROM `Order` WHERE UserID = :userID")
     List<Order> getOrdersByUser(int userID);
     @Query("SELECT strftime('%m', orderdate) AS month, SUM(totalprice) AS revenue " +

@@ -7,6 +7,7 @@ import com.example.prm392_project.Bean.POJO.OrderWithUser;
 import java.util.List;
 
 public interface IOrderRepository {
+    void insertOrder(Order order);
     List<Order> getAll();
     List<Order> getOrderPendingByUser(int userID);
     List<Order> getOrderPurchasedByUser(int userID);

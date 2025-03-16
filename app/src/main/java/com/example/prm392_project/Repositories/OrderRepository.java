@@ -22,6 +22,11 @@ public class OrderRepository implements IOrderRepository {
     }
 
     @Override
+    public void insertOrder(Order order) {
+        orderDao.insert(order);
+    }
+
+    @Override
     public List<Order> getAll() {
         return orderDao.getAll();
     }

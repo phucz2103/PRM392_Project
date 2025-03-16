@@ -56,7 +56,6 @@ public class DashboardActivity extends AppCompatActivity {
         tvRevenue.setText(String.valueOf(totalRevenue));
     }
         private void setupBarChart() {
-
             BarChart barChart = findViewById(R.id.barChart);
 
             // Dữ liệu mẫu cho lượt truy cập theo tháng
