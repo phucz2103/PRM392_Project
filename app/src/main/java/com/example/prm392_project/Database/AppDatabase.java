@@ -25,7 +25,7 @@ import com.example.prm392_project.DAO.UserDao;
 
 @Database(entities = {User.class, Review.class, Cart.class, OrderDetail.class, Product.class, Category.class, Order.class, Sale.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase  extends RoomDatabase{
-        public abstract UserDao userDao();
+    public abstract UserDao userDao();
     public abstract ReviewDao reviewDao();
     public abstract CartDao cartDao();
     public abstract OrderDetailDao orderDetailDao();

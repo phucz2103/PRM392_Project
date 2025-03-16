@@ -24,6 +24,7 @@ public class Cart {
         this.UserID = UserID;
     }
 
+
     // Getters and Setters
     public int getCartID() { return CartID; }
     public void setCartID(int CartID) { this.CartID = CartID; }
