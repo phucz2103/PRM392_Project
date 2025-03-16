@@ -87,7 +87,7 @@ public class UserProfileActivity extends AppCompatActivity {
         String userId = getIntent().getStringExtra("UserID");
         user = userRepository.getUserByID(userId);
         } else {
-            user = userRepository.login("user1@gmail.com", "Abc123456@");
+            user = userRepository.login("user3@gmail.com", "Abcd123456@@");
         }
 
         edtFullName.setText(user.getFullName());

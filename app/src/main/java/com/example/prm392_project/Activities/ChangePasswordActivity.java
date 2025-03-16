@@ -93,7 +93,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     etConfirmPassword.requestFocus();
                     return;
                 }
-                user.setPassword(etNewPassword.getText().toString());
+                String hashpassword = BCrypt.hashpw(etNewPassword.getText().toString(), BCrypt.gensalt());
+                user.setPassword(hashpassword);
                 userRepository.updateUser(user);
                 Intent intent1 = new Intent();
                 intent1.putExtra("UserID", String.valueOf(user.getUserID()));

@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
-//                "user1@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-//                "Male","Abc123456@",true,false), "Abc123456@" );
-//        userRepository.insertUser(new User("Nguyen Van A", "0987654322",
+        userRepository.insertUser(new User("Cao Duy Quan", "0987654322",
+                "user3@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+                "Male","Abc123456@",true,false), "Abc123456@" );
+//        userRepository.insertUser(new User("Nguyen Van A", "0987654329",
 //                "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
 //                "Male","Abc123456@",true,false),"Abc123456@");
 
