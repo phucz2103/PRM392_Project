@@ -104,7 +104,7 @@
 
         <!-- Refresh Button -->
         <ImageView
-            android:id="@+id/refresh_button"
+            android:id="@+id/ivRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_popup_sync"
@@ -114,14 +114,13 @@
 
     <!-- RecyclerView for Order List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/order_recycler_view"
+        android:id="@+id/recyclerViewOrderList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="8dp"
         app:layout_constraintTop_toBottomOf="@id/filter_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_order" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

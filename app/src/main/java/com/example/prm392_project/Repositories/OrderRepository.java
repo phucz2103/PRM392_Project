@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.prm392_project.Adapter.MonthRevenue;
 import com.example.prm392_project.Bean.Order;
+import com.example.prm392_project.Bean.POJO.OrderDetailWithProduct;
+import com.example.prm392_project.Bean.POJO.OrderWithUser;
 import com.example.prm392_project.DAO.OrderDao;
 import com.example.prm392_project.Database.AppDatabase;
 import com.example.prm392_project.IRepositories.IOrderRepository;
@@ -45,5 +47,20 @@ public class OrderRepository implements IOrderRepository {
 
     public List<MonthRevenue> getMonthRevenue(String year){
         return orderDao.getMonthRevenue(year);
+    }
+
+    @Override
+    public OrderWithUser getOderWithUserByID(int orderID) {
+        return orderDao.getOrderWithUserByID(orderID);
+    }
+
+    @Override
+    public List<OrderDetailWithProduct> getOrderDetailsWithProduct(int orderID) {
+        return orderDao.getOrderDetailsWithProduct(orderID);
+    }
+
+    @Override
+    public List<OrderWithUser> getAllOrderWithUser() {
+        return orderDao.getAllOrdersWithUsers();
     }
 }

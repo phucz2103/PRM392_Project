@@ -79,7 +79,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tvOrderID"
+                android:id="@+id/tvOrderCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
@@ -98,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
+                android:layout_weight="0.5"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -168,7 +169,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:gravity="end"/>
         </LinearLayout>
 
         <!-- Total Amount -->
@@ -215,63 +217,14 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
-
-    <!-- Product Section -->
-    <LinearLayout
-        android:id="@+id/product_layout"
+    <!--    Product Section-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProductList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:layout_marginTop="18dp"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/order_details_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- Product Image -->
-        <ImageView
-            android:id="@+id/ivProductImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:contentDescription="Product Image" />
-
-        <!-- Product Details -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvProductName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="LEGO® Lamborghini Countach 5000 Quattrovalvole"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tvProductPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1.020.000đ"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <!-- Quantity -->
-        <TextView
-            android:id="@+id/tvProductQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quantity: 1"
-            android:textColor="#000000"
-            android:textSize="16sp" />
-    </LinearLayout>
-
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:background="#FFFFFF"/>
     <!-- Total Amount Footer -->
     <TextView
         android:id="@+id/tvTotalAmountFooter"
@@ -279,7 +232,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textAlignment="center"
-        android:text="TOTAL AMOUNT: "
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
