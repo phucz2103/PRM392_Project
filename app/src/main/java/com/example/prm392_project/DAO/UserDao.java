@@ -21,11 +21,17 @@ public interface UserDao {
     @Query("SELECT * FROM User WHERE IsAdmin = 0")
     List<User> getAllUsers();
 
+    @Query("SELECT * FROM User WHERE Email = :email")
+    User getUserByEmail(String email);
+
+    @Query("SELECT * FROM User WHERE Mobile = :phone")
+    User getUserByPhone(String phone);
+
+    @Query("UPDATE User SET Password = :newPassword WHERE Email = :email")
+    void resetPassword(String newPassword, String email);
+
     @Query("SELECT * FROM User WHERE UserID = :userID")
     User getUserByID(String userID);
-
-    @Query("DELETE FROM User WHERE UserID = :userID")
-    void deleteUser(String userID);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateUser(User user);

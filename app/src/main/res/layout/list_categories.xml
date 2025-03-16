@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FADBD8"
+    android:padding="16dp">
+
+    <!-- Logo và Thanh tìm kiếm -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/logopage" />
+
+        <!-- Tên cửa hàng -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AE Cay Khe"
+            android:textColor="#F39C12"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Thanh tìm kiếm -->
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="Search"
+            android:background="#FFFFFF"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"
+            android:minHeight="48dp" />
+    </LinearLayout>
+
+    <!-- Button Add Category -->
+    <Button
+        android:id="@+id/btn_add_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="3dp"
+        android:backgroundTint="#3498DB"
+        android:text="Add Category"
+        android:textColor="#FFFFFF" />
+
+    <!-- Tiêu đề Categories -->
+    <TextView
+        android:id="@+id/tv_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_add_category"
+        android:layout_marginTop="10dp"
+        android:text="Categories"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- RecyclerView để hiển thị danh sách -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_categories"
+        android:layout_marginTop="10dp"
+        android:padding="8dp" />
+
+</RelativeLayout>

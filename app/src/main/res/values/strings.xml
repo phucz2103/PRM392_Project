@@ -10,5 +10,8 @@
         <item>ASC</item>
         <item>DESC</item>
     </string-array>
+    <string name="TabOrderPending">Order Pending</string>
+    <string name="TabOrderPurchased">Order Purchased</string>
+    <string name="PaymentMethod">Cash on delivery</string>
 
 </resources>
