@@ -33,7 +33,7 @@ public interface OrderDao {
     void updateOrderStatus(int orderID, int status);
 
     @Transaction
-    @Query("SELECT * FROM `Order`")
+    @Query("SELECT * FROM `Order` ORDER BY `OrderDate` DESC")
     List<OrderWithUser> getAllOrdersWithUsers();
 
     @Transaction
