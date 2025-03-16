@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private OrderDetailRepository orderDetailRepository;
     private ProductRepository productRepository;
 
-    private CategoryRepository categoryRepository = new CategoryRepository(this);
+    private CategoryRepository categoryRepository ;
 
 
     @Override
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         userRepository = new UserRepository(this);
+        categoryRepository = new CategoryRepository(this);
+
 //        orderRepository = new OrderRepository(this);
 //        orderDetailRepository = new OrderDetailRepository(this);
 //        productRepository = new ProductRepository(this);
@@ -63,16 +65,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
-                "user1@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-                "Male","Abc123456@",true,false), "Abc123456@" );
-        userRepository.insertUser(new User("Nguyen Van A", "0987654322",
-                "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
-                "Male","Abc123456@",true,false),"Abc123456@");
+//        userRepository.insertUser(new User("Cao Duy Quan", "0987654321",
+//                "user1@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","Abc123456@",true,false), "Abc123456@" );
+//        userRepository.insertUser(new User("Nguyen Van A", "0987654322",
+//                "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
+//                "Male","Abc123456@",true,false),"Abc123456@");
 
-//        categoryRepository.AddCategory("Foods",true);
-//        categoryRepository.AddCategory("Drinks",true);
-//        categoryRepository.AddCategory("Toys",true);
-//        categoryRepository.AddCategory("Healthcare",true);
+        categoryRepository.AddCategory("Foods",true);
+        categoryRepository.AddCategory("Drinks",true);
+        categoryRepository.AddCategory("Toys",true);
+        categoryRepository.AddCategory("Healthcare",true);
     }
 }
