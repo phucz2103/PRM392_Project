@@ -40,7 +40,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     public OrderHistoryItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_order_history, parent, false);
-        return new OrderHistoryItemViewHolder(view);
+        return new OrderHistoryItemViewHolder(view, this);
     }
 
     @Override
@@ -78,10 +78,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         private Context context;
         private OrderRepository orderRepository;
         private OnOrderCancelListener cancelListener;
-        public OrderHistoryItemViewHolder(@NonNull View itemView) {
+        private OrderHistoryAdapter orderHistoryAdapter;
+        public OrderHistoryItemViewHolder(@NonNull View itemView, OrderHistoryAdapter orderHistoryAdapter) {
             super(itemView);
             // lấy context từ itemView
             this.context = itemView.getContext();
+            this.orderHistoryAdapter = orderHistoryAdapter;
             // Ánh xạ các view thủ công
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
             tvOrderCode = itemView.findViewById(R.id.tvOrderCode);
@@ -134,6 +136,8 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             cancelOrder(position);
+                            orderHistoryAdapter.orderList.remove(position);
+                            orderHistoryAdapter.notifyItemRemoved(position);
                             dialog.dismiss();
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener(){

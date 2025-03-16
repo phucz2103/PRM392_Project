@@ -38,7 +38,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     public OrderListAdapter.OrderListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_order_list, parent, false);
-        return new OrderListAdapter.OrderListViewHolder(view, orderWithUserList, context);
+        return new OrderListAdapter.OrderListViewHolder(view, orderWithUserList, context, this);
     }
 
     @Override
@@ -64,11 +64,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         private List<OrderWithUser> orderWithUserList;
         private Context context;
         private OrderRepository orderRepository;
-        public OrderListViewHolder(@NonNull View itemView, List<OrderWithUser> orderWithUserList, Context context) {
+        private OrderListAdapter orderListAdapter;
+        public OrderListViewHolder(@NonNull View itemView, List<OrderWithUser> orderWithUserList, Context context, OrderListAdapter adapter) {
             super(itemView);
             // map local variable to global variable
             this.orderWithUserList = orderWithUserList;
             this.context = context;
+            this.orderListAdapter = adapter;
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
             tvOrderCode = itemView.findViewById(R.id.tvOrderCode);
             tvFullName = itemView.findViewById(R.id.tvFullName);
@@ -86,6 +88,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     if (position != RecyclerView.NO_POSITION && orderWithUserList != null && position < orderWithUserList.size()) {
                         OrderWithUser orderWithUser = orderWithUserList.get(position);
                         showUpdateStatusDialog(orderWithUser, position);
+
                     } else {
                         Log.e("OrderListAdapter", "Cannot update order: invalid position or list is null/empty");
                     }
@@ -137,6 +140,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     orderRepository = new OrderRepository(context);
                     orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), newStatus);
                     orderWithUser.order.setStatus(newStatus);
+                    orderListAdapter.notifyItemChanged(position);
                 }
             });
             builder.setNegativeButton("Cancel", null);
