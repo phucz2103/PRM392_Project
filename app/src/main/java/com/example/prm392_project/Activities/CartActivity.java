@@ -37,9 +37,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_shopping_cart); // Kiểm tra đúng tên file XML
+        setContentView(R.layout.acitivity_shopping_cart);
 
-        recyclerView = findViewById(R.id.recyclerCart); // Đảm bảo RecyclerView có trong XML
+        recyclerView = findViewById(R.id.recyclerCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         btnOrder = findViewById(R.id.btnOrder);

@@ -76,6 +76,9 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemHolder.txtProductName.setText(product.getProductName());
             itemHolder.txtProductPrice.setText(product.getPrice() + " VND");
             itemHolder.txtQuantity.setText(String.valueOf(cartItem.getQTY_int()));
+            if(itemHolder.txtQuantity.getText().equals("0")){
+                itemHolder.btnDecrease.setEnabled(false);
+            }
 
             Glide.with(context)
                     .load(product.getIMAGE_URL())
@@ -83,6 +86,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     .into(itemHolder.imgProduct);
 
             itemHolder.btnIncrease.setOnClickListener(v -> listener.onIncrease(cartItem));
+
             itemHolder.btnDecrease.setOnClickListener(v -> listener.onDecrease(cartItem));
             itemHolder.txtRemove.setOnClickListener(v -> listener.onRemove(cartItem));
         }
