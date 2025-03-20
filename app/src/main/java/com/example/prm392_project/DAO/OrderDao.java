@@ -43,4 +43,8 @@ public interface OrderDao {
     @Transaction
     @Query("SELECT * FROM `OrderDetail` WHERE OrderID = :orderID")
     List<OrderDetailWithProduct> getOrderDetailsWithProduct(int orderID);
+
+    @Transaction
+    @Query("SELECT * FROM `Order` WHERE `OrderDate` >= :startDate & `OrderDate` <= :endDate")
+    List<OrderWithUser> getOrderFilteredByDate(String startDate, String endDate);
 }

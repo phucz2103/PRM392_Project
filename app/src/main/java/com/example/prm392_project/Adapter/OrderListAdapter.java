@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,6 +119,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             // convert int status to text status
             String statusText = getStatusString(orderWithUser.order.getStatus());
             tvOrderStatus.setText(statusText);
+            tvOrderStatus.setTypeface(null, Typeface.BOLD);
             // change color of text status
             String color = changeTextColor(orderWithUser.order.getStatus());
             try {
@@ -154,10 +156,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     color = "#000000";
                     break;
                 case 1:
-                    color = "#00FF00";
+                    color = "#27AE60";
                     break;
                 case 2:
-                    color = "#FF0000";
+                    color = "#E74C3C";
                     break;
                 case 3:
                     color = "#00FFFF";
