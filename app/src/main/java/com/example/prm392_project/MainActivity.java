@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 //                "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
 //                "Male","Abc123456@",true,false),"Abc123456@");
 
+
 //        categoryRepository.AddCategory("Foods",true);
 //        categoryRepository.AddCategory("Drinks",true);
 //        categoryRepository.AddCategory("Toys",true);
