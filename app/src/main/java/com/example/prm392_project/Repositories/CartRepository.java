@@ -34,9 +34,10 @@ public class CartRepository implements ICartRepository {
         if (cart.getQTY_int() > 1) {
             cart.setQTY_int(cart.getQTY_int() - 1);
             updateCartItem(cart.getCartID(),cart.getQTY_int());
-        } else {
-            deleteCartItem(cart.getCartID());
         }
+//        else {
+//            deleteCartItem(cart.getCartID());
+//        }
     }
 
     @Override

@@ -73,6 +73,7 @@
         <activity
             android:name=".Activities.UserProfileActivity"
             android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -93,6 +94,15 @@
                 <data android:scheme="http" android:host="www.example.com" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.CartActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="www.example.com" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activities.ListCategoriesActivity"
             android:exported="true">
             <intent-filter>
@@ -102,8 +112,6 @@
                 <data android:scheme="http" android:host="www.example.com" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CartActivity"
-            android:exported="true"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
