@@ -20,6 +20,9 @@ public class Order {
     private int UserID; // FK
 
     // Constructor
+    public Order(){
+
+    }
     public Order(String OrderDate, double TotalPrice, int status, int UserID) {
         this.OrderCode = UUID.randomUUID();
         this.OrderDate = OrderDate;

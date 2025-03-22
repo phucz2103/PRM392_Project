@@ -12,6 +12,7 @@ import com.example.prm392_project.IRepositories.IOrderRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderRepository implements IOrderRepository {
     private OrderDao orderDao;
@@ -29,6 +30,11 @@ public class OrderRepository implements IOrderRepository {
     @Override
     public List<Order> getAll() {
         return orderDao.getAll();
+    }
+
+    @Override
+    public Order getOrdersByOrderCode(UUID uuid) {
+        return orderDao.getOrdersByOrderCode(uuid);
     }
 
     @Override

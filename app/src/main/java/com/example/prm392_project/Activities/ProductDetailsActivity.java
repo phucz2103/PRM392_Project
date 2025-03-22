@@ -84,6 +84,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnCart.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("product_id",productId);
             startActivity(intent);
             finish();
         });
@@ -106,7 +107,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         int productId = getIntent().getIntExtra("product_id", -1);
         List<Cart> list = cartRepository.getCartByProductID(productId);
         if(curQuantity > 1 || list.size() == 1){
-            Toast.makeText(this, "You have already added this product to your cart!", Toast.LENGTH_SHORT).show();
+            //curQuantity++;
+            cartRepository.increaseQuantity(newcart);
+            int x = newcart.getQTY_int();
+            //Toast.makeText(this, "You have already added this product to your cart!", Toast.LENGTH_SHORT).show();
+
         }
         else {
             // Insert new cart

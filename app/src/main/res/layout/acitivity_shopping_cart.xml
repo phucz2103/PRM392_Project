@@ -105,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Total Cost: 312.000đ"
+            android:text="Total Cost: 0đ"
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
