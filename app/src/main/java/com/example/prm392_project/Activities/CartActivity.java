@@ -39,6 +39,8 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private Button btnOrder;
     private ProductRepository productRepository;
 
+    private int userId = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId", 1);
+         userId = sharedPreferences.getInt("userId", 1);
 
         // Lấy danh sách sản phẩm trong giỏ hàng bo sung UserID o day
         cartList = cartRepository.getCartByUser(userId);
@@ -138,7 +140,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     // Cập nhật lại danh sách giỏ hàng sau khi thay đổi
     private void refreshCart() {
         // Sua id user o day
-        cartList = cartRepository.getCartByUser(1);
+        cartList = cartRepository.getCartByUser(userId);
         cartAdapter = new CartAdapter(this, cartList, this, productRepository);
         recyclerView.setAdapter(cartAdapter);
         // Cập nhật tổng tiền

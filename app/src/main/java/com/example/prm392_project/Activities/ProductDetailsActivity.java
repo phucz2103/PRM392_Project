@@ -1,6 +1,7 @@
 package com.example.prm392_project.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +46,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         int productId = getIntent().getIntExtra("product_id", -1);
         cartRepository = new CartRepository(this);
-        List<Cart> list = cartRepository.getCartByUser(1);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
+        List<Cart> list = cartRepository.getCartByUser(userId);
         //Quantity
         txtCartCount.setText(String.valueOf(list.size()));
 
@@ -61,8 +64,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
             txtProductName.setText(product.getProductName());
             txtDescription.setText(product.getDescription());
             txtPrice.setText("Price: " + product.getPrice() + " VND");
+
             // New Cart o day
-            newcart = new Cart(product.getPrice(), 1, productId,1);
+            newcart = new Cart(product.getPrice(), 1, productId,userId);
             // Load ảnh bằng Glide
             //Glide.with(this).load(product.getIMAGE_URL()).into(productimage);
         } else {
