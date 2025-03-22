@@ -3,8 +3,10 @@ package com.example.prm392_project.Activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+import org.mindrot.jbcrypt.BCrypt;
 import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.Helpers.Validation;
 import com.example.prm392_project.R;
@@ -24,6 +26,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText etNewPassword;
     private EditText etConfirmPassword;
     private Button btnChangePassword;
+    private ImageView ivCurrentPassword, ivNewPassword, ivConfirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         etCurrentPassword = findViewById(R.id.etCurrentPassword);
         etNewPassword = findViewById(R.id.etNewPassword);
         etConfirmPassword = findViewById(R.id.etConfirmNewPassword);
+        ivCurrentPassword = findViewById(R.id.ivCurrentPassword);
+        ivNewPassword = findViewById(R.id.ivNewPassword);
+        ivConfirmPassword = findViewById(R.id.ivConfirmNewPassword);
+
+        // Gọi hàm xử lý sự kiện click
+        togglePasswordVisibility(ivCurrentPassword, etCurrentPassword);
+        togglePasswordVisibility(ivNewPassword, etNewPassword);
+        togglePasswordVisibility(ivConfirmPassword, etConfirmPassword);
+
         Intent intent = getIntent();
         String userID = intent.getStringExtra("UserID");
         User user = userRepository.getUserByID(userID);
@@ -65,7 +77,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(!etCurrentPassword.getText().toString().equals(user.getPassword())){
+                if(!BCrypt.checkpw(etCurrentPassword.getText().toString(), user.getPassword())){
                     etCurrentPassword.setError("Current password is incorrect");
                     etCurrentPassword.requestFocus();
                     return;
@@ -81,12 +93,28 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     etConfirmPassword.requestFocus();
                     return;
                 }
-                user.setPassword(etNewPassword.getText().toString());
+                String hashpassword = BCrypt.hashpw(etNewPassword.getText().toString(), BCrypt.gensalt());
+                user.setPassword(hashpassword);
                 userRepository.updateUser(user);
                 Intent intent1 = new Intent();
                 intent1.putExtra("UserID", String.valueOf(user.getUserID()));
                 setResult(RESULT_OK, intent1);
                 finish();
+        });
+    }
+
+    private void togglePasswordVisibility(ImageView imageView, EditText editText) {
+        imageView.setOnClickListener(v -> {
+            if (editText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                // Hiển thị mật khẩu
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_open_eye); // Cập nhật icon
+            } else {
+                // Ẩn mật khẩu
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_closed_eye);
+            }
+            editText.setSelection(editText.getText().length()); // Giữ con trỏ ở cuối văn bản
         });
     }
 

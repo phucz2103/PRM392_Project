@@ -90,7 +90,7 @@ public class UserProfileActivity extends BaseActivity {
         if (userId != -1) {
         user = userRepository.getUserByID(String.valueOf(userId));
         } else {
-            user = userRepository.login("user1@gmail.com", "Abc123456@");
+            user = userRepository.login("user3@gmail.com", "Abcd123456@@");
         }
 
         edtFullName.setText(user.getFullName());

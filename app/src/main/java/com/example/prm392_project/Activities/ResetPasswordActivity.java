@@ -2,8 +2,10 @@ package com.example.prm392_project.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private EditText etConfirmPassword;
     private Button btnResetPassword;
     private UserRepository userRepository;
+    private ImageView ivResetNewPassword,ivResetConfirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
         etNewPassword = findViewById(R.id.rsNewPassword);
         etConfirmPassword = findViewById(R.id.rsConfirmPassword);
         btnResetPassword = findViewById(R.id.btnConfirmNewPass);
-
+        ivResetNewPassword = findViewById(R.id.ivResetNewPassword);
+        ivResetConfirmPassword = findViewById(R.id.ivResetConfirmPassword);
+        togglePasswordVisibility(ivResetNewPassword, etNewPassword);
+        togglePasswordVisibility(ivResetConfirmPassword, etConfirmPassword);
         btnResetPassword.setOnClickListener(v -> {
             String newPassword = etNewPassword.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
@@ -71,5 +77,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void togglePasswordVisibility(ImageView imageView, EditText editText) {
+        imageView.setOnClickListener(v -> {
+            if (editText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_open_eye);
+            } else {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_closed_eye);
+            }
+            editText.setSelection(editText.getText().length());
+        });
     }
 }

@@ -3,8 +3,10 @@ package com.example.prm392_project.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView tvSignUp;
     private TextView tvForgetPassword;
+    private ImageView ivLoginPassword;
     private UserRepository userRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +41,13 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
         userRepository = new UserRepository(this);
-
+        ivLoginPassword = findViewById(R.id.ivLoginPassword);
         etEmail = findViewById(R.id.lgEmail);
         etPassword = findViewById(R.id.lgPassword);
         tvSignUp = findViewById(R.id.lgSignUp);
         tvForgetPassword = findViewById(R.id.lgForgetPassword);
         btnLogin = findViewById(R.id.btnSignIn);
-
+        togglePasswordVisibility(ivLoginPassword, etPassword);
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString();
             String password = etPassword.getText().toString();
@@ -101,5 +104,18 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void togglePasswordVisibility(ImageView imageView, EditText editText) {
+        imageView.setOnClickListener(v -> {
+            if (editText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_open_eye);
+            } else {
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_closed_eye);
+            }
+            editText.setSelection(editText.getText().length());
+        });
     }
 }

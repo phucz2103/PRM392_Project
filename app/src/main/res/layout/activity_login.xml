@@ -73,15 +73,31 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/lgPassword"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginBottom="24dp"
                 android:background="@android:drawable/edit_text"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:paddingHorizontal="12dp" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <EditText
+                    android:id="@+id/lgPassword"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:id="@+id/ivLoginPassword"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"
+                    android:src="@drawable/ic_closed_eye"
+                    android:contentDescription="Toggle Password"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
 
             <!-- Nút Sign In -->
             <Button
