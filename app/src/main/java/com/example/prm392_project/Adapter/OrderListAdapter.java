@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.prm392_project.Activities.CustomerOrderDetailActivity;
 import com.example.prm392_project.Bean.Order;
 import com.example.prm392_project.Bean.POJO.OrderWithUser;
+import com.example.prm392_project.Helpers.Notification;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.OrderRepository;
 
@@ -139,6 +140,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     int newStatus = which == 0 ? 1 : 2;
                     orderRepository = new OrderRepository(context);
                     orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), newStatus);
+                    if(newStatus == 1){
+                        Notification notified = new Notification(context);
+                        notified.sendNotification("Order", "Your order has been confirmed, your order will be delivered in 3-5 days");
+                    }else{
+                        Notification notified = new Notification(context);
+                        notified.sendNotification("Order", "Your order has been rejected");
+                    }
                     orderWithUser.order.setStatus(newStatus);
                     orderListAdapter.notifyItemChanged(position);
                 }
