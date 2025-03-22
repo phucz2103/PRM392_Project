@@ -1,6 +1,7 @@
 package com.example.prm392_project.Activities;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -59,6 +60,7 @@ public class CustomerOrderDetailActivity extends AppCompatActivity {
 
                 tvOrderCode.setText(orderWithUser.order.getOrderCode().toString());
                 tvOrderStatus.setText(getStatusString(orderWithUser.order.getStatus()));
+                tvOrderStatus.setTypeface(null, Typeface.BOLD);
                 tvOrderDate.setText(orderWithUser.order.getOrderDate().toString());
                 tvFullName.setText(orderWithUser.user.getFullName());
                 tvAddress.setText(orderWithUser.user.getAddress());
@@ -106,10 +108,10 @@ public class CustomerOrderDetailActivity extends AppCompatActivity {
                 color = "#000000";
                 break;
             case 1:
-                color = "#00FF00";
+                color = "#27AE60";
                 break;
             case 2:
-                color = "#FF0000";
+                color = "#E74C3C";
                 break;
             case 3:
                 color = "#00FFFF";

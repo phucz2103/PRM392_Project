@@ -6,15 +6,6 @@
     android:padding="8dp"
     android:background="@android:color/white">
 
-    <!-- Product Image -->
-    <ImageView
-        android:id="@+id/ivProductImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="16dp"
-        android:src="@android:drawable/ic_menu_gallery"
-        android:contentDescription="Product Image" />
-
     <!-- Order Details -->
     <LinearLayout
         android:layout_width="0dp"
@@ -26,7 +17,6 @@
             android:id="@+id/tvOrderCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ABVXYZ gì đó"
             android:textColor="#000000"
             android:textSize="16sp" />
 
@@ -92,7 +82,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:padding="4dp"
-                android:backgroundTint="#00FF00"
+                android:backgroundTint="#27AE60"
                 android:layout_marginEnd="15dp"/>
 
             <Button
@@ -103,7 +93,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:padding="4dp"
-                android:backgroundTint="#0000FF" />
+                android:backgroundTint="#3498DB" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

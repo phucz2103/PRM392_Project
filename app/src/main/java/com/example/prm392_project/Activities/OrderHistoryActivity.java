@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -47,7 +48,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderHist
         orderRepository = new OrderRepository(this);
         // khoi tao recyclerview
         orderRecyclerView = findViewById(R.id.recyclerViewOrderHistory);
-        orderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        orderRecyclerView.setLayoutManager(layoutManager);
         // lấy list order theo id của người dùng
         orderList = orderRepository.getOrderByUser(userID);
         // lay order pending theo user
@@ -88,28 +90,29 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderHist
         });
     }
 
-    private void refreshOrderList(){
+    private void refreshOrderList() {
         List<Order> orders = orderRepository.getOrderByUser(userID);
         orderList.clear();
-        if(orders != null && !orders.isEmpty()){
+        if (orders != null && !orders.isEmpty()) {
             orderList.addAll(orders);
-        }else{
+        } else {
             Log.e("OrderHistoryActivity", "No orders found for user");
         }
         FilterOrder();
     }
 
-    private void FilterOrder(){
+    private void FilterOrder() {
         filteredOrder.clear();
-        for (Order order : orderList){
-            if(currentTab == 0 && order.getStatus() == 0){
+        for (Order order : orderList) {
+            if (currentTab == 0 && order.getStatus() == 0) {
                 filteredOrder.add(order);
-            }else if(currentTab == 1 && order.getStatus() != 0){
+            } else if (currentTab == 1 && order.getStatus() != 0) {
                 filteredOrder.add(order);
             }
         }
         adapter.updateData(filteredOrder);
     }
+
     @Override
     public void onOrderCanceled(int position) {
         refreshOrderList();
