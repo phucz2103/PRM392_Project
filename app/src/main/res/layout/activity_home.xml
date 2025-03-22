@@ -61,13 +61,29 @@
         android:padding="4dp" />
 
     <!-- Products RecyclerView (grid) -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Products"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:padding="8dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Products"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnAddProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Product"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerProducts"
@@ -76,5 +92,6 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:padding="4dp" />
+    
     <include layout="@layout/layout_bottom_nav" />
 </LinearLayout>

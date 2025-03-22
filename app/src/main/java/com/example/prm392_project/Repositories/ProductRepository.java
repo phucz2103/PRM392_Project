@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.prm392_project.Bean.Product;
+import com.example.prm392_project.DAO.CategoryDao;
 import com.example.prm392_project.DAO.ProductDao;
 import com.example.prm392_project.Database.AppDatabase;
 import com.example.prm392_project.IRepositories.IProductRepository;
@@ -12,10 +13,13 @@ import java.util.List;
 
 public class ProductRepository implements IProductRepository {
     private ProductDao productDao;
+    private CategoryDao categoryDao;
 
     public ProductRepository(Context context) {
         AppDatabase db = AppDatabase.getInstance(context);
         productDao = db.productDao();
+        categoryDao = db.categoryDao();
+
     }
 
     @Override

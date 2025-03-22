@@ -43,8 +43,11 @@ public class BaseActivity extends AppCompatActivity {
                     startActivity(new Intent(this, HomeActivity.class));
                 } else if (itemId == R.id.nav_sales) {
                     startActivity(new Intent(this, SaleActivity.class));
-                } else if(itemId == R.id.nav_order_history){
-                    //startActivity(new Intent(this, OrderHistoryActivity.class));
+                }else if(itemId == R.id.nav_cart){
+                    startActivity(new Intent(this, CartActivity.class));
+                }
+                else if(itemId == R.id.nav_order_history){
+                    startActivity(new Intent(this, OrderHistoryActivity.class));
                 }
                 else if (itemId == R.id.nav_profile) {
                     startActivity(new Intent(this, UserProfileActivity.class));
@@ -62,10 +65,15 @@ public class BaseActivity extends AppCompatActivity {
 
         if (className.equals(HomeActivity.class.getName())) {
             return R.id.nav_home;}
-//        } else if (className.equals("com.example.prm392_project.Activities.CartActivity")) {
-//            return R.id.nav_cart;
+        else if (className.equals(OrderHistoryActivity.class.getName())) {
+            return R.id.nav_order_history;}
          else if (className.equals(UserProfileActivity.class.getName())) {
             return R.id.nav_profile;
+        }
+         else if(className.equals(CartActivity.class.getName())){
+            return R.id.nav_cart;}
+         else if(className.equals(SaleActivity.class.getName())) {
+            return R.id.nav_sales;
         }
         return -1;
     }

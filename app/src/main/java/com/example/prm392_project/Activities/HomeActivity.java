@@ -1,5 +1,7 @@
 package com.example.prm392_project.Activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,13 +21,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.CategoryAdapter;
+import com.example.prm392_project.Adapter.HomepageAdapter;
 import com.example.prm392_project.Adapter.ProductAdapter;
 import com.example.prm392_project.Bean.Category;
 import com.example.prm392_project.Bean.Product;
+import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.CategoryRepository;
 import com.example.prm392_project.Repositories.ProductRepository;
+import com.example.prm392_project.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +37,14 @@ import java.util.stream.Collectors;
 
 public class HomeActivity extends BaseActivity {
     private RecyclerView recyclerCategories, recyclerProducts;
-    private CategoryAdapter categoryAdapter;
+    private HomepageAdapter homepageAdapter;
     private ProductAdapter productAdapter;
     private CategoryRepository categoryRepository;
     private ProductRepository productRepository;
+    private UserRepository userRepository;
     private EditText edtSearch;
     private Button btnSearch;
+    private Button btnAddProduct;
     private List<Product> allProducts = new ArrayList<>();
     private List<Product> currentFilteredProducts = new ArrayList<>();
     private int currentCategoryId = 0; // 0 means "All Products"
@@ -61,10 +67,12 @@ public class HomeActivity extends BaseActivity {
         // Initialize repositories
         categoryRepository = new CategoryRepository(this);
         productRepository = new ProductRepository(this);
+        userRepository = new UserRepository(this);
 
         // Initialize UI components
         initViews();
         setupRecyclerViews();
+        checkAdminStatus();
 
         // Load data
         currentPage = 0;
@@ -82,6 +90,7 @@ public class HomeActivity extends BaseActivity {
         recyclerProducts = findViewById(R.id.recyclerProducts);
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
+        btnAddProduct = findViewById(R.id.btnAddProduct);
     }
 
     private void setupRecyclerViews() {
@@ -91,11 +100,11 @@ public class HomeActivity extends BaseActivity {
                 this, LinearLayoutManager.HORIZONTAL, false);
         recyclerCategories.setLayoutManager(categoryLayoutManager);
 
-        categoryAdapter = new CategoryAdapter(this, new ArrayList<>(), category -> {
+        homepageAdapter = new HomepageAdapter(this, new ArrayList<>(), category -> {
             // Handle category click
             filterProductsByCategory(category.getCategoryID());
         });
-        recyclerCategories.setAdapter(categoryAdapter);
+        recyclerCategories.setAdapter(homepageAdapter);
 
         // Setup Product RecyclerView (Grid with 2 columns)
         GridLayoutManager productLayoutManager = new GridLayoutManager(this, 2);
@@ -112,7 +121,15 @@ public class HomeActivity extends BaseActivity {
         productAdapter = new ProductAdapter(this, new ArrayList<>(), product -> {
             // Handle product click
             Toast.makeText(this, "Selected: " + product.getProductName(), Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to product details activity
+            // Chuyển sang ProductDetailActivity
+            Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+            int userId = sharedPreferences.getInt("userId", -1);
+            intent.putExtra("userId", userId);
+            intent.putExtra("product_id", product.getProductID());
+            //Can userid chuyen sang
+            //intent.putExtra("user_id", );
+            startActivity(intent);
         });
 
         productAdapter.setLoadMoreListener(() -> {
@@ -132,7 +149,7 @@ public class HomeActivity extends BaseActivity {
 
     private void loadCategories() {
         List<Category> categories = categoryRepository.getAllCategories();
-        categoryAdapter.setCategoryList(categories);
+        homepageAdapter.setCategoryList(categories);
 
         // Add "All" category at the beginning
         Category allCategory = new Category("All Products", true);
@@ -142,7 +159,7 @@ public class HomeActivity extends BaseActivity {
         categoriesWithAll.add(allCategory);
         categoriesWithAll.addAll(categories);
 
-        categoryAdapter.setCategoryList(categoriesWithAll);
+        homepageAdapter.setCategoryList(categoriesWithAll);
     }
 
     private void loadProducts(int page) {
@@ -237,9 +254,28 @@ public class HomeActivity extends BaseActivity {
         loadFilteredProducts(currentPage);
     }
 
+    private void checkAdminStatus(){
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", 2);
+        User user = new User();
+        if(userId != -1){user = userRepository.getUserByID(String.valueOf(userId));}
+
+        if(user.getIsAdmin()){
+            btnAddProduct.setVisibility(View.VISIBLE);
+            btnAddProduct.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, CreateProductActivity.class);
+                startActivity(intent);
+            });
+        }
+        else{
+            btnAddProduct.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        checkAdminStatus();
         currentPage = 0;
         allProducts.clear();
         loadProducts(currentPage);

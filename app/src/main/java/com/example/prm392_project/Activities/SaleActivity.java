@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.CategoryAdapter;
+import com.example.prm392_project.Adapter.HomepageAdapter;
 import com.example.prm392_project.Adapter.ProductAdapter;
 import com.example.prm392_project.Bean.Category;
 import com.example.prm392_project.Bean.Product;
@@ -31,7 +31,7 @@ import java.util.List;
 
 public class SaleActivity extends BaseActivity {
     private RecyclerView recyclerCategories, recyclerProducts;
-    private CategoryAdapter categoryAdapter;
+    private HomepageAdapter homepageAdapter;
     private ProductAdapter productAdapter;
     private CategoryRepository categoryRepository;
     private ProductRepository productRepository;
@@ -87,11 +87,11 @@ public class SaleActivity extends BaseActivity {
                 this, LinearLayoutManager.HORIZONTAL, false);
         recyclerCategories.setLayoutManager(categoryLayoutManager);
 
-        categoryAdapter = new CategoryAdapter(this, new ArrayList<>(), category -> {
+        homepageAdapter = new HomepageAdapter(this, new ArrayList<>(), category -> {
             // Handle category click
             filterProductsByCategory(category.getCategoryID());
         });
-        recyclerCategories.setAdapter(categoryAdapter);
+        recyclerCategories.setAdapter(homepageAdapter);
 
         // Setup Product RecyclerView (Grid with 2 columns)
         GridLayoutManager productLayoutManager = new GridLayoutManager(this, 2);
@@ -127,7 +127,7 @@ public class SaleActivity extends BaseActivity {
 
     private void loadCategories() {
         List<Category> categories = categoryRepository.getAllCategories();
-        categoryAdapter.setCategoryList(categories);
+        homepageAdapter.setCategoryList(categories);
 
         // Add "All" category at the beginning
         Category allCategory = new Category("All Sale Products", true);
@@ -137,7 +137,7 @@ public class SaleActivity extends BaseActivity {
         categoriesWithAll.add(allCategory);
         categoriesWithAll.addAll(categories);
 
-        categoryAdapter.setCategoryList(categoriesWithAll);
+        homepageAdapter.setCategoryList(categoriesWithAll);
     }
 
     private void loadProducts(int page) {

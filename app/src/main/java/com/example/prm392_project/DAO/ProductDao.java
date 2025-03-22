@@ -41,15 +41,15 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE IsSale = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> getSaleProducts(int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsSale = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> getSaleProductsByCategory(int categoryID, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSale = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchSaleProducts(String searchQuery, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSale = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchSaleProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
 }

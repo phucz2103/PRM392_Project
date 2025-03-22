@@ -1,6 +1,7 @@
 package com.example.prm392_project.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -84,9 +85,10 @@ public class UserProfileActivity extends BaseActivity {
 
         userRepository = new UserRepository(this);
         User user;
-        if (getIntent() != null && getIntent().hasExtra("UserID")) {
-        String userId = getIntent().getStringExtra("UserID");
-        user = userRepository.getUserByID(userId);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
+        if (userId != -1) {
+        user = userRepository.getUserByID(String.valueOf(userId));
         } else {
             user = userRepository.login("user1@gmail.com", "Abc123456@");
         }

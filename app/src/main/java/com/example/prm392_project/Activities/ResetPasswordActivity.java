@@ -41,6 +41,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnResetPassword.setOnClickListener(v -> {
             String newPassword = etNewPassword.getText().toString();
             String confirmPassword = etConfirmPassword.getText().toString();
+            if(!validateInput()){
+                return;
+            }
             String email = getIntent().getStringExtra("email");
             String error = userRepository.resetPassword(email, newPassword, confirmPassword);
             if(error.isEmpty()){
@@ -53,9 +56,20 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         .setTitle("Error")
                         .setMessage(error)
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(R.drawable.error)
                         .show();
             }
         });
+    }
+    private boolean validateInput() {
+        if (etNewPassword.getText().toString().trim().isEmpty()) {
+            etNewPassword.setError("NewPassword is required");
+            return false;
+        }
+        if (etConfirmPassword.getText().toString().trim().isEmpty()) {
+            etConfirmPassword.setError("ConfirmPassword is required");
+            return false;
+        }
+        return true;
     }
 }

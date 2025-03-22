@@ -18,8 +18,19 @@ public class CategoryRepository implements ICategoryRepository {
         categoryDao = db.categoryDao();
     }
 
+
     @Override
     public List<Category> getAllCategories() {
         return categoryDao.getAllCategories();
+    }
+
+    @Override
+    public void AddCategory(String name, boolean isAvailable) {
+        categoryDao.insert(new Category(name,isAvailable));
+    }
+
+    @Override
+    public void UpdateCategory(int id, String name, boolean isAvailable) {
+        categoryDao.updateCategory(id,name,isAvailable);
     }
 }

@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color> <!-- Màu đỏ -->
     <color name="green">#FF00FF00</color> <!-- Màu xanh lá -->
+    <color name="darkgrey">#D3D3D3</color>
 </resources>
