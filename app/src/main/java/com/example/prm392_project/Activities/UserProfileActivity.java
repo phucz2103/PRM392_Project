@@ -1,5 +1,6 @@
 package com.example.prm392_project.Activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class UserProfileActivity extends BaseActivity {
     private RadioButton rbFemale;
     private Button btnEditUserProfile;
     private Button btnChangePassword;
-
+    private Button btnLogout;
     private ActivityResultLauncher<Intent> startForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -62,11 +63,6 @@ public class UserProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_user_profile);
 
         setupBottomNavigation();
-        Toolbar toolbar = findViewById(R.id.toolbarUserProfile);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -82,6 +78,7 @@ public class UserProfileActivity extends BaseActivity {
         rbFemale = findViewById(R.id.rbFemale);
         btnEditUserProfile = findViewById(R.id.btnEditUserProfile);
         btnChangePassword = findViewById(R.id.btnChangePassword);
+        btnLogout = findViewById(R.id.btnLogout);
 
         userRepository = new UserRepository(this);
         User user;
@@ -114,14 +111,28 @@ public class UserProfileActivity extends BaseActivity {
             intent.putExtra("UserID", String.valueOf(user.getUserID()));
             startForResult.launch(intent);
         });
-    }
+
+        btnLogout.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Confirm Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.apply();
+
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss()) // Ở lại nếu chọn No
+                    .show();
+        });
 
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
     }
+
 
 
 }

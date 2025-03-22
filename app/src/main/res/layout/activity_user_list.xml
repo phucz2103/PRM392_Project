@@ -4,10 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9E6E6"
     tools:context=".Activities.UserListActivity">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarUserList"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#F9E6E6"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="#F9E6E6" />
 
     <!-- Main Content Layout -->
     <LinearLayout
@@ -15,8 +26,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#F9E6E6"
-        android:padding="16dp">
-
+        android:padding="8dp">
         <!-- Search Bar -->
         <EditText
             android:id="@+id/search_bar_user"

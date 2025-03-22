@@ -78,17 +78,17 @@ public class EditProfileActivity extends AppCompatActivity {
         btnSaveUserProfile.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(etFullNameEditProfile.getText().toString().isEmpty()){
+            if(etFullNameEditProfile.getText().toString().trim().isEmpty()){
                 etFullNameEditProfile.setError("Please enter your full name");
                 etFullNameEditProfile.requestFocus();
                 return;
             }
-            if(!Validation.isValidPhone(etMobileEditProfile.getText().toString())){
+            if(!Validation.isValidPhone(etMobileEditProfile.getText().toString().trim())){
                 etMobileEditProfile.setError("Mobile number must be 10 digits and start with 0");
                 etMobileEditProfile.requestFocus();
                 return;
             }
-            if(etAddressEditProfile.getText().toString().isEmpty()){
+            if(etAddressEditProfile.getText().toString().trim().isEmpty()){
                 etAddressEditProfile.setError("Please enter your address");
                 etAddressEditProfile.requestFocus();
                 return;

@@ -2,8 +2,10 @@ package com.example.prm392_project.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnSignUp;
     private UserRepository userRepository;
 
+    ImageView ivRegisPassword,ivRegisConfirmPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,8 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
         userRepository = new UserRepository(this);
-
+        ivRegisPassword = findViewById(R.id.ivRegisPassword);
+        ivRegisConfirmPassword = findViewById(R.id.ivRegisConfirmPassword);
         regisFullName = findViewById(R.id.regisFULLNAME);
         regisPhoneNumber = findViewById(R.id.regisPhoneNumber);
         regisEmail = findViewById(R.id.regisEMAIL);
@@ -58,6 +62,9 @@ public class RegisterActivity extends AppCompatActivity {
         radioMale = findViewById(R.id.rbMale);
         btnSignUp = findViewById(R.id.btnRegister);
         tvSignIn = findViewById(R.id.regisSignIn);
+
+        togglePasswordVisibility(ivRegisPassword, regisPassword);
+        togglePasswordVisibility(ivRegisConfirmPassword, regisConfirmPassword);
 
         btnSignUp.setOnClickListener(v -> {
             String fullName = regisFullName.getText().toString();
@@ -122,5 +129,20 @@ public class RegisterActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    private void togglePasswordVisibility(ImageView imageView, EditText editText) {
+        imageView.setOnClickListener(v -> {
+            if (editText.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                // Hiển thị mật khẩu
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_open_eye); // Cập nhật icon
+            } else {
+                // Ẩn mật khẩu
+                editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imageView.setImageResource(R.drawable.ic_closed_eye);
+            }
+            editText.setSelection(editText.getText().length()); // Giữ con trỏ ở cuối văn bản
+        });
     }
 }
