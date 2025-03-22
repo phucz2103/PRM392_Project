@@ -1,6 +1,7 @@
 package com.example.prm392_project.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -23,7 +24,7 @@ import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.UserRepository;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
     private UserRepository userRepository;
     private EditText edtFullName;
     private EditText edtMobile;
@@ -60,6 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile);
 
+        setupBottomNavigation();
         Toolbar toolbar = findViewById(R.id.toolbarUserProfile);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -83,9 +85,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
         userRepository = new UserRepository(this);
         User user;
-        if (getIntent() != null && getIntent().hasExtra("UserID")) {
-        String userId = getIntent().getStringExtra("UserID");
-        user = userRepository.getUserByID(userId);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
+        if (userId != -1) {
+        user = userRepository.getUserByID(String.valueOf(userId));
         } else {
             user = userRepository.login("user1@gmail.com", "Abc123456@");
         }

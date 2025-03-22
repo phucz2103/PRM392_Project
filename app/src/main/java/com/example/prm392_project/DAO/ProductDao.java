@@ -20,11 +20,36 @@ public interface ProductDao {
     @Query("SELECT * FROM Product")
     List<Product> getAllProducts();
 
+    @Query("SELECT * FROM Product WHERE IsAvailable = 1")
+    List<Product> getAllAvailableProducts();
+
     @Update
     void update(Product product);
 
     @Query("SELECT * FROM Product WHERE ProductID = :productId")
     Product getProductById(int productId);
 
+    @Query("SELECT * FROM Product WHERE IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> getProducts(int limit, int offset);
 
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> getProductsByCategory(int categoryID, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> searchProducts(String searchQuery, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> searchProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> getSaleProducts(int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> getSaleProductsByCategory(int categoryID, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> searchSaleProducts(String searchQuery, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    List<Product> searchSaleProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
 }

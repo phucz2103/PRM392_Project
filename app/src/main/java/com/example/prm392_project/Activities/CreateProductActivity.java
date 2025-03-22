@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -51,6 +52,7 @@ public class CreateProductActivity extends AppCompatActivity {
     private ICategoryRepository categoryRepository;
     private List<Category> categories;
     private ImageButton btnSelectImage;
+    private EditText edtPrice;
     private IProductRepository productRepository;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
@@ -89,6 +91,12 @@ public class CreateProductActivity extends AppCompatActivity {
             return insets;
         });
 
+        Toolbar toolbar = findViewById(R.id.toolbarCreateProduct);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         initViews();
         loadCategories();
         checkPermissions();
@@ -105,6 +113,7 @@ public class CreateProductActivity extends AppCompatActivity {
         btnCreate = findViewById(R.id.btnCreate);
         imgProduct = findViewById(R.id.imgProduct);
         btnSelectImage = findViewById(R.id.btnSelectImage);
+        edtPrice = findViewById(R.id.edtPrice);
     }
     private void loadCategories() {
         categories = categoryRepository.getAllCategories();
@@ -133,7 +142,6 @@ public class CreateProductActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
     }
 
     private void openImageChooser() {
@@ -170,6 +178,10 @@ public class CreateProductActivity extends AppCompatActivity {
             edtQuantity.setError("Quantity is required");
             return false;
         }
+        if (edtPrice.getText().toString().trim().isEmpty()) {
+            edtPrice.setError("Price is required");
+            return false;
+        }
         if (imageUri == null) {
             Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
             return false;
@@ -181,15 +193,16 @@ public class CreateProductActivity extends AppCompatActivity {
         String name = edtProductName.getText().toString();
         String description = edtDescription.getText().toString();
         int quantity = Integer.parseInt(edtQuantity.getText().toString());
+        double price = Double.parseDouble(edtPrice.getText().toString());
         int selectedPosition = spnCategory.getSelectedItemPosition();
         int categoryID = categories.get(selectedPosition).getCategoryID();
         String imageUrl = imageUri.toString();
 
-        Product product = new Product(name, description, quantity, imageUrl, LocalDateTime.now().toString(),
-                LocalDateTime.now().toString(), true, categoryID,quantity, false);
+        Product product = new Product(name, description, price, imageUrl, LocalDateTime.now().toString(),
+                LocalDateTime.now().toString(), true, categoryID, quantity, false);
         productRepository.insertProduct(product);
         Toast.makeText(this, "Product created successfully", Toast.LENGTH_SHORT).show();
-//        finish();
+        //finish();
     }
     private void checkPermissions() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
@@ -208,5 +221,9 @@ public class CreateProductActivity extends AppCompatActivity {
             }
         }
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Đóng Activity và quay lại màn hình trước đó
+        return true;
+    }
 }

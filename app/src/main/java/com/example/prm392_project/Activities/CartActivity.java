@@ -1,6 +1,7 @@
 package com.example.prm392_project.Activities;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,7 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +28,7 @@ import com.example.prm392_project.Repositories.ProductRepository;
 
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity implements CartAdapter.OnCartItemClickListener {
+public class CartActivity extends BaseActivity implements CartAdapter.OnCartItemClickListener {
 
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
@@ -38,6 +43,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_shopping_cart); // Kiểm tra đúng tên file XML
+        setupBottomNavigation();
 
         recyclerView = findViewById(R.id.recyclerCart); // Đảm bảo RecyclerView có trong XML
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,8 +60,11 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
         btnClearCart.setOnClickListener(v -> deleteCartByUserId());
 
 
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", 1);
+
         // Lấy danh sách sản phẩm trong giỏ hàng bo sung UserID o day
-        cartList = cartRepository.getCartByUser(1);
+        cartList = cartRepository.getCartByUser(userId);
 
         if (cartList == null || cartList.isEmpty()) {
             Log.e("CartActivity", "Giỏ hàng trống!");

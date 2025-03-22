@@ -27,6 +27,10 @@ public class User {
         this.IsAdmin = IsAdmin;
     }
 
+    public User() {
+
+    }
+
     // Getters and Setters
     public int getUserID() { return UserID; }
     public void setUserID(int UserID) { this.UserID = UserID; }

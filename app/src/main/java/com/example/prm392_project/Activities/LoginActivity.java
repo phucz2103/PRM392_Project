@@ -1,6 +1,7 @@
 package com.example.prm392_project.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,7 +50,10 @@ public class LoginActivity extends AppCompatActivity {
             String password = etPassword.getText().toString();
             if(validateInput()) {
                 User user = userRepository.login(email, password);
-
+                SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("userId", user.getUserID());
+                editor.apply();
                 if (user != null) {
                     if (user.getIsAdmin()) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();

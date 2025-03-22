@@ -20,6 +20,12 @@
         android:theme="@style/Theme.PRM392_Project"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.SaleActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.HomeActivity"
             android:exported="true" />
         <activity
@@ -96,7 +102,8 @@
                 <data android:scheme="http" android:host="www.example.com" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CartActivity" />
+        <activity android:name=".Activities.CartActivity"
+            android:exported="true"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

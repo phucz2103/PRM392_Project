@@ -25,7 +25,7 @@ import com.example.prm392_project.Repositories.OrderRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderHistoryActivity extends AppCompatActivity implements OrderHistoryAdapter.OnOrderCancelListener {
+public class OrderHistoryActivity extends BaseActivity implements OrderHistoryAdapter.OnOrderCancelListener {
     private RecyclerView orderRecyclerView;
     private OrderHistoryAdapter adapter;
     private List<Order> orderList;
@@ -44,6 +44,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements OrderHist
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        setupBottomNavigation();
         // khoi tao repository
         orderRepository = new OrderRepository(this);
         // khoi tao recyclerview
