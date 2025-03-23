@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +27,7 @@ import com.example.prm392_project.repositories.ProductRepository;
 
 public class ProductDetailsActivity extends AppCompatActivity {
     TextView txtCartCount,txtProductName, txtDescription, txtPrice;
-    Button btnAddToCart;
+    Button btnAddToCart,btnSend;
     ImageView productimage;
     private static int quantity = 0;
     private int curQuantity = 0;
@@ -34,6 +36,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ImageView btnBack;
     private Cart newcart;
     private int userId = 0;
+    RatingBar edtRate;
+    EditText edtReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.product_des);
         txtPrice= findViewById(R.id.product_price);
         productimage = findViewById(R.id.imgProduct);
-
+        Button btnSend = findViewById(R.id.btnSend);
+        EditText edtReview = findViewById(R.id.edtReview);
+        RatingBar edtRate = findViewById(R.id.edtRate);
 
         int productId = getIntent().getIntExtra("product_id", -1);
         cartRepository = new CartRepository(this);
