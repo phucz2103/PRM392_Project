@@ -5,10 +5,12 @@ import com.example.prm392_project.bean.pojo.OrderDetailWithProduct;
 import com.example.prm392_project.bean.pojo.OrderWithUser;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IOrderRepository {
     void insertOrder(Order order);
     List<Order> getAll();
+    Order getOrdersByOrderCode(UUID uuid);
     List<Order> getOrderPendingByUser(int userID);
     List<Order> getOrderPurchasedByUser(int userID);
     void updateOrderStatus(int orderID, int status);

@@ -11,6 +11,7 @@ import com.example.prm392_project.bean.pojo.OrderWithUser;
 import com.example.prm392_project.bean.pojo.MonthRevenue;
 
 import java.util.List;
+import java.util.UUID;
 
 @Dao
 public interface OrderDao {
@@ -18,6 +19,8 @@ public interface OrderDao {
     void insert(Order order);
     @Query("SELECT * FROM `Order` WHERE UserID = :userID")
     List<Order> getOrdersByUser(int userID);
+    @Query("SELECT * FROM `Order` WHERE OrderCode = :orderCode")
+    Order getOrdersByOrderCode(UUID orderCode);
     @Query("SELECT strftime('%m', orderdate) AS month, SUM(totalprice) AS revenue " +
             "FROM `Order` WHERE strftime('%Y', orderdate) = :year " +
             "GROUP BY month ORDER BY month")

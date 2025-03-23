@@ -2,6 +2,7 @@ package com.example.prm392_project.activities;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -21,10 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_project.adapter.CartAdapter;
 import com.example.prm392_project.bean.Cart;
+import com.example.prm392_project.bean.Order;
+import com.example.prm392_project.bean.OrderDetail;
+import com.example.prm392_project.adapter.CartAdapter;
+import com.example.prm392_project.bean.Cart;
 import com.example.prm392_project.R;
+import com.example.prm392_project.repositories.CartRepository;
+import com.example.prm392_project.repositories.OrderDetailRepository;
+import com.example.prm392_project.repositories.OrderRepository;
+import com.example.prm392_project.repositories.ProductRepository;
 import com.example.prm392_project.repositories.CartRepository;
 import com.example.prm392_project.repositories.ProductRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CartActivity extends BaseActivity implements CartAdapter.OnCartItemClickListener {
@@ -33,6 +44,9 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private CartAdapter cartAdapter;
     private List<Cart> cartList;
     private CartRepository cartRepository;
+    private static double totalCost = 0;
+    private OrderRepository orderRepository;
+    private OrderDetailRepository orderDetailRepository;
     private ImageView btnBack;
     private Button btnClearCart;
     private Button btnOrder;
@@ -61,7 +75,19 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
         cartRepository = new CartRepository(this);
         productRepository = new ProductRepository(this);
         btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        //xu li nut quay lai
+        btnBack.setOnClickListener(v -> {
+            int productId = getIntent().getIntExtra("product_id", -1);  // Lấy productId đã được truyền sang CartActivity
+
+            Intent intent = new Intent(CartActivity.this, ProductDetailsActivity.class);
+
+            intent.putExtra("product_id", productId);  // Truyền productId vào Intent
+
+            // Mở lại ProductDetailsActivity
+            startActivity(intent);
+            finish();  // Kết thúc CartActivity
+        });
+
 
         btnClearCart = findViewById(R.id.btnClearCart);
         btnClearCart.setOnClickListener(v -> deleteCartByUserId());
@@ -92,7 +118,6 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     }
 
     private void showLoadingAndOrder() {
-        // Tạo Dialog với vòng tròn xoay
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_loading, null);
@@ -102,12 +127,27 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
         dialog.setCancelable(false); // Không cho phép đóng khi bấm ra ngoài
         dialog.show();
 
-        // Giả lập thời gian xử lý đơn hàng (2 giây)
         new Handler().postDelayed(() -> {
-            dialog.dismiss(); // Ẩn vòng xoay
+            dialog.dismiss();
             Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
 
-            // Xóa giỏ hàng sau khi đặt hàng thành công
+            // ham insert o day
+            orderRepository = new OrderRepository(this);
+            orderDetailRepository = new OrderDetailRepository(this);
+            // sua userId o day
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = now.format(formatter);
+            Order order = new Order(formattedDate,totalCost,0,1);
+
+            orderRepository.insertOrder(order);
+            Order tmp = orderRepository.getOrdersByOrderCode(order.getOrderCode());
+            // sua userId o day
+            //cartList = cartRepository.getCartByUser(1);
+            for (Cart c: cartList) {
+                OrderDetail orderDetail = new OrderDetail(c.getQTY_int(),c.getPrice(),c.getProductID(),tmp.getOrderID());
+                orderDetailRepository.insertOrderDetail(orderDetail);
+            }
             deleteCartByUserId();
         }, 2000);
     }
@@ -127,7 +167,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     }
 
     private void calculateTotalCost() {
-        double totalCost = 0;
+
         for (Cart cart : cartList) {
             totalCost += cart.getQTY_int() * cart.getPrice();
         }
