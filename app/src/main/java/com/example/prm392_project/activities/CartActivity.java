@@ -50,6 +50,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private ImageView btnBack;
     private Button btnClearCart;
     private Button btnOrder;
+    private TextView txtTotalCost1;
     private ProductRepository productRepository;
     private boolean addQuantity = true;
 
@@ -66,6 +67,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
             return insets;
         });
         setupBottomNavigation();
+        //totalCost = productPrice;
 
         recyclerView = findViewById(R.id.recyclerCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -84,10 +86,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
 
             intent.putExtra("product_id", productId);  // Truyền productId vào Intent
 
-            // Mở lại ProductDetailsActivity
             startActivity(intent);
-            finish();  // Kết thúc CartActivity
+            finish();
         });
+        int id = getIntent().getIntExtra("product_id", -1);
+
 
 
         btnClearCart = findViewById(R.id.btnClearCart);
@@ -95,15 +98,17 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-         userId = sharedPreferences.getInt("userId", 1);
+        userId = sharedPreferences.getInt("userId", 1);
 
         // Lấy danh sách sản phẩm trong giỏ hàng bo sung UserID o day
         cartList = cartRepository.getCartByUser(userId);
 
+
         if (cartList == null || cartList.isEmpty()) {
             Log.e("CartActivity", "Giỏ hàng trống!");
         } else {
-            Log.d("CartActivity", "Giỏ hàng có " + cartList.size() + " sản phẩm.");
+            addQuantity = true;
+            calculateTotalCost();
         }
 
         // Khởi tạo Adapter và gán vào RecyclerView
@@ -140,7 +145,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formattedDate = now.format(formatter);
-            Order order = new Order(formattedDate,totalCost,0,1);
+            Order order = new Order(formattedDate,totalCost,0,userId);
 
             orderRepository.insertOrder(order);
             Order tmp = orderRepository.getOrdersByOrderCode(order.getOrderCode());
@@ -173,11 +178,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
 
         for (Cart cart : cartList) {
             if(addQuantity){
-                totalCost += cart.getQTY_int() * cart.getPrice();
+                totalCost = cart.getQTY_int() * cart.getPrice();
             }
             else {
                 if(totalCost > cart.getQTY_int() * cart.getPrice()){
-                    totalCost -= cart.getQTY_int() * cart.getPrice();
+                    totalCost = cart.getQTY_int() * cart.getPrice();
                 }
                 else totalCost = cart.getPrice();
             }
@@ -189,7 +194,8 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     }
 
     private void deleteCartByUserId() {
-        cartRepository.deleteCartbyUserID(1);
+        cartRepository.deleteCartbyUserID(userId);
+        totalCost = 0;
         refreshCart();
     }
 
@@ -200,6 +206,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
         cartAdapter = new CartAdapter(this, cartList, this, productRepository);
         recyclerView.setAdapter(cartAdapter);
         // Cập nhật tổng tiền
+        //totalCost = getIntent().getIntExtra("product_price", -1);
         calculateTotalCost();
     }
 
