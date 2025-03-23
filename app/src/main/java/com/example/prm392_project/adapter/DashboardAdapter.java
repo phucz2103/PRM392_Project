@@ -36,7 +36,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public void onBindViewHolder(@NonNull DashboardAdapter.ViewHolder holder, int position) {
         TopProduct topproduct = topProductList.get(position);
         holder.txtDashProductName.setText(topproduct.getProductName());
-        holder.txtDashPrice.setText(String.valueOf(topproduct.Price));
+        String originalPriceFormatted = String.format("%,d", (long)topproduct.getPrice());
+        holder.txtDashPrice.setText(originalPriceFormatted);
         holder.txtQuantity.setText(String.valueOf(topproduct.totalQuantitySold));
     }
 

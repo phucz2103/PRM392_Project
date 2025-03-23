@@ -82,7 +82,8 @@ public class DashboardActivity extends BaseActivity {
         tvOrders.setText(String.valueOf(orders.stream().count()));
         tvCategories.setText(String.valueOf(cates.stream().count()));
         tvUsers.setText(String.valueOf(userRepository.getAllUsers().stream().count()));
-        tvRevenue.setText(String.valueOf(totalRevenue));
+        String originalPriceFormatted = String.format("%,d VND", (long)totalRevenue);
+        tvRevenue.setText(originalPriceFormatted);
 
         imgUsers = findViewById(R.id.negativeUser);
         imgCategory = findViewById(R.id.negativeCategory);
@@ -135,7 +136,7 @@ public class DashboardActivity extends BaseActivity {
             barChart.getXAxis().setLabelCount(12);
 
             barChart.getAxisLeft().setAxisMinimum(0f);
-            barChart.getAxisLeft().setAxisMaximum(10000f);
+            barChart.getAxisLeft().setAxisMaximum(1500000f);
             barChart.getAxisLeft().setLabelCount(5);
             barChart.getAxisRight().setEnabled(false);
 
@@ -147,4 +148,5 @@ public class DashboardActivity extends BaseActivity {
             barChart.setData(barData);
             barChart.invalidate();
         }
+
 }

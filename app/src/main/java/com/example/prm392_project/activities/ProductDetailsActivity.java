@@ -2,6 +2,8 @@ package com.example.prm392_project.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +28,7 @@ import com.example.prm392_project.repositories.CartRepository;
 import com.example.prm392_project.repositories.ProductRepository;
 
 public class ProductDetailsActivity extends AppCompatActivity {
-    TextView txtCartCount,txtProductName, txtDescription, txtPrice;
+    TextView txtCartCount,txtProductName, txtDescription, txtPrice, txtDiscountPrice;
     Button btnAddToCart,btnSend;
     ImageView productimage;
     private static int quantity = 0;
@@ -55,6 +57,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         txtProductName = findViewById(R.id.product_name);
         txtDescription = findViewById(R.id.product_des);
         txtPrice= findViewById(R.id.product_price);
+        txtDiscountPrice = findViewById(R.id.product_discount_price);
+
         productimage = findViewById(R.id.imgProduct);
         Button btnSend = findViewById(R.id.btnSend);
         EditText edtReview = findViewById(R.id.edtReview);
@@ -81,15 +85,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
         if (product != null) {
             txtProductName.setText(product.getProductName());
             txtDescription.setText(product.getDescription());
+            double productPrice = product.getPrice();
             if(product.getIsSaled()){
-                txtPrice.setText("Price: " + product.getPrice()*80/100 + " VND");
+                txtPrice.setText("Price: " + formatMoney(productPrice) + " VND");
+                txtPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                txtPrice.setVisibility(View.VISIBLE);
+                txtPrice.setTextColor(Color.BLACK);
+                double discountPrice = productPrice*80/100;
+                txtDiscountPrice.setText("Price: " + formatMoney(discountPrice) + " VND");
             }
-            else txtPrice.setText("Price: " + product.getPrice() + " VND");
+            else{
+                txtPrice.setText("Price: " + formatMoney(productPrice) + " VND");
+            }
 
             // New Cart o day
             if(product.getIsSaled()){
                 newcart = new Cart(product.getPrice() * 80/100, 1, productId,userId);
-
             }
             else newcart = new Cart(product.getPrice(), 1, productId,userId);
             // Load ảnh bằng Glide
@@ -99,13 +110,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             finish();
         }
 
-        //btnBack = findViewById(R.id.btnBack);
-//        btnBack.setOnClickListener(v -> {
-//            Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//            startActivity(intent);
-//            finish();
-//        });
         if(isAdmin){
             btnAddToCart.setText("Update Product");
             btnAddToCart.setOnClickListener( v -> {
@@ -135,23 +139,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("product_id",productId);
             intent.putExtra("product_price",txtPrice.getText().toString());
+
             startActivity(intent);
             finish();
         });
         }
-
     }
-
-
-//    private void updateQuantity(int change) {
-//        int quantity = Integer.parseInt(txtQuantity.getText().toString());
-//        quantity += change;
-//
-//        if (quantity < 0) quantity = 0;
-//        txtQuantity.setText(String.valueOf(quantity));
-//    }
-
-
     private void addToCart() {
         cartRepository = new CartRepository(this);
         curQuantity++;
@@ -162,7 +155,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             cartRepository.increaseQuantity(newcart);
             int x = newcart.getQTY_int();
             //Toast.makeText(this, "You have already added this product to your cart!", Toast.LENGTH_SHORT).show();
-
         }
         else {
             // Insert new cart
@@ -171,10 +163,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
             // truyen UserId vao
             quantity = cartRepository.countDistinctCategoriesInCart(userId);
             txtCartCount.setText(String.valueOf(quantity));
-            
         }
+    }
+    private String formatMoney(double price){
+        String originalPriceFormatted = String.format("%,d", (long)price);
+        return  originalPriceFormatted;
+    }
 
-
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
 

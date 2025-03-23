@@ -11,14 +11,6 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarProductDetail"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#F9E6E6"
-            android:elevation="4dp"
-            app:titleTextColor="#F9E6E6"
-            android:theme="@style/ThemeOverlay.AppCompat.Light" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,20 +20,22 @@
             android:layout_marginTop="30dp">
 
 
-            <!-- Khoảng trống để đẩy nút bên phải ra xa -->
-            <View
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarProductDetail"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="#F9E6E6"
+                android:elevation="4dp"
+                app:titleTextColor="#F9E6E6"
+                android:theme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <!-- Nút Giỏ Hàng (Bên Phải) -->
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="8dp">
 
-                <!-- Nút Giỏ Hàng -->
                 <ImageView
                     android:id="@+id/btnCart"
                     android:layout_width="40dp"
@@ -49,7 +43,6 @@
                     android:src="@drawable/ic_cart"
                     android:contentDescription="Cart" />
 
-                <!-- Số lượng sản phẩm trong giỏ -->
                 <TextView
                     android:id="@+id/txtCartCount"
                     android:layout_width="20dp"
@@ -101,6 +94,16 @@
 
         <TextView
             android:id="@+id/product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#FF5722"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/product_discount_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
