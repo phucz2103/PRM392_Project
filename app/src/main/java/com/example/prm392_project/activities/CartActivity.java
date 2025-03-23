@@ -12,14 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.CartAdapter;
-import com.example.prm392_project.Bean.Cart;
+import com.example.prm392_project.adapter.CartAdapter;
+import com.example.prm392_project.bean.Cart;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.CartRepository;
-import com.example.prm392_project.Repositories.ProductRepository;
+import com.example.prm392_project.repositories.CartRepository;
+import com.example.prm392_project.repositories.ProductRepository;
 
 import java.util.List;
 

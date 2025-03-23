@@ -13,11 +13,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.OrderDetailProductAdapter;
-import com.example.prm392_project.Bean.POJO.OrderDetailWithProduct;
-import com.example.prm392_project.Bean.POJO.OrderWithUser;
+import com.example.prm392_project.adapter.OrderDetailProductAdapter;
+import com.example.prm392_project.bean.pojo.OrderDetailWithProduct;
+import com.example.prm392_project.bean.pojo.OrderWithUser;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.OrderRepository;
+import com.example.prm392_project.repositories.OrderRepository;
 
 import java.util.List;
 

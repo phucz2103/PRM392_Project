@@ -15,10 +15,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.OrderHistoryAdapter;
-import com.example.prm392_project.Bean.Order;
+import com.example.prm392_project.adapter.OrderHistoryAdapter;
+import com.example.prm392_project.bean.Order;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.OrderRepository;
+import com.example.prm392_project.repositories.OrderRepository;
 
 import java.util.List;
 

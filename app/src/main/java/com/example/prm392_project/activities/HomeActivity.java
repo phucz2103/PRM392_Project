@@ -1,20 +1,16 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,19 +18,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.HomepageAdapter;
-import com.example.prm392_project.Adapter.ProductAdapter;
-import com.example.prm392_project.Bean.Category;
-import com.example.prm392_project.Bean.Product;
-import com.example.prm392_project.Bean.User;
+import com.example.prm392_project.adapter.HomepageAdapter;
+import com.example.prm392_project.adapter.ProductAdapter;
+import com.example.prm392_project.bean.Category;
+import com.example.prm392_project.bean.Product;
+import com.example.prm392_project.bean.User;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.CategoryRepository;
-import com.example.prm392_project.Repositories.ProductRepository;
-import com.example.prm392_project.Repositories.UserRepository;
+import com.example.prm392_project.repositories.CategoryRepository;
+import com.example.prm392_project.repositories.ProductRepository;
+import com.example.prm392_project.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HomeActivity extends BaseActivity {
     private RecyclerView recyclerCategories, recyclerProducts;

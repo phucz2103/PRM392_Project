@@ -1,0 +1,20 @@
+package com.example.prm392_project.irepositories;
+
+import com.example.prm392_project.bean.Order;
+import com.example.prm392_project.bean.pojo.OrderDetailWithProduct;
+import com.example.prm392_project.bean.pojo.OrderWithUser;
+
+import java.util.List;
+
+public interface IOrderRepository {
+    void insertOrder(Order order);
+    List<Order> getAll();
+    List<Order> getOrderPendingByUser(int userID);
+    List<Order> getOrderPurchasedByUser(int userID);
+    void updateOrderStatus(int orderID, int status);
+    List<Order> getOrderByUser(int userID);
+
+    OrderWithUser getOderWithUserByID(int orderID);
+    List<OrderDetailWithProduct> getOrderDetailsWithProduct(int orderID);
+    List<OrderWithUser> getAllOrderWithUser();
+}

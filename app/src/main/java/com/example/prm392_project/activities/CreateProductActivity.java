@@ -1,44 +1,33 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.Manifest;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.prm392_project.Bean.Category;
-import com.example.prm392_project.Bean.Product;
-import com.example.prm392_project.IRepositories.ICategoryRepository;
-import com.example.prm392_project.IRepositories.IProductRepository;
+import com.example.prm392_project.bean.Category;
+import com.example.prm392_project.bean.Product;
+import com.example.prm392_project.irepositories.ICategoryRepository;
+import com.example.prm392_project.irepositories.IProductRepository;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.CategoryRepository;
-import com.example.prm392_project.Repositories.ProductRepository;
+import com.example.prm392_project.repositories.CategoryRepository;
+import com.example.prm392_project.repositories.ProductRepository;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

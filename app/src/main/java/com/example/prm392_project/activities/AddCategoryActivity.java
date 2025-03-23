@@ -8,9 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.prm392_project.DAO.CategoryDao;
+import com.example.prm392_project.dao.CategoryDao;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.CategoryRepository;
+import com.example.prm392_project.repositories.CategoryRepository;
 
 public class AddCategoryActivity extends AppCompatActivity {
 
