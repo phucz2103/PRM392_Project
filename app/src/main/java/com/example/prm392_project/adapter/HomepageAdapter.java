@@ -1,6 +1,7 @@
 package com.example.prm392_project.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
         private Context context;
         private List<Category> categoryList;
         private OnCategoryClickListener listener;
+        private int selectedPosition = 0;
 
         public interface OnCategoryClickListener {
             void onCategoryClick(Category category);
@@ -41,8 +43,21 @@ public class HomepageAdapter extends RecyclerView.Adapter<HomepageAdapter.ViewHo
             Category category = categoryList.get(position);
             holder.txtCategoryName.setText(category.getCategoryName());
 
+            if (position == selectedPosition) {
+                holder.txtCategoryName.setBackgroundResource(R.drawable.bg_category_selected);
+                holder.txtCategoryName.setTextColor(Color.WHITE);
+            } else {
+                holder.txtCategoryName.setBackgroundResource(R.drawable.bg_category_unselected);
+                holder.txtCategoryName.setTextColor(Color.BLACK);
+            }
+
             holder.itemView.setOnClickListener(v -> {
                 if (listener != null) {
+                    int previousSelected = selectedPosition;
+                    selectedPosition = holder.getBindingAdapterPosition();
+
+                    notifyItemChanged(previousSelected);
+                    notifyItemChanged(selectedPosition);
                     listener.onCategoryClick(category);
                 }
             });
