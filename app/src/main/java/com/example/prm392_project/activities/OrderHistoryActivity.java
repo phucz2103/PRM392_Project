@@ -1,15 +1,14 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -18,11 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_project.Adapter.OrderHistoryAdapter;
 import com.example.prm392_project.Bean.Order;
-import com.example.prm392_project.Database.AppDatabase;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.OrderRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderHistoryActivity extends BaseActivity implements OrderHistoryAdapter.OnOrderCancelListener {
@@ -31,7 +28,7 @@ public class OrderHistoryActivity extends BaseActivity implements OrderHistoryAd
     private List<Order> orderList;
     private List<Order> filteredOrder;
     private OrderRepository orderRepository;
-    private int userID = 2;
+    private int userID = 0;
     private int currentTab = 0;
 
     @Override
@@ -51,6 +48,9 @@ public class OrderHistoryActivity extends BaseActivity implements OrderHistoryAd
         orderRecyclerView = findViewById(R.id.recyclerViewOrderHistory);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         orderRecyclerView.setLayoutManager(layoutManager);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        userID = sharedPreferences.getInt("userId", -1);
         // lấy list order theo id của người dùng
         orderList = orderRepository.getOrderByUser(userID);
         // lay order pending theo user

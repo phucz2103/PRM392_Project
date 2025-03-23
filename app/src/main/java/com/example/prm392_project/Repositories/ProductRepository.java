@@ -8,7 +8,9 @@ import com.example.prm392_project.DAO.CategoryDao;
 import com.example.prm392_project.DAO.ProductDao;
 import com.example.prm392_project.Database.AppDatabase;
 import com.example.prm392_project.IRepositories.IProductRepository;
+import com.example.prm392_project.dto.TopProduct;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ProductRepository implements IProductRepository {
@@ -91,5 +93,10 @@ public class ProductRepository implements IProductRepository {
     public List<Product> searchSaleProductsByCategory(String query, int categoryID, int limit, int offset) {
         Log.d("ProductRepository", "searchSaleProductsByCategory called with query: " + query + ", categoryID: " + categoryID + ", limit: " + limit + ", offset: " + offset);
         return productDao.searchSaleProductsByCategory(query, categoryID, limit, offset);
+    }
+
+    @Override
+    public List<TopProduct> getTopSellingProductsLastMonth() {
+        return productDao.getTopSellingProductsLastMonth();
     }
 }

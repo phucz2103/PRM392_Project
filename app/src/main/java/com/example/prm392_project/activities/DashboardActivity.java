@@ -1,6 +1,8 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -8,12 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Adapter.MonthRevenue;
+import com.example.prm392_project.Adapter.DashboardAdapter;
+import com.example.prm392_project.Bean.Category;
 import com.example.prm392_project.Bean.Order;
 import com.example.prm392_project.R;
+import com.example.prm392_project.Repositories.CategoryRepository;
 import com.example.prm392_project.Repositories.OrderRepository;
+import com.example.prm392_project.Repositories.ProductRepository;
 import com.example.prm392_project.Repositories.UserRepository;
+import com.example.prm392_project.dto.MonthRevenue;
+import com.example.prm392_project.dto.TopProduct;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -25,11 +34,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
-    private TextView tvUsers;
-    private TextView tvOrders;
-    private TextView tvRevenue;
+    private TextView tvUsers,tvOrders,tvCategories,tvRevenue;
+    private ImageView imgUsers,imgOrders,imgCategory;
     private UserRepository userRepository;
     private OrderRepository orderRepository;
+    private CategoryRepository cateRepository;
+    private ProductRepository productRepository;
+    private RecyclerView recycleview;
+    private DashboardAdapter dashboardAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,24 +55,57 @@ public class DashboardActivity extends AppCompatActivity {
         });
         userRepository = new UserRepository(this);
         orderRepository = new OrderRepository(this);
+        cateRepository = new CategoryRepository(this);
+        productRepository = new ProductRepository(this);
+
+        recycleview = findViewById(R.id.recycler_view);
+        recycleview.setLayoutManager(new LinearLayoutManager(this));
+        List<TopProduct> topProductList = productRepository.getTopSellingProductsLastMonth();
+        if (topProductList == null) {
+            topProductList = new ArrayList<>();
+        }
+        dashboardAdapter = new DashboardAdapter(this, topProductList);
+        recycleview.setAdapter(dashboardAdapter);
+
         setupBarChart();
         tvUsers = findViewById(R.id.tvUsers);
         tvOrders = findViewById(R.id.tvOrders);
         tvRevenue = findViewById(R.id.tvRevenue);
+        tvCategories = findViewById(R.id.tvCategory);
+
         List<Order> orders = orderRepository.getAll();
+        List<Category> cates = cateRepository.getAllCategories();
         int totalRevenue = 0;
         for (Order order : orders) {
             totalRevenue += (int)order.getTotalPrice();
         }
         tvOrders.setText(String.valueOf(orders.stream().count()));
+        tvCategories.setText(String.valueOf(cates.stream().count()));
         tvUsers.setText(String.valueOf(userRepository.getAllUsers().stream().count()));
         tvRevenue.setText(String.valueOf(totalRevenue));
+
+        imgUsers = findViewById(R.id.negativeUser);
+        imgCategory = findViewById(R.id.negativeCategory);
+        imgOrders = findViewById(R.id.negativeOrder);
+
+        imgUsers.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, UserListActivity.class);
+            startActivity(intent);
+        });
+        imgOrders.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, OrderListActivity.class);
+            startActivity(intent);
+        });
+        imgCategory.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, ListCategoriesActivity.class);
+            startActivity(intent);
+        });
     }
         private void setupBarChart() {
             BarChart barChart = findViewById(R.id.barChart);
 
             // Dữ liệu mẫu cho lượt truy cập theo tháng
-            List<MonthRevenue> result = orderRepository.getMonthRevenue("2024");
+            List<MonthRevenue> result = orderRepository.getMonthRevenue("2025");
             float[] monthlyRevenue = new float[12];
             Arrays.fill(monthlyRevenue, 0);
 

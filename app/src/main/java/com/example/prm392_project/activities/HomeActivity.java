@@ -1,16 +1,15 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,22 +21,27 @@ import com.example.prm392_project.Adapter.HomepageAdapter;
 import com.example.prm392_project.Adapter.ProductAdapter;
 import com.example.prm392_project.Bean.Category;
 import com.example.prm392_project.Bean.Product;
+import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.CategoryRepository;
 import com.example.prm392_project.Repositories.ProductRepository;
+import com.example.prm392_project.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaleActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity {
     private RecyclerView recyclerCategories, recyclerProducts;
     private HomepageAdapter homepageAdapter;
     private ProductAdapter productAdapter;
     private CategoryRepository categoryRepository;
     private ProductRepository productRepository;
+    private UserRepository userRepository;
     private EditText edtSearch;
     private Button btnSearch;
+    private Button btnAddProduct;
     private List<Product> allProducts = new ArrayList<>();
+    private List<Product> currentFilteredProducts = new ArrayList<>();
     private int currentCategoryId = 0; // 0 means "All Products"
     private String currentSearchQuery = "";
     private static final int PAGE_SIZE = 6;
@@ -48,20 +52,22 @@ public class SaleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_sale);
+        setContentView(R.layout.activity_home);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // Set bottom padding to 0
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         // Initialize repositories
         categoryRepository = new CategoryRepository(this);
         productRepository = new ProductRepository(this);
+        userRepository = new UserRepository(this);
 
         // Initialize UI components
         initViews();
         setupRecyclerViews();
+        checkAdminStatus();
 
         // Load data
         currentPage = 0;
@@ -79,9 +85,11 @@ public class SaleActivity extends BaseActivity {
         recyclerProducts = findViewById(R.id.recyclerProducts);
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
+        btnAddProduct = findViewById(R.id.btnAddProduct);
     }
 
     private void setupRecyclerViews() {
+
         // Setup Category RecyclerView
         LinearLayoutManager categoryLayoutManager = new LinearLayoutManager(
                 this, LinearLayoutManager.HORIZONTAL, false);
@@ -108,7 +116,15 @@ public class SaleActivity extends BaseActivity {
         productAdapter = new ProductAdapter(this, new ArrayList<>(), product -> {
             // Handle product click
             Toast.makeText(this, "Selected: " + product.getProductName(), Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to product details activity
+            // Chuyển sang ProductDetailActivity
+            Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+            int userId = sharedPreferences.getInt("userId", -1);
+            intent.putExtra("userId", userId);
+            intent.putExtra("product_id", product.getProductID());
+            //Can userid chuyen sang
+            //intent.putExtra("user_id", );
+            startActivity(intent);
         });
 
         productAdapter.setLoadMoreListener(() -> {
@@ -125,12 +141,13 @@ public class SaleActivity extends BaseActivity {
         recyclerProducts.setAdapter(productAdapter);
     }
 
+
     private void loadCategories() {
         List<Category> categories = categoryRepository.getAllCategories();
         homepageAdapter.setCategoryList(categories);
 
         // Add "All" category at the beginning
-        Category allCategory = new Category("All Sale Products", true);
+        Category allCategory = new Category("All Products", true);
         allCategory.setCategoryID(0); // Special ID for "All"
 
         List<Category> categoriesWithAll = new ArrayList<>();
@@ -142,8 +159,7 @@ public class SaleActivity extends BaseActivity {
 
     private void loadProducts(int page) {
         int offset = page * PAGE_SIZE;
-        // Use getSaleProducts instead of getProducts
-        List<Product> newProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
+        List<Product> newProducts = productRepository.getProducts(PAGE_SIZE, offset);
 
         if (newProducts != null && !newProducts.isEmpty()) {
             allProducts.addAll(newProducts);
@@ -169,17 +185,17 @@ public class SaleActivity extends BaseActivity {
         List<Product> filteredProducts;
 
         if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
-            // No filters applied, get all sale products
-            filteredProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
+            // No filters applied, get all products
+            filteredProducts = productRepository.getProducts(PAGE_SIZE, offset);
         } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
             // Only filter by category
-            filteredProducts = productRepository.getSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
+            filteredProducts = productRepository.getProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
         } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
             // Only filter by search query
-            filteredProducts = productRepository.searchSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
+            filteredProducts = productRepository.searchProducts(currentSearchQuery, PAGE_SIZE, offset);
         } else {
             // Filter by both category and search query
-            filteredProducts = productRepository.searchSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+            filteredProducts = productRepository.searchProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
         }
 
         if (filteredProducts != null && !filteredProducts.isEmpty()) {
@@ -190,7 +206,7 @@ public class SaleActivity extends BaseActivity {
             productAdapter.setShowLoadingButton(filteredProducts.size() == PAGE_SIZE);
 
             if (page == 0 && filteredProducts.isEmpty()) {
-                Toast.makeText(SaleActivity.this, "No sale products found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "No products found", Toast.LENGTH_SHORT).show();
             }
         } else {
             productAdapter.setShowLoadingButton(false);
@@ -233,9 +249,28 @@ public class SaleActivity extends BaseActivity {
         loadFilteredProducts(currentPage);
     }
 
+    private void checkAdminStatus(){
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", 1);
+        User user = new User();
+        if(userId != -1){user = userRepository.getUserByID(String.valueOf(userId));}
+
+        if(user.getIsAdmin()){
+            btnAddProduct.setVisibility(View.VISIBLE);
+            btnAddProduct.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, CreateProductActivity.class);
+                startActivity(intent);
+            });
+        }
+        else{
+            btnAddProduct.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        checkAdminStatus();
         currentPage = 0;
         allProducts.clear();
         loadProducts(currentPage);

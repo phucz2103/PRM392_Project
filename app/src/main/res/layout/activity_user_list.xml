@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9E6E6"
-    tools:context=".Activities.UserListActivity">
+    tools:context=".activities.UserListActivity">
 
     <!-- Main Content Layout -->
     <LinearLayout

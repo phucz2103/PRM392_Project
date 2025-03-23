@@ -1,4 +1,4 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;

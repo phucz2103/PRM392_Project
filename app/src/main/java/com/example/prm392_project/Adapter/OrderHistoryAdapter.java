@@ -16,9 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Activities.CustomerOrderDetailActivity;
+import com.example.prm392_project.activities.CustomerOrderDetailActivity;
 import com.example.prm392_project.Bean.Order;
-import com.example.prm392_project.DAO.OrderDao;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.OrderRepository;
 

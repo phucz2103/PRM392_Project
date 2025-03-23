@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@android:color/white">
 
+    <!-- Product Name -->
     <TextView
         android:id="@+id/DashProductName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="ProductName" />
+        android:text="ProductName"
+        android:textSize="14sp"
+        android:gravity="start"
+        android:padding="8dp" />
 
+    <!-- Price -->
     <TextView
         android:id="@+id/DashPrice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Price" />
+        android:text="Price"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:padding="8dp" />
 
+    <!-- Quantity -->
     <TextView
         android:id="@+id/DashQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="quantity" />
+        android:text="Quantity"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:padding="8dp" />
 </LinearLayout>

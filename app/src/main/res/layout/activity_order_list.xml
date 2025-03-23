@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFE6E6"
-    tools:context=".Activities.OrderListActivity">
+    tools:context=".activities.OrderListActivity">
 
     <!-- Header Section -->
     <LinearLayout

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFE4E1"
-    tools:context=".Activities.SaleActivity">
+    tools:context=".activities.SaleActivity">
 
     <!-- Toolbar with search -->
     <androidx.appcompat.widget.Toolbar

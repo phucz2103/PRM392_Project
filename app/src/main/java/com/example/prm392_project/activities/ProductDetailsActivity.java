@@ -1,4 +1,4 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 

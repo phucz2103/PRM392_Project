@@ -1,4 +1,4 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +20,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.UserRepository;
-import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (user.getIsAdmin()) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         //chuyen huong sang admin
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtra("userId", user.getUserID());
                         startActivity(intent);
                         finish();

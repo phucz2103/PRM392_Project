@@ -6,6 +6,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.prm392_project.Bean.Product;
+import com.example.prm392_project.dto.TopProduct;
 
 import java.util.List;
 
@@ -35,10 +36,10 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> getProductsByCategory(int categoryID, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' ) AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchProducts(String searchQuery, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%') AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
 
     @Query("SELECT * FROM Product WHERE IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
@@ -47,9 +48,19 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> getSaleProductsByCategory(int categoryID, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' ) AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchSaleProducts(String searchQuery, int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' OR Description LIKE '%' || :searchQuery || '%') AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' ) AND IsSaled = 1 AND IsAvailable = 1 LIMIT :limit OFFSET :offset")
     List<Product> searchSaleProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
+
+    @Query("SELECT p.ProductName, p.Price, SUM(od.QTY_int) AS totalQuantitySold " +
+            "FROM OrderDetail od " +
+            "JOIN `Order` o ON od.OrderID = o.OrderID " +
+            "JOIN Product p ON od.ProductID = p.ProductID " +
+            "WHERE o.OrderDate >= DATE('now', '-1 month') " +
+            "GROUP BY p.ProductID, p.ProductName, p.Price " +
+            "ORDER BY totalQuantitySold DESC " +
+            "LIMIT 10")
+    List<TopProduct> getTopSellingProductsLastMonth();
 }

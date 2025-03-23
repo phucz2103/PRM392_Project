@@ -2,8 +2,6 @@ package com.example.prm392_project.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Activities.UserDetailActivity;
-import com.example.prm392_project.Activities.UserListActivity;
+import com.example.prm392_project.activities.UserDetailActivity;
 import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.UserRepository;

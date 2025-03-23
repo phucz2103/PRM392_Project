@@ -1,10 +1,8 @@
-package com.example.prm392_project.Adapter;
+package com.example.prm392_project.dto;
 
 import androidx.room.ColumnInfo;
 
 public class MonthRevenue {
-        @ColumnInfo(name = "month")
         public int month;
-        @ColumnInfo(name = "revenue")
         public float revenue;
 }

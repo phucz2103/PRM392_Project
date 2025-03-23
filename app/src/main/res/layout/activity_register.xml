@@ -7,7 +7,7 @@
     android:background="#F9E6E6"
     android:fillViewport="true"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Activities.RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

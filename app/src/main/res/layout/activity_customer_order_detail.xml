@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F9E6E6"
-    tools:context=".Activities.CustomerOrderDetailActivity">
+    tools:context=".activities.CustomerOrderDetailActivity">
 
     <!-- Header Section -->
     <LinearLayout

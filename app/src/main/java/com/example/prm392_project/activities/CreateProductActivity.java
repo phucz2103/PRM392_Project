@@ -1,4 +1,4 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -202,7 +202,7 @@ public class CreateProductActivity extends AppCompatActivity {
                 LocalDateTime.now().toString(), true, categoryID, quantity, false);
         productRepository.insertProduct(product);
         Toast.makeText(this, "Product created successfully", Toast.LENGTH_SHORT).show();
-        //finish();
+        finish();
     }
     private void checkPermissions() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {

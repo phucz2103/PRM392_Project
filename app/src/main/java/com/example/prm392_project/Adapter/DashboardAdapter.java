@@ -1,39 +1,29 @@
 package com.example.prm392_project.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Activities.UserDetailActivity;
-import com.example.prm392_project.Bean.Category;
 import com.example.prm392_project.Bean.Product;
-import com.example.prm392_project.Bean.User;
 import com.example.prm392_project.R;
-import com.example.prm392_project.Repositories.UserRepository;
+import com.example.prm392_project.dto.TopProduct;
 
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
     private Context context;
-    private List<Product> productList;
-    private OnProductClickListener listener;
+    private List<TopProduct> topProductList;
 
-    public interface OnProductClickListener {
-        void onProductClick(Product product);
-    }
 
-    public DashboardAdapter(Context context, List<Product> productList, OnProductClickListener listener) {
+
+    public DashboardAdapter(Context context, List<TopProduct> topProductList) {
         this.context = context;
-        this.productList = productList;
-        this.listener = listener;
+        this.topProductList = topProductList;
     }
 
     @NonNull
@@ -45,32 +35,30 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull DashboardAdapter.ViewHolder holder, int position) {
-        Product product = productList.get(position);
-        holder.txtDashProductName.setText(product.getProductName());
-
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onProductClick(product);
-            }
-        });
+        TopProduct topproduct = topProductList.get(position);
+        holder.txtDashProductName.setText(topproduct.getProductName());
+        holder.txtDashPrice.setText(String.valueOf(topproduct.Price));
+        holder.txtQuantity.setText(String.valueOf(topproduct.totalQuantitySold));
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return topProductList.size();
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public void setProductList(List<TopProduct> topProductList) {
+        this.topProductList = topProductList;
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtDashProductName;
+        TextView txtDashProductName,txtDashPrice,txtQuantity;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtDashProductName = itemView.findViewById(R.id.DashProductName);
+            txtDashPrice = itemView.findViewById(R.id.DashPrice);
+            txtQuantity = itemView.findViewById(R.id.DashQuantity);
         }
     }
 }

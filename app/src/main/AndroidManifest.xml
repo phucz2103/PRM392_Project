@@ -20,58 +20,58 @@
         android:theme="@style/Theme.PRM392_Project"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.SaleActivity"
+            android:name=".activities.SaleActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.BaseActivity"
+            android:name=".activities.BaseActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name=".activities.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.UpdateProductActivity"
+            android:name=".activities.UpdateProductActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.CreateProductActivity"
+            android:name=".activities.CreateProductActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.OrderListActivity"
+            android:name=".activities.OrderListActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.OrderHistoryActivity"
+            android:name=".activities.OrderHistoryActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.CustomerOrderDetailActivity"
+            android:name=".activities.CustomerOrderDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.DashboardActivity"
+            android:name=".activities.DashboardActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.ResetPasswordActivity"
+            android:name=".activities.ResetPasswordActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.ForgotPasswordActivity"
+            android:name=".activities.ForgotPasswordActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.RegisterActivity"
+            android:name=".activities.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.UserListActivity"
+            android:name=".activities.UserListActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.UserDetailActivity"
+            android:name=".activities.UserDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.ChangePasswordActivity"
+            android:name=".activities.ChangePasswordActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.EditProfileActivity"
+            android:name=".activities.EditProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.UserProfileActivity"
+            android:name=".activities.UserProfileActivity"
             android:exported="true" />
 
         <activity
@@ -83,9 +83,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.AddCategoryActivity" />
-        <activity android:name=".Activities.UpdateCategoryActivity" />
-        <activity android:name=".Activities.ProductDetailsActivity"
+        <activity android:name=".activities.AddCategoryActivity" />
+        <activity android:name=".activities.UpdateCategoryActivity" />
+        <activity android:name=".activities.ProductDetailsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -94,7 +94,7 @@
                 <data android:scheme="http" android:host="www.example.com" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CartActivity"
+        <activity android:name=".activities.CartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -103,7 +103,7 @@
                 <data android:scheme="http" android:host="www.example.com" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ListCategoriesActivity"
+        <activity android:name=".activities.ListCategoriesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

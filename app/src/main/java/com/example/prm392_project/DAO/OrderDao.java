@@ -4,12 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import androidx.room.Update;
 
-import com.example.prm392_project.Adapter.MonthRevenue;
 import com.example.prm392_project.Bean.Order;
 import com.example.prm392_project.Bean.POJO.OrderDetailWithProduct;
 import com.example.prm392_project.Bean.POJO.OrderWithUser;
+import com.example.prm392_project.dto.MonthRevenue;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.prm392_project.Bean.Category;
 import com.example.prm392_project.DAO.CategoryDao;
-import com.example.prm392_project.Database.AppDatabase;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.CategoryRepository;
 

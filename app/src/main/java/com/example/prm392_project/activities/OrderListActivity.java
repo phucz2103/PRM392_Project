@@ -1,10 +1,9 @@
-package com.example.prm392_project.Activities;
+package com.example.prm392_project.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_project.Adapter.OrderListAdapter;
 import com.example.prm392_project.Bean.POJO.OrderWithUser;
-import com.example.prm392_project.DAO.OrderDao;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.OrderRepository;
 

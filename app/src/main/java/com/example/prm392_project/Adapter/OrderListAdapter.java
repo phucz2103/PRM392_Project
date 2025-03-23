@@ -15,11 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.prm392_project.Activities.CustomerOrderDetailActivity;
-import com.example.prm392_project.Bean.Order;
+import com.example.prm392_project.activities.CustomerOrderDetailActivity;
 import com.example.prm392_project.Bean.POJO.OrderWithUser;
 import com.example.prm392_project.Helpers.Notification;
 import com.example.prm392_project.R;
