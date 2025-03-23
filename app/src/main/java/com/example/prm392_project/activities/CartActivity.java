@@ -50,7 +50,6 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private ImageView btnBack;
     private Button btnClearCart;
     private Button btnOrder;
-    private TextView txtTotalCost1;
     private ProductRepository productRepository;
     private boolean addQuantity = true;
 
@@ -175,22 +174,18 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     }
 
     private void calculateTotalCost() {
-
+        totalCost = 0;
+        TextView txtTotalCost = findViewById(R.id.txtTotalCost);
         for (Cart cart : cartList) {
-            if(addQuantity){
-                totalCost = cart.getQTY_int() * cart.getPrice();
-            }
-            else {
-                if(totalCost > cart.getQTY_int() * cart.getPrice()){
-                    totalCost = cart.getQTY_int() * cart.getPrice();
-                }
-                else totalCost = cart.getPrice();
+            if (addQuantity) {
+                totalCost += cart.getQTY_int() * cart.getPrice();
+                txtTotalCost.setText("Total Cost: " + String.format("%.1f", totalCost) + " VND");
+            } else{
+                totalCost += cart.getQTY_int() * (-cart.getPrice());
+                txtTotalCost.setText("Total Cost: " + String.format("%.1f", -totalCost) + " VND");
             }
         }
 
-        // Cập nhật UI hiển thị tổng tiền
-        TextView txtTotalCost = findViewById(R.id.txtTotalCost);
-        txtTotalCost.setText("Total Cost: " + String.format("%.1f", totalCost) + " VND");
     }
 
     private void deleteCartByUserId() {
