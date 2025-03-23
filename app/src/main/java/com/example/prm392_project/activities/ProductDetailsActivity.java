@@ -99,13 +99,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
             finish();
         }
 
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
-        });
+        //btnBack = findViewById(R.id.btnBack);
+//        btnBack.setOnClickListener(v -> {
+//            Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            startActivity(intent);
+//            finish();
+//        });
         if(isAdmin){
             btnAddToCart.setText("Update Product");
             btnAddToCart.setOnClickListener( v -> {
