@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_project.activities.CustomerOrderDetailActivity;
+import com.example.prm392_project.activities.OrderListActivity;
 import com.example.prm392_project.bean.pojo.OrderWithUser;
 import com.example.prm392_project.helpers.Notification;
 import com.example.prm392_project.R;
@@ -138,25 +139,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         private void showUpdateStatusDialog(OrderWithUser orderWithUser, int position){
             // Tạo dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Update Order Status");
-            String[] statusOptions = {"Confirm", "Reject"};
-            builder.setItems(statusOptions, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    int newStatus = which == 0 ? 1 : 2;
-                    orderRepository = new OrderRepository(context);
-                    orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), newStatus);
-                    if (newStatus == 1) {
-                        Notification notified = new Notification(context);
-                        notified.sendNotification("Order", "Your order has been confirmed, your order will be delivered in 3-5 days");
-                    } else {
-                        Notification notified = new Notification(context);
-                        notified.sendNotification("Order", "Your order has been rejected");
-                    }
-                    orderWithUser.order.setStatus(newStatus);
-                    orderListAdapter.notifyItemChanged(position);
-                }
-            });
             builder.setTitle("Update order status");
             builder.setMessage("Please choose new status for this order:");
 
@@ -179,6 +161,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), 1); // 1: Confirmed
                 orderWithUser.order.setStatus(1);
                 orderListAdapter.notifyItemChanged(position);
+                Notification notified = new Notification(context);
+                notified.sendNotification("Order", "Your order has been confirmed, your order will be delivered in 3-5 days");
             });
 
             builder.setNegativeButton(rejectText, (dialog, which) -> {
@@ -186,6 +170,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), 2); // 2: Rejected
                 orderWithUser.order.setStatus(2);
                 orderListAdapter.notifyItemChanged(position);
+                Notification notified = new Notification(context);
+                notified.sendNotification("Order", "Your order has been rejected");
             });
 
             builder.setNeutralButton(cancelText, null);
