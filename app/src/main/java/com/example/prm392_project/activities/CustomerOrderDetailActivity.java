@@ -72,7 +72,7 @@ public class CustomerOrderDetailActivity extends AppCompatActivity {
                 tvFullName.setText(orderWithUser.user.getFullName());
                 tvAddress.setText(orderWithUser.user.getAddress());
                 tvTotalAmount.setText(String.format("%,dđ", (long) orderWithUser.order.getTotalPrice()));
-                tvTotalAmountFooter.setText(new StringBuilder().append("TOTAL AMOUNT: ").append(String.format("%,dđ", (long) orderWithUser.order.getTotalPrice())));
+                tvTotalAmountFooter.setText(new StringBuilder().append(String.format("%,dđ", (long) orderWithUser.order.getTotalPrice())));
                 // add color for status
                 String color = changeTextColor(orderWithUser.order.getStatus());
                 try {
