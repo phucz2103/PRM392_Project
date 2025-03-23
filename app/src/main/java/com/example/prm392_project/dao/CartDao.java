@@ -19,7 +19,7 @@ public interface CartDao {
     List<Cart> getCartByUser(int userID);
 
     @Query("SELECT * FROM Cart WHERE ProductID = :productID")
-    List<Cart> getCartByProduct(int productID);
+    Cart getCartByProduct(int productID);
 
     @Query("UPDATE Cart SET QTY_int = :quantity WHERE CartID = :cartID")
     void updateCart(int cartID, int quantity);

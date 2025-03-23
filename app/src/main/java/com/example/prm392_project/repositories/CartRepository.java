@@ -50,7 +50,12 @@ public class CartRepository implements ICartRepository {
         return cartDao.getCartByUser(userID);
     }
 
-    public List<Cart> getCartByProductID(int productID) {
+    @Override
+    public Cart getCartByProduct(int productID) {
+        return cartDao.getCartByProduct(productID);
+    }
+
+    public Cart getCartByProductID(int productID) {
         return cartDao.getCartByProduct(productID);
     }
 

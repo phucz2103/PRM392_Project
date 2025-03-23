@@ -138,7 +138,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
         }
         else{
-            btnAddToCart.setOnClickListener(v -> addToCart());
+            btnAddToCart.setOnClickListener(v -> addToCart(productId));
             if(userId == -1){
                 new AlertDialog.Builder(ProductDetailsActivity.this)
                         .setTitle("Login")
@@ -155,8 +155,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnCart.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("product_id",productId);
-            intent.putExtra("product_price",txtPrice.getText().toString());
+//            intent.putExtra("product_id",productId);
+//            intent.putExtra("product_price",txtPrice.getText().toString());
             startActivity(intent);
             finish();
         });
@@ -201,18 +201,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
             radapter = new ReviewAdapter(this, getReviews, duoc);
             recyclerView.setAdapter(radapter);
         }
-
-
     }
-    private void addToCart() {
+    private void addToCart(int productId) {
         cartRepository = new CartRepository(this);
         curQuantity++;
-        int productId = getIntent().getIntExtra("product_id", -1);
-        List<Cart> list = cartRepository.getCartByProductID(productId);
-        if(curQuantity > 1 || list.size() == 1){
+        List<Cart> listcart = cartRepository.getCartByUser(userId);
+        if(listcart.size() >0){
             //curQuantity++;
-            cartRepository.increaseQuantity(newcart);
-            int x = newcart.getQTY_int();
+            Cart cart = cartRepository.getCartByProductID(productId);
+            cartRepository.increaseQuantity(cart);
             //Toast.makeText(this, "You have already added this product to your cart!", Toast.LENGTH_SHORT).show();
         }
         else {
