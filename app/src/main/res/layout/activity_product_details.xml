@@ -204,6 +204,19 @@
                 android:layout_marginTop="8dp"
                 android:visibility="gone"/>
 
+            <RatingBar
+                android:id="@+id/edtRate"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="0dp"
+                android:numStars="5"
+                android:rating="4"
+                android:scaleX="0.4"
+                android:scaleY="0.5"
+                android:stepSize="0.5"
+                android:paddingLeft="0dp"
+                android:visibility="gone"/>
+
             <!-- Send Button -->
             <Button
                 android:id="@+id/btnSend"
