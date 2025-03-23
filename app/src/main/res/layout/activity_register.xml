@@ -173,15 +173,29 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/regisPASSWORD"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@android:drawable/edit_text"
-                        android:hint="Enter password"
-                        android:inputType="textPassword"
-                        android:paddingHorizontal="12dp" />
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/regisPASSWORD"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="Enter password"
+                            android:inputType="textPassword"
+                            android:paddingEnd="50dp"
+                            android:background="@android:drawable/edit_text" />
+
+                        <ImageView
+                            android:id="@+id/ivRegisPassword"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_closed_eye"
+                            android:contentDescription="Toggle Password" />
+                    </RelativeLayout>
 
                     <!-- Trường nhập Confirm Password -->
                     <TextView
@@ -193,15 +207,34 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/etConfirmPassword"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginBottom="24dp"
-                        android:background="@android:drawable/edit_text"
-                        android:hint="Confirm password"
-                        android:inputType="textPassword"
-                        android:paddingHorizontal="12dp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp">
+
+                        <!-- EditText Confirm Password -->
+                        <EditText
+                            android:id="@+id/etConfirmPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:hint="Confirm password"
+                            android:inputType="textPassword"
+                            android:paddingEnd="50dp"
+                            android:paddingHorizontal="12dp"
+                            android:background="@android:drawable/edit_text" />
+
+                        <!-- ImageView Toggle Password -->
+                        <ImageView
+                            android:id="@+id/ivRegisConfirmPassword"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_closed_eye"
+                            android:contentDescription="Toggle Confirm Password" />
+                    </RelativeLayout>
+
 
                     <!-- Nút Register -->
                     <Button

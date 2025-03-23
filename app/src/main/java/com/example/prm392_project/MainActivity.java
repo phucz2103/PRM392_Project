@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
 //        orderRepository.insertOrder(new Order("2024-03-03",1500,1, 3));
 //        orderRepository.insertOrder(new Order("2024-03-03",1000,1, 2));
 //        orderRepository.insertOrder(new Order("2024-01-01",500,1, 2));
-////
-////
+
 //        orderDetailRepository.insertOrderDetail(new OrderDetail(1,500.00, 3, 1));
 //        orderDetailRepository.insertOrderDetail(new OrderDetail(1,500.00, 3, 2));
 //        orderDetailRepository.insertOrderDetail(new OrderDetail(1,500.00, 3, 3));
