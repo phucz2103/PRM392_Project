@@ -47,6 +47,10 @@ public interface OrderDao {
     OrderWithUser getOrderWithUserByID(int orderID);
 
     @Transaction
+    @Query("SELECT * FROM `Order` WHERE status= :status")
+    List<OrderWithUser>  getOrderWithUserByStatus(int status);
+
+    @Transaction
     @Query("SELECT * FROM `OrderDetail` WHERE OrderID = :orderID")
     List<OrderDetailWithProduct> getOrderDetailsWithProduct(int orderID);
 

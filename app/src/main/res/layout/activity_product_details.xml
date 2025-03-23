@@ -122,78 +122,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            android:layout_height="131dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
             <!-- Individual Review -->
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewduoc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:layout_marginBottom="4dp">
+                android:layout_height="match_parent"
+                android:padding="0dp" />
 
-                <!-- User Avatar -->
-                <!-- User Avatar và Name -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_marginEnd="8dp">
-
-                    <!-- User Avatar -->
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_user" />
-
-                    <!-- User Name -->
-                    <TextView
-                        android:id="@+id/txtUserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ngoc Duoc"
-                        android:textSize="12sp"
-                        android:textColor="#000"
-                        android:layout_marginTop="4dp"/>
-                </LinearLayout>
-
-
-                <!-- Review Text -->
-                <TextView
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="So delicious"
-                    android:textColor="#000" />
-
-                <!-- Rating Bar -->
-                <RatingBar
-                    android:layout_width="220dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="0dp"
-                    android:numStars="5"
-                    android:rating="4"
-                    android:scaleX="0.4"
-                    android:scaleY="0.5"
-                    android:stepSize="0.5"
-                    android:paddingLeft="0dp"/>
-            </LinearLayout>
 
             <!-- Review Input -->
             <EditText
                 android:id="@+id/edtReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="#FFF"
                 android:hint="Review for product"
                 android:padding="10dp"
-                android:background="#FFF"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <RatingBar
                 android:id="@+id/edtRate"
@@ -201,24 +151,24 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="0dp"
                 android:numStars="5"
+                android:paddingLeft="0dp"
                 android:rating="4"
                 android:scaleX="0.4"
                 android:scaleY="0.5"
                 android:stepSize="0.5"
-                android:paddingLeft="0dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <!-- Send Button -->
             <Button
                 android:id="@+id/btnSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:background="#000"
                 android:text="Send"
                 android:textColor="#FFF"
-                android:background="#000"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

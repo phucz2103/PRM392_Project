@@ -11,19 +11,29 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.prm392_project.adapter.OrderHistoryAdapter;
+import com.example.prm392_project.adapter.ReviewAdapter;
 import com.example.prm392_project.bean.Cart;
 import com.example.prm392_project.bean.Product;
 import com.example.prm392_project.R;
+import com.example.prm392_project.bean.Review;
+import com.example.prm392_project.bean.User;
+import com.example.prm392_project.bean.pojo.OrderWithUser;
 import com.example.prm392_project.repositories.CartRepository;
+import com.example.prm392_project.repositories.OrderRepository;
 import com.example.prm392_project.repositories.ProductRepository;
+import com.example.prm392_project.repositories.ReviewRepository;
+import com.example.prm392_project.repositories.UserRepository;
 
 public class ProductDetailsActivity extends AppCompatActivity {
     TextView txtCartCount,txtProductName, txtDescription, txtPrice;
@@ -32,12 +42,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static int quantity = 0;
     private int curQuantity = 0;
     private ProductRepository productRepository;
+    private ReviewAdapter radapter;
+    private ReviewRepository reviewRepository;
+    private UserRepository userRepository;
+    private OrderRepository orderRepository;
     private CartRepository cartRepository;
     private ImageView btnBack;
     private Cart newcart;
     private int userId = 0;
-    RatingBar edtRate;
+    private RecyclerView recyclerView;
+    private ReviewAdapter reviewAdapter;
+    private List<Review> reviewList;
     EditText edtReview;
+    RatingBar edtRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +73,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.product_des);
         txtPrice= findViewById(R.id.product_price);
         productimage = findViewById(R.id.imgProduct);
-        Button btnSend = findViewById(R.id.btnSend);
-        EditText edtReview = findViewById(R.id.edtReview);
-        RatingBar edtRate = findViewById(R.id.edtRate);
+        btnSend = findViewById(R.id.btnSend);
+        edtReview = findViewById(R.id.edtReview);
+        edtRate = findViewById(R.id.edtRate);
 
         int productId = getIntent().getIntExtra("product_id", -1);
         cartRepository = new CartRepository(this);
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         userId = sharedPreferences.getInt("userId", -1);
+
         boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
         List<Cart> list = cartRepository.getCartByUser(userId);
 
@@ -138,7 +156,48 @@ public class ProductDetailsActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+            // viet 1 ham lay userid thanh cong trong bang Order
+            orderRepository = new OrderRepository(this);
+            List<OrderWithUser> list1 = orderRepository.getOrderWithUserByStatus(1);
+            boolean buingocduoc = false;
+            for (OrderWithUser tmp: list1) {
+                if(userId == tmp.user.getUserID()){
+                    buingocduoc = true;
+                }
+            }
+            if (buingocduoc) {
+                edtReview.setVisibility(View.VISIBLE);
+                edtRate.setVisibility(View.VISIBLE);
+                btnSend.setVisibility(View.VISIBLE);
+                btnSend.setOnClickListener(v -> {
+                    String reviewContent = edtReview.getText().toString();
+                    float rating = edtRate.getRating();
+                    if (!reviewContent.isEmpty()) {
+                        Review review = new Review(reviewContent,String.valueOf(System.currentTimeMillis()),(int)rating,2,productId);
+                        reviewRepository = new ReviewRepository(this);
+                        reviewRepository.insertReview(review);
+                        Toast.makeText(this, "Review sent!", Toast.LENGTH_SHORT).show();
+                        edtReview.setText("");
+                        edtRate.setRating(0);
+                        Toast.makeText(this, "Please enter a review!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+
         }
+
+        userRepository = new UserRepository(this);
+        reviewRepository = new ReviewRepository(this);
+        String duoc = userRepository.getUserByID(String.valueOf(userId)).getFullName();
+        recyclerView = findViewById(R.id.recyclerViewduoc);
+        List<Review> getReviews = reviewRepository.getReviewsByProduct(productId);
+        if(getReviews.size() > 0){
+            radapter = new ReviewAdapter(this, getReviews, duoc);
+            recyclerView.setAdapter(radapter);
+        }
+
 
     }
 

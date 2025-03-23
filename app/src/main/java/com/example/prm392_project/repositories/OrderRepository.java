@@ -55,6 +55,11 @@ public class OrderRepository implements IOrderRepository {
         return orderDao.getOrdersByUser(userID);
     }
 
+    @Override
+    public List<OrderWithUser>  getOrderWithUserByStatus(int status) {
+        return orderDao.getOrderWithUserByStatus(status);
+    }
+
     public List<MonthRevenue> getMonthRevenue(String year){
         return orderDao.getMonthRevenue(year);
     }

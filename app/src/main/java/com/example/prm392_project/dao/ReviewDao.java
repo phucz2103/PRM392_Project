@@ -14,4 +14,5 @@ public interface ReviewDao {
 
     @Query("SELECT * FROM Review WHERE ProductID = :productID")
     List<Review> getReviewsByProduct(int productID);
+
 }
