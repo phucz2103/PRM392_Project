@@ -16,15 +16,6 @@
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/txtQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quantity: 0"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginEnd="8dp" />
-
     <Button
         android:id="@+id/btnUpdate"
         android:layout_width="wrap_content"

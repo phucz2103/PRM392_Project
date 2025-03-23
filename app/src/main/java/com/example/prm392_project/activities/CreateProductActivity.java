@@ -85,7 +85,7 @@ public class CreateProductActivity extends AppCompatActivity {
         btnPreviewImage = findViewById(R.id.btnPreviewImage);
     }
     private void loadCategories() {
-        categories = categoryRepository.getAllCategories();
+        categories = categoryRepository.getAllAvailableCategories();
 
         // Create list of category names for the spinner
         List<String> categoryNames = new ArrayList<>();

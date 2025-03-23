@@ -3,6 +3,7 @@ package com.example.prm392_project.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +23,10 @@ import com.example.prm392_project.adapter.ProductAdapter;
 import com.example.prm392_project.bean.Category;
 import com.example.prm392_project.bean.Product;
 import com.example.prm392_project.R;
+import com.example.prm392_project.bean.User;
 import com.example.prm392_project.repositories.CategoryRepository;
 import com.example.prm392_project.repositories.ProductRepository;
+import com.example.prm392_project.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class SaleActivity extends BaseActivity {
     private ProductAdapter productAdapter;
     private CategoryRepository categoryRepository;
     private ProductRepository productRepository;
+    private UserRepository userRepository;
     private EditText edtSearch;
     private Button btnSearch;
     private List<Product> allProducts = new ArrayList<>();
@@ -42,6 +46,7 @@ public class SaleActivity extends BaseActivity {
     private static final int PAGE_SIZE = 6;
     private boolean isLoading = false;
     private int currentPage = 0;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class SaleActivity extends BaseActivity {
         // Initialize repositories
         categoryRepository = new CategoryRepository(this);
         productRepository = new ProductRepository(this);
+        userRepository = new UserRepository(this);
 
         // Initialize UI components
         initViews();
@@ -151,10 +157,18 @@ public class SaleActivity extends BaseActivity {
     }
 
     private void loadProducts(int page) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
+        user = new User();
+        if(userId != -1){user = userRepository.getUserByID(String.valueOf(userId));}
         int offset = page * PAGE_SIZE;
         // Use getSaleProducts instead of getProducts
-        List<Product> newProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
-
+        List<Product> newProducts = new ArrayList<>();
+        if(user.getIsAdmin()){
+             newProducts = productRepository.getAllSaleProducts(PAGE_SIZE, offset);
+        }else{
+             newProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
+        }
         if (newProducts != null && !newProducts.isEmpty()) {
             allProducts.addAll(newProducts);
             productAdapter.setProductList(allProducts);
@@ -177,21 +191,35 @@ public class SaleActivity extends BaseActivity {
 
         // Use repository methods directly instead of filtering with streams
         List<Product> filteredProducts;
-
-        if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
-            // No filters applied, get all sale products
-            filteredProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
-        } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
-            // Only filter by category
-            filteredProducts = productRepository.getSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
-        } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
-            // Only filter by search query
-            filteredProducts = productRepository.searchSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
-        } else {
-            // Filter by both category and search query
-            filteredProducts = productRepository.searchSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+        if(user.getIsAdmin()){
+            if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
+                // No filters applied, get all sale products
+                filteredProducts = productRepository.getAllSaleProducts(PAGE_SIZE, offset);
+            } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
+                // Only filter by category
+                filteredProducts = productRepository.getAllSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
+            } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
+                // Only filter by search query
+                filteredProducts = productRepository.searchAllSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
+            } else {
+                // Filter by both category and search query
+                filteredProducts = productRepository.searchAllSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+            }
+        }else{
+            if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
+                // No filters applied, get all sale products
+                filteredProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
+            } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
+                // Only filter by category
+                filteredProducts = productRepository.getSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
+            } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
+                // Only filter by search query
+                filteredProducts = productRepository.searchSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
+            } else {
+                // Filter by both category and search query
+                filteredProducts = productRepository.searchSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+            }
         }
-
         if (filteredProducts != null && !filteredProducts.isEmpty()) {
             allProducts.addAll(filteredProducts);
             productAdapter.setProductList(allProducts);

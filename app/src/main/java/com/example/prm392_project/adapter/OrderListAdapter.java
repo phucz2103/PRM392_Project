@@ -146,17 +146,17 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     int newStatus = which == 0 ? 1 : 2;
                     orderRepository = new OrderRepository(context);
                     orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), newStatus);
-                    if(newStatus == 1){
+                    if (newStatus == 1) {
                         Notification notified = new Notification(context);
                         notified.sendNotification("Order", "Your order has been confirmed, your order will be delivered in 3-5 days");
-                    }else{
+                    } else {
                         Notification notified = new Notification(context);
                         notified.sendNotification("Order", "Your order has been rejected");
                     }
                     orderWithUser.order.setStatus(newStatus);
                     orderListAdapter.notifyItemChanged(position);
                 }
-                });
+            });
             builder.setTitle("Update order status");
             builder.setMessage("Please choose new status for this order:");
 

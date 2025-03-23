@@ -15,15 +15,31 @@ public interface ProductDao {
     @Insert
     void insert(Product product);
 
-    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID")
-    List<Product> getProductsByCategory(int categoryID);
+    @Query("Update Product SET IsAvailable = :status WHERE CategoryID = :categoryID")
+    void updateProductsByCategory(int categoryID, boolean status);
 
-    @Query("SELECT * FROM Product")
-    List<Product> getAllProducts();
+    @Query("SELECT * FROM Product  LIMIT :limit OFFSET :offset")
+    List<Product> getAllProducts(int limit, int offset);
 
-    @Query("SELECT * FROM Product WHERE IsAvailable = 1")
-    List<Product> getAllAvailableProducts();
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID LIMIT :limit OFFSET :offset")
+    List<Product> getAllProductsByCategory(int categoryID, int limit, int offset);
 
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' ) LIMIT :limit OFFSET :offset")
+    List<Product> searchAllProducts(String searchQuery, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%') LIMIT :limit OFFSET :offset")
+    List<Product> searchAllProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE IsSaled = 1 LIMIT :limit OFFSET :offset")
+    List<Product> getAllSaleProducts(int limit, int offset);
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND IsSaled = 1  LIMIT :limit OFFSET :offset")
+    List<Product> getAllSaleProductsByCategory(int categoryID, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE (ProductName LIKE '%' || :searchQuery || '%' ) AND IsSaled = 1  LIMIT :limit OFFSET :offset")
+    List<Product> searchAllSaleProducts(String searchQuery, int limit, int offset);
+
+    @Query("SELECT * FROM Product WHERE CategoryID = :categoryID AND (ProductName LIKE '%' || :searchQuery || '%' ) AND IsSaled = 1 LIMIT :limit OFFSET :offset")
+    List<Product> searchAllSaleProductsByCategory(String searchQuery, int categoryID, int limit, int offset);
     @Update
     void update(Product product);
 

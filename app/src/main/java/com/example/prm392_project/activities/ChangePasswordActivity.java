@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -96,6 +97,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 String hashpassword = BCrypt.hashpw(etNewPassword.getText().toString(), BCrypt.gensalt());
                 user.setPassword(hashpassword);
                 userRepository.updateUser(user);
+                Toast.makeText(ChangePasswordActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+
                 Intent intent1 = new Intent();
                 intent1.putExtra("UserID", String.valueOf(user.getUserID()));
                 setResult(RESULT_OK, intent1);

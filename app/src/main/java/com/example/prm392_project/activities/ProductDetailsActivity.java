@@ -12,7 +12,9 @@ import android.widget.Toast;
 import java.util.List;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.prm392_project.bean.Cart;
 import com.example.prm392_project.bean.Product;
@@ -35,6 +37,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+        Toolbar toolbar = findViewById(R.id.toolbarProductDetail);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         txtCartCount = findViewById(R.id.txtCartCount);
 
@@ -91,7 +98,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
         }
         else{
-            btnAddToCart.setOnClickListener(v -> addToCart());
+            btnAddToCart.setOnClickListener(v ->{
+                if(userId == -1){
+                    new AlertDialog.Builder(ProductDetailsActivity.this)
+                            .setTitle("Login")
+                            .setMessage("Login to continue")
+                            .setPositiveButton("OK", (dialog, which) -> {
+                                dialog.dismiss();
+                                startActivity(new Intent(this, LoginActivity.class));
+                            })
+                            .setIcon(R.drawable.admin_panel_settings)
+                            .show();
+                }else{
+                    addToCart();
+                }
+            });
             ImageView btnCart = findViewById(R.id.btnCart);
 
         btnCart.setOnClickListener(v -> {

@@ -82,12 +82,7 @@ public class UserProfileActivity extends BaseActivity {
         User user;
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
-        if (userId != -1) {
         user = userRepository.getUserByID(String.valueOf(userId));
-        } else {
-            user = userRepository.login("user3@gmail.com", "Abcd123456@@");
-        }
-
         edtFullName.setText(user.getFullName());
         edtMobile.setText(user.getMobile());
         edtEmail.setText(user.getEmail());

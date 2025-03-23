@@ -45,10 +45,10 @@ public class ListCategoriesActivity extends AppCompatActivity {
         categoryRepository = new CategoryRepository(this);
 
         if (categoryRepository.getAllCategories().isEmpty()) {
-            categoryRepository.AddCategory("Foods", true);
-            categoryRepository.AddCategory("Drinks", true);
-            categoryRepository.AddCategory("Toys", true);
-            categoryRepository.AddCategory("Healthcare", true);
+//            categoryRepository.AddCategory("Foods", true);
+//            categoryRepository.AddCategory("Drinks", true);
+//            categoryRepository.AddCategory("Toys", true);
+//            categoryRepository.AddCategory("Healthcare", true);
             //Toast.makeText(this, "Sample categories added!", Toast.LENGTH_SHORT).show();
         }
 

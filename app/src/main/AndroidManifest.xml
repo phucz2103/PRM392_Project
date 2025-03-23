@@ -57,7 +57,10 @@
             android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true" />
+            android:parentActivityName=".activities.HomeActivity"
+            android:label="Back to Homepage"
+            android:exported="true"
+            android:theme="@style/Theme.PRM392_Project"/>
         <activity
             android:name=".activities.UserListActivity"
             android:exported="true" />

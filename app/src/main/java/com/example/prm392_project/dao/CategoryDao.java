@@ -13,11 +13,18 @@ public interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Category category);
 
+    @Query("SELECT * FROM CATEGORY WHERE CategoryID = :categoryId")
+    Category getCategoryById(int categoryId);
+
     @Query("DELETE FROM category")
     void deleteAllCategories();
 
     @Query("SELECT * FROM Category")
     List<Category> getAllCategories();
+
+    @Query("SELECT * FROM Category Where IsAvailable = 1")
+    List<Category> getAllAvailableCategories();
+
     @Query("DELETE FROM Cart WHERE UserID = :userID")
     void deleteCartByUserId(int userID);
 

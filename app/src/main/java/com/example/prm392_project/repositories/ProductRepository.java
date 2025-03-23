@@ -10,6 +10,7 @@ import com.example.prm392_project.databse.AppDatabase;
 import com.example.prm392_project.irepositories.IProductRepository;
 import com.example.prm392_project.bean.pojo.TopProduct;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ProductRepository implements IProductRepository {
@@ -39,12 +40,49 @@ public class ProductRepository implements IProductRepository {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productDao.getAllProducts();
+    public void updateProductsByCategory(int categoryID, boolean status) {
+        productDao.updateProductsByCategory(categoryID,status);
     }
 
     @Override
-    public List<Product> getAllAvailableProducts() { return productDao.getAllAvailableProducts();}
+    public List<Product> getAllProducts(int limit, int offset) {
+        return productDao.getAllProducts(limit,offset);
+    }
+
+    @Override
+    public List<Product> getAllProductsByCategory(int categoryID, int limit, int offset) {
+        return productDao.getAllProductsByCategory(categoryID,limit,offset);
+    }
+
+    @Override
+    public List<Product> searchAllProducts(String searchQuery, int limit, int offset) {
+        return productDao.searchAllProducts(searchQuery,limit,offset);
+    }
+
+    @Override
+    public List<Product> searchAllProductsByCategory(String searchQuery, int categoryID, int limit, int offset) {
+        return searchAllProductsByCategory(searchQuery,categoryID,limit,offset);
+    }
+
+    @Override
+    public List<Product> getAllSaleProducts(int limit, int offset) {
+        return productDao.getAllSaleProducts(limit,offset);
+    }
+
+    @Override
+    public List<Product> getAllSaleProductsByCategory(int categoryID, int limit, int offset) {
+        return productDao.getAllSaleProductsByCategory(categoryID,limit,offset);
+    }
+
+    @Override
+    public List<Product> searchAllSaleProducts(String searchQuery, int limit, int offset) {
+        return productDao.searchAllSaleProducts(searchQuery,limit,offset);
+    }
+
+    @Override
+    public List<Product> searchAllSaleProductsByCategory(String searchQuery, int categoryID, int limit, int offset) {
+        return productDao.searchAllSaleProductsByCategory(searchQuery,categoryID,limit,offset);
+    }
 
     @Override
     public List<Product> getProducts(int limit, int offset) {

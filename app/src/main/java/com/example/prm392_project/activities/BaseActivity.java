@@ -3,7 +3,9 @@ package com.example.prm392_project.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392_project.R;
@@ -49,7 +51,7 @@ public class BaseActivity extends AppCompatActivity {
                     if (itemId == R.id.nav_cart) {
                         startActivity(new Intent(this, CartActivity.class));
                     } else if (itemId == R.id.nav_order_history) {
-                        startActivity(new Intent(this, OrderHistoryActivity.class));
+                        startActivity(new Intent(this, OrderListActivity.class));
                     } else if (itemId == R.id.nav_profile) {
                         startActivity(new Intent(this, UserProfileActivity.class));
                     } else if (itemId == R.id.nav_admin) {
@@ -57,11 +59,35 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 }else{
                     if (itemId == R.id.nav_cart) {
-                        startActivity(new Intent(this, LoginActivity.class));
+                        new AlertDialog.Builder(BaseActivity.this)
+                                .setTitle("Login")
+                                .setMessage("Login to continue")
+                                .setPositiveButton("OK", (dialog, which) -> {
+                                    dialog.dismiss();
+                                    startActivity(new Intent(this, LoginActivity.class));
+                                })
+                                .setIcon(R.drawable.admin_panel_settings)
+                                .show();
                     } else if (itemId == R.id.nav_order_history) {
-                        startActivity(new Intent(this, LoginActivity.class));
+                        new AlertDialog.Builder(BaseActivity.this)
+                                .setTitle("Login")
+                                .setMessage("Login to continue")
+                                .setPositiveButton("OK", (dialog, which) -> {
+                                    dialog.dismiss();
+                                    startActivity(new Intent(this, LoginActivity.class));
+                                })
+                                .setIcon(R.drawable.admin_panel_settings)
+                                .show();
                     } else if (itemId == R.id.nav_profile) {
-                        startActivity(new Intent(this, LoginActivity.class));
+                        new AlertDialog.Builder(BaseActivity.this)
+                                .setTitle("Login")
+                                .setMessage("Login to continue")
+                                .setPositiveButton("OK", (dialog, which) -> {
+                                    dialog.dismiss();
+                                    startActivity(new Intent(this, LoginActivity.class)); // Chuyển sang Login sau khi ấn OK
+                                })
+                                .setIcon(R.drawable.admin_panel_settings)
+                                .show();
                     }
                 }
 
@@ -79,6 +105,10 @@ public class BaseActivity extends AppCompatActivity {
             return R.id.nav_home;}
         else if (className.equals(OrderHistoryActivity.class.getName())) {
             return R.id.nav_order_history;}
+        else if (className.equals(OrderListActivity.class.getName())) {
+            return R.id.nav_order_history;}
+        else if (className.equals(DashboardActivity.class.getName())) {
+            return R.id.nav_admin;}
          else if (className.equals(UserProfileActivity.class.getName())) {
             return R.id.nav_profile;
         }

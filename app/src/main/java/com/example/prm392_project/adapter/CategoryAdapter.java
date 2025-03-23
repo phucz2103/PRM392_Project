@@ -64,7 +64,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         if (!category.getIsAvailable()) {
             holder.txtCategoryName.setAlpha(0.5f);
-            holder.txtQuantity.setAlpha(0.5f);
             holder.btnUpdate.setAlpha(1.0f);
         } else {
             holder.itemView.setAlpha(1.0f);
@@ -88,12 +87,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtCategoryName;
-        TextView txtQuantity;
         Button btnUpdate;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCategoryName = itemView.findViewById(R.id.txtCategoryName);
-            txtQuantity = itemView.findViewById(R.id.txtQuantity);
             btnUpdate = itemView.findViewById(R.id.btnUpdate);
         }
     }

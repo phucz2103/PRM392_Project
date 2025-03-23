@@ -50,6 +50,8 @@ public class HomeActivity extends BaseActivity {
     private boolean isLoading = false;
     private int currentPage = 0;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,8 @@ public class HomeActivity extends BaseActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+
+
 
         // Initialize repositories
         categoryRepository = new CategoryRepository(this);
@@ -166,7 +170,12 @@ public class HomeActivity extends BaseActivity {
 
     private void loadProducts(int page) {
         int offset = page * PAGE_SIZE;
-        List<Product> newProducts = productRepository.getProducts(PAGE_SIZE, offset);
+        List<Product> newProducts = new ArrayList<>();
+        if(user.getIsAdmin()){
+            newProducts = productRepository.getAllProducts(PAGE_SIZE,offset);
+        }else{
+            newProducts = productRepository.getProducts(PAGE_SIZE, offset);
+        }
 
         if (newProducts != null && !newProducts.isEmpty()) {
             allProducts.addAll(newProducts);
@@ -190,21 +199,35 @@ public class HomeActivity extends BaseActivity {
 
         // Use repository methods directly instead of filtering with streams
         List<Product> filteredProducts;
-
-        if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
-            // No filters applied, get all products
-            filteredProducts = productRepository.getProducts(PAGE_SIZE, offset);
-        } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
-            // Only filter by category
-            filteredProducts = productRepository.getProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
-        } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
-            // Only filter by search query
-            filteredProducts = productRepository.searchProducts(currentSearchQuery, PAGE_SIZE, offset);
-        } else {
-            // Filter by both category and search query
-            filteredProducts = productRepository.searchProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+        if(user.getIsAdmin()){
+            if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
+                // No filters applied, get all products
+                filteredProducts = productRepository.getAllProducts(PAGE_SIZE, offset);
+            } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
+                // Only filter by category
+                filteredProducts = productRepository.getAllProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
+            } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
+                // Only filter by search query
+                filteredProducts = productRepository.searchAllProducts(currentSearchQuery, PAGE_SIZE, offset);
+            } else {
+                // Filter by both category and search query
+                filteredProducts = productRepository.searchAllProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+            }
+        }else{
+            if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
+                // No filters applied, get all products
+                filteredProducts = productRepository.getProducts(PAGE_SIZE, offset);
+            } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
+                // Only filter by category
+                filteredProducts = productRepository.getProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
+            } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
+                // Only filter by search query
+                filteredProducts = productRepository.searchProducts(currentSearchQuery, PAGE_SIZE, offset);
+            } else {
+                // Filter by both category and search query
+                filteredProducts = productRepository.searchProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
+            }
         }
-
         if (filteredProducts != null && !filteredProducts.isEmpty()) {
             allProducts.addAll(filteredProducts);
             productAdapter.setProductList(allProducts);
@@ -258,8 +281,8 @@ public class HomeActivity extends BaseActivity {
 
     private void checkAdminStatus(){
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId", 2);
-        User user = new User();
+        int userId = sharedPreferences.getInt("userId", -1);
+        user = new User();
         if(userId != -1){user = userRepository.getUserByID(String.valueOf(userId));}
 
         if(user.getIsAdmin()){

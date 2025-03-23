@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FDE9EA"
     android:padding="16dp">
 
@@ -8,8 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        >
+        android:gravity="center">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarProductDetail"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#F9E6E6"
+            android:elevation="4dp"
+            app:titleTextColor="#F9E6E6"
+            android:theme="@style/ThemeOverlay.AppCompat.Light" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +84,7 @@
             android:layout_height="180dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_example_foods"
-            android:layout_marginTop="100dp"/>
+            android:layout_marginTop="50dp"/>
 
         <!-- Product Name -->
         <TextView

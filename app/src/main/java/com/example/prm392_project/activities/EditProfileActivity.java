@@ -19,6 +19,7 @@ import com.example.prm392_project.helpers.Validation;
 import com.example.prm392_project.R;
 import com.example.prm392_project.repositories.UserRepository;
 import android.app.AlertDialog;
+import android.widget.Toast;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -103,6 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
 
             userRepository.updateUser(user);
+            Toast.makeText(EditProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent();
             intent.putExtra("UserID", String.valueOf(user.getUserID()));
             setResult(RESULT_OK, intent);

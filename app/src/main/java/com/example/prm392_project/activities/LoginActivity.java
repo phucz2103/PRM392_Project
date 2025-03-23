@@ -58,6 +58,15 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putInt("userId", user.getUserID());
                     editor.putBoolean("isAdmin", user.getIsAdmin());
                     editor.apply();
+                    if(!user.getIsActive()){
+                        new AlertDialog.Builder(LoginActivity.this)
+                                .setTitle("Error")
+                                .setMessage("Your account have been ban by Admin, contact 0963133593 to support!")
+                                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                                .setIcon(R.drawable.error)
+                                .show();
+                        return;
+                    }
                     if (user.getIsAdmin()) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         //chuyen huong sang admin

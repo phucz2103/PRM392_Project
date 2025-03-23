@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -210,6 +211,17 @@ public class UpdateProductActivity extends AppCompatActivity {
         int categoryID = categories.get(selectedPosition).getCategoryID();
         boolean isSaled = rgIsSaled.getCheckedRadioButtonId() == R.id.rbSaledTrue;
         boolean isAvailable = rgIsAvailable.getCheckedRadioButtonId() == R.id.rbAvailableTrue;
+
+        Category category = categoryRepository.getCategoryById(categoryID);
+        if(!category.getIsAvailable() && isAvailable){
+            new AlertDialog.Builder(UpdateProductActivity.this)
+                    .setTitle("Error")
+                    .setMessage("Can't active this product because category is unactive!")
+                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                    .setIcon(R.drawable.error)
+                    .show();
+            return;
+        }
 
         Product updatedProduct = new Product(name, description, price, imageUrl,
                 LocalDateTime.now().toString(), LocalDateTime.now().toString(), isAvailable, categoryID, quantity, isSaled);
