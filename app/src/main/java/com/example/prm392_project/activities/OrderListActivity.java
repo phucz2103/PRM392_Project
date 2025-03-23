@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class OrderListActivity extends AppCompatActivity {
+public class OrderListActivity extends BaseActivity {
     private RecyclerView orderRecyclerView;
     private OrderListAdapter orderListAdapter;
     private List<OrderWithUser> orderWithUserList;
@@ -42,9 +42,11 @@ public class OrderListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_list);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+
+        setupBottomNavigation();
 
         // khoi tao repository
         orderRepository = new OrderRepository(this);

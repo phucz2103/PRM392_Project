@@ -7,7 +7,6 @@
     android:background="#FFE4E1"
     android:id="@+id/main">
 
-    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:background="#F9E6E6"
         android:id="@+id/toolbarCreateProduct"

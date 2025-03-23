@@ -1,3 +1,4 @@
+
 package com.example.prm392_project.bean.pojo;
 
 public class TopProduct {
