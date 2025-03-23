@@ -158,6 +158,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             // truyen UserId vao
             quantity = cartRepository.countDistinctCategoriesInCart(1);
             txtCartCount.setText(String.valueOf(quantity));
+            
         }
 
 
