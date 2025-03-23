@@ -77,5 +77,4 @@
         android:clipToPadding="false"
         android:padding="4dp" />
 
-    <include layout="@layout/layout_bottom_nav" />
 </LinearLayout>

@@ -39,7 +39,13 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.acitivity_shopping_cart); // Kiểm tra đúng tên file XML
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            return insets;
+        });
         setupBottomNavigation();
 
         recyclerView = findViewById(R.id.recyclerCart);

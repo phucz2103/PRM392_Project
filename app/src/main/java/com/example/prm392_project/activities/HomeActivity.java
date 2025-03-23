@@ -1,15 +1,20 @@
-package com.example.prm392_project.activities;
+package com.example.prm392_project.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,6 +34,7 @@ import com.example.prm392_project.Repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeActivity extends BaseActivity {
     private RecyclerView recyclerCategories, recyclerProducts;
@@ -40,6 +46,7 @@ public class HomeActivity extends BaseActivity {
     private EditText edtSearch;
     private Button btnSearch;
     private Button btnAddProduct;
+    private ImageView imgSaleBanner;
     private List<Product> allProducts = new ArrayList<>();
     private List<Product> currentFilteredProducts = new ArrayList<>();
     private int currentCategoryId = 0; // 0 means "All Products"
@@ -55,7 +62,7 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
 
@@ -86,6 +93,11 @@ public class HomeActivity extends BaseActivity {
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
         btnAddProduct = findViewById(R.id.btnAddProduct);
+        ImageView imgSaleBanner = findViewById(R.id.imgSaleBanner);
+        imgSaleBanner.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, SaleActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setupRecyclerViews() {
@@ -251,7 +263,7 @@ public class HomeActivity extends BaseActivity {
 
     private void checkAdminStatus(){
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId", 1);
+        int userId = sharedPreferences.getInt("userId", 2);
         User user = new User();
         if(userId != -1){user = userRepository.getUserByID(String.valueOf(userId));}
 

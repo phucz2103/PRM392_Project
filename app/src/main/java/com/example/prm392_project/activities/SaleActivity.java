@@ -1,12 +1,19 @@
-package com.example.prm392_project.activities;
+package com.example.prm392_project.Activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -75,6 +82,11 @@ public class SaleActivity extends BaseActivity {
         recyclerProducts = findViewById(R.id.recyclerProducts);
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setupRecyclerViews() {
@@ -103,8 +115,14 @@ public class SaleActivity extends BaseActivity {
 
         productAdapter = new ProductAdapter(this, new ArrayList<>(), product -> {
             // Handle product click
-            Toast.makeText(this, "Selected: " + product.getProductName(), Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to product details activity
+            Intent intent = new Intent(SaleActivity.this, ProductDetailsActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+            int userId = sharedPreferences.getInt("userId", -1);
+            intent.putExtra("userId", userId);
+            intent.putExtra("product_id", product.getProductID());
+            //Can userid chuyen sang
+            //intent.putExtra("user_id", );
+            startActivity(intent);
         });
 
         productAdapter.setLoadMoreListener(() -> {
@@ -235,5 +253,10 @@ public class SaleActivity extends BaseActivity {
         currentPage = 0;
         allProducts.clear();
         loadProducts(currentPage);
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Đóng Activity và quay lại màn hình trước đó
+        return true;
     }
 }
