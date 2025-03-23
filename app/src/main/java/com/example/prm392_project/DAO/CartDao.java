@@ -24,6 +24,9 @@ public interface CartDao {
     @Query("UPDATE Cart SET QTY_int = :quantity WHERE CartID = :cartID")
     void updateCart(int cartID, int quantity);
 
+    @Query("UPDATE Cart SET Price = :price WHERE CartID = :cartID")
+    void updateCart(double price, int cartID);
+
     @Query("DELETE FROM Cart WHERE CartID = :cartID")
     void deleteCartItem(int cartID);
 

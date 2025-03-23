@@ -32,7 +32,14 @@ public class CartRepository implements ICartRepository {
 
     public void decreaseQuantity(Cart cart) {
         if (cart.getQTY_int() > 1) {
+
             cart.setQTY_int(cart.getQTY_int() - 1);
+            // Set tru o day
+            //cart.setPrice(cart.getPrice() - cart.getPrice());
+            updateCartItem(cart.getCartID(),cart.getQTY_int());
+        }
+        else {
+            cart.setQTY_int(1);
             updateCartItem(cart.getCartID(),cart.getQTY_int());
         }
 //        else {

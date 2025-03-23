@@ -43,6 +43,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     private Button btnClearCart;
     private Button btnOrder;
     private ProductRepository productRepository;
+    private boolean addQuantity = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     @Override
     public void onIncrease(Cart cart) {
         cartRepository.increaseQuantity(cart);
+        addQuantity = true;
         refreshCart();
     }
 
@@ -136,6 +138,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     @Override
     public void onDecrease(Cart cart) {
         cartRepository.decreaseQuantity(cart);
+        addQuantity = false;
         refreshCart();
     }
 
@@ -149,7 +152,15 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     private void calculateTotalCost() {
 
         for (Cart cart : cartList) {
-            totalCost += cart.getQTY_int() * cart.getPrice();
+            if(addQuantity){
+                totalCost += cart.getQTY_int() * cart.getPrice();
+            }
+            else {
+                if(totalCost > cart.getQTY_int() * cart.getPrice()){
+                    totalCost -= cart.getQTY_int() * cart.getPrice();
+                }
+                else totalCost = cart.getPrice();
+            }
         }
 
         // Cập nhật UI hiển thị tổng tiền
