@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.prm392_project.bean.Cart;
 import com.example.prm392_project.bean.Product;
 import com.example.prm392_project.R;
@@ -32,6 +33,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private CartRepository cartRepository;
     private ImageView btnBack;
     private Cart newcart;
+    private int userId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +53,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
         txtPrice= findViewById(R.id.product_price);
         productimage = findViewById(R.id.imgProduct);
 
+
         int productId = getIntent().getIntExtra("product_id", -1);
         cartRepository = new CartRepository(this);
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        int userId = sharedPreferences.getInt("userId", -1);
+        userId = sharedPreferences.getInt("userId", -1);
         boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
         List<Cart> list = cartRepository.getCartByUser(userId);
+
         //Quantity
         txtCartCount.setText(String.valueOf(list.size()));
 
@@ -71,12 +75,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
         if (product != null) {
             txtProductName.setText(product.getProductName());
             txtDescription.setText(product.getDescription());
-            txtPrice.setText("Price: " + product.getPrice() + " VND");
+            if(product.getIsSaled()){
+                txtPrice.setText("Price: " + product.getPrice()*80/100 + " VND");
+            }
+            else txtPrice.setText("Price: " + product.getPrice() + " VND");
 
             // New Cart o day
-            newcart = new Cart(product.getPrice(), 1, productId,userId);
+            if(product.getIsSaled()){
+                newcart = new Cart(product.getPrice() * 80/100, 1, productId,userId);
+
+            }
+            else newcart = new Cart(product.getPrice(), 1, productId,userId);
             // Load ảnh bằng Glide
-            //Glide.with(this).load(product.getIMAGE_URL()).into(productimage);
+            Glide.with(this).load(product.getIMAGE_URL()).into(productimage);
         } else {
             Toast.makeText(this, "Product not found!", Toast.LENGTH_SHORT).show();
             finish();
@@ -94,6 +105,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             btnAddToCart.setOnClickListener( v -> {
                 Intent intent = new Intent(ProductDetailsActivity.this, UpdateProductActivity.class);
                 intent.putExtra("product_id", productId);
+                //intent.putExtra("product_price",txtPrice.getText().toString());
                 startActivity(intent);
             });
         }
@@ -116,15 +128,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("product_id",productId);
+            intent.putExtra("product_price",txtPrice.getText().toString());
             startActivity(intent);
             finish();
         });
-            btnCart.setOnClickListener(v -> {
-                Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finish();
-            });
         }
 
     }
@@ -156,7 +163,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             cartRepository.insert(newcart);
             txtCartCount.setVisibility(View.VISIBLE);
             // truyen UserId vao
-            quantity = cartRepository.countDistinctCategoriesInCart(1);
+            quantity = cartRepository.countDistinctCategoriesInCart(userId);
             txtCartCount.setText(String.valueOf(quantity));
             
         }

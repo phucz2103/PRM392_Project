@@ -74,7 +74,10 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             ItemViewHolder itemHolder = (ItemViewHolder) holder;
             itemHolder.txtProductName.setText(product.getProductName());
-            itemHolder.txtProductPrice.setText(product.getPrice() + " VND");
+            if(product.getIsSaled()){
+                itemHolder.txtProductPrice.setText(product.getPrice()*80/100 + " VND");
+            }
+            else itemHolder.txtProductPrice.setText(product.getPrice() + " VND");
             itemHolder.txtQuantity.setText(String.valueOf(cartItem.getQTY_int()));
             if(itemHolder.txtQuantity.getText().equals("0")){
                 itemHolder.btnDecrease.setEnabled(false);
