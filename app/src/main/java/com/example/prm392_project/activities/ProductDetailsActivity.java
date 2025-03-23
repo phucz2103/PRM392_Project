@@ -98,21 +98,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
         }
         else{
-            btnAddToCart.setOnClickListener(v ->{
-                if(userId == -1){
-                    new AlertDialog.Builder(ProductDetailsActivity.this)
-                            .setTitle("Login")
-                            .setMessage("Login to continue")
-                            .setPositiveButton("OK", (dialog, which) -> {
-                                dialog.dismiss();
-                                startActivity(new Intent(this, LoginActivity.class));
-                            })
-                            .setIcon(R.drawable.admin_panel_settings)
-                            .show();
-                }else{
-                    addToCart();
-                }
-            });
+            btnAddToCart.setOnClickListener(v -> addToCart());
+            if(userId == -1){
+                new AlertDialog.Builder(ProductDetailsActivity.this)
+                        .setTitle("Login")
+                        .setMessage("Login to continue")
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            dialog.dismiss();
+                            startActivity(new Intent(this, LoginActivity.class));
+                        })
+                        .setIcon(R.drawable.admin_panel_settings)
+                        .show();
+            }
             ImageView btnCart = findViewById(R.id.btnCart);
 
         btnCart.setOnClickListener(v -> {
