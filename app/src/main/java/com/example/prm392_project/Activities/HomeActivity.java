@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class HomeActivity extends BaseActivity {
     private EditText edtSearch;
     private Button btnSearch;
     private Button btnAddProduct;
+    private ImageView imgSaleBanner;
     private List<Product> allProducts = new ArrayList<>();
     private List<Product> currentFilteredProducts = new ArrayList<>();
     private int currentCategoryId = 0; // 0 means "All Products"
@@ -60,7 +62,7 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
 
@@ -91,6 +93,11 @@ public class HomeActivity extends BaseActivity {
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
         btnAddProduct = findViewById(R.id.btnAddProduct);
+        ImageView imgSaleBanner = findViewById(R.id.imgSaleBanner);
+        imgSaleBanner.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, SaleActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void setupRecyclerViews() {

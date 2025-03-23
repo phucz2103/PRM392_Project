@@ -57,11 +57,12 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putInt("userId", user.getUserID());
+                    editor.putBoolean("isAdmin", user.getIsAdmin());
                     editor.apply();
                     if (user.getIsAdmin()) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         //chuyen huong sang admin
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtra("userId", user.getUserID());
                         startActivity(intent);
                         finish();

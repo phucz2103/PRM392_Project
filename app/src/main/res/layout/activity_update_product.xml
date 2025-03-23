@@ -64,37 +64,49 @@
         <Spinner
             android:id="@+id/spnCategory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:background="@android:color/white"
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Image -->
+        <!-- Image URL -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Image"
+            android:text="Image URL"
             android:layout_marginBottom="8dp"/>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
-            <ImageView
-                android:id="@+id/imgProduct"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+            <EditText
+                android:id="@+id/edtImageUrl"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:hint="Enter image URL"
+                android:background="@android:color/white"/>
 
-            <ImageButton
-                android:id="@+id/btnSelectImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/ic_add"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-        </FrameLayout>
+            <Button
+                android:id="@+id/btnPreviewImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preview"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:layout_marginBottom="16dp"
+            android:background="#F5F5F5"/>
 
         <!-- Quantity -->
         <TextView
@@ -191,7 +203,6 @@
             android:layout_height="wrap_content"
             android:text="Update"
             android:textColor="@android:color/white"
-            android:background="@android:color/black"
-            android:layout_marginBottom="16dp"/>
+            android:background="@android:color/black"/>
     </LinearLayout>
 </ScrollView>

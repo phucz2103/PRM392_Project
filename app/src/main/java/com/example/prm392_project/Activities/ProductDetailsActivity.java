@@ -48,6 +48,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartRepository = new CartRepository(this);
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
+        boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
         List<Cart> list = cartRepository.getCartByUser(userId);
         //Quantity
         txtCartCount.setText(String.valueOf(list.size()));
@@ -81,16 +82,25 @@ public class ProductDetailsActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+        if(isAdmin){
+            btnAddToCart.setText("Update Product");
+            btnAddToCart.setOnClickListener( v -> {
+                Intent intent = new Intent(ProductDetailsActivity.this, UpdateProductActivity.class);
+                intent.putExtra("product_id", productId);
+                startActivity(intent);
+            });
+        }
+        else{
+            btnAddToCart.setOnClickListener(v -> addToCart());
+            ImageView btnCart = findViewById(R.id.btnCart);
 
-        btnAddToCart.setOnClickListener(v -> addToCart());
-        ImageView btnCart = findViewById(R.id.btnCart);
-
-        btnCart.setOnClickListener(v -> {
-            Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
-        });
+            btnCart.setOnClickListener(v -> {
+                Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            });
+        }
 
     }
 

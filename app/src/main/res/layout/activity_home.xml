@@ -44,6 +44,33 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- After the recyclerCategories RecyclerView -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgSaleBanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sale_banner"
+            android:background="#F5F5F5"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SALE"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:background="#80FF0000"
+            android:padding="8dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"/>
+    </FrameLayout>
     <!-- Categories RecyclerView (horizontal) -->
     <TextView
         android:layout_width="match_parent"
@@ -92,6 +119,6 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:padding="4dp" />
-    
+
     <include layout="@layout/layout_bottom_nav" />
 </LinearLayout>

@@ -118,9 +118,8 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if (product.getIMAGE_URL() != null && !product.getIMAGE_URL().isEmpty()) {
             try {
-                Uri imageUri = Uri.parse(product.getIMAGE_URL());
                 Picasso.get()
-                        .load(imageUri)
+                        .load(product.getIMAGE_URL())
                         .placeholder(R.drawable.avatar)
                         .error(R.drawable.error)
                         .into(holder.imgProduct);

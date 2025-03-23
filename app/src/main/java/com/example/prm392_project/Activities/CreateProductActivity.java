@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import com.example.prm392_project.IRepositories.IProductRepository;
 import com.example.prm392_project.R;
 import com.example.prm392_project.Repositories.CategoryRepository;
 import com.example.prm392_project.Repositories.ProductRepository;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -51,7 +53,9 @@ public class CreateProductActivity extends AppCompatActivity {
     private ImageView imgProduct;
     private ICategoryRepository categoryRepository;
     private List<Category> categories;
-    private ImageButton btnSelectImage;
+    private EditText edtImageUrl;
+    private Button btnPreviewImage;
+    private String imageUrl;
     private EditText edtPrice;
     private IProductRepository productRepository;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
@@ -59,30 +63,6 @@ public class CreateProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imagePickerLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null && result.getData().getData() != null) {
-                        imageUri = result.getData().getData();
-
-                        // Take persistable permission
-                        try {
-                            getContentResolver().takePersistableUriPermission(
-                                    imageUri,
-                                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            );
-
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                            imgProduct.setImageBitmap(bitmap);
-                            btnSelectImage.setVisibility(View.GONE);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(CreateProductActivity.this,
-                                    "Cannot access this image. Please select another.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_product);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -99,7 +79,6 @@ public class CreateProductActivity extends AppCompatActivity {
 
         initViews();
         loadCategories();
-        checkPermissions();
         setupListeners();
     }
 
@@ -112,8 +91,9 @@ public class CreateProductActivity extends AppCompatActivity {
         spnCategory = findViewById(R.id.spnCategory);
         btnCreate = findViewById(R.id.btnCreate);
         imgProduct = findViewById(R.id.imgProduct);
-        btnSelectImage = findViewById(R.id.btnSelectImage);
         edtPrice = findViewById(R.id.edtPrice);
+        edtImageUrl = findViewById(R.id.edtImageUrl);
+        btnPreviewImage = findViewById(R.id.btnPreviewImage);
     }
     private void loadCategories() {
         categories = categoryRepository.getAllCategories();
@@ -134,7 +114,7 @@ public class CreateProductActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btnSelectImage.setOnClickListener(v -> openImageChooser());
+        btnPreviewImage.setOnClickListener(v -> previewImage());
 
         btnCreate.setOnClickListener(v -> {
             if (validateInput()) {
@@ -143,30 +123,29 @@ public class CreateProductActivity extends AppCompatActivity {
         });
 
     }
+    private void previewImage() {
+        imageUrl = edtImageUrl.getText().toString().trim();
 
-    private void openImageChooser() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/jpeg", "image/png"});
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        imagePickerLauncher.launch(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                imgProduct.setImageBitmap(bitmap);
-                btnSelectImage.setVisibility(View.GONE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (TextUtils.isEmpty(imageUrl)) {
+            Toast.makeText(this, "Please enter an image URL", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.avatar) // Add a placeholder image
+                .error(R.drawable.error) // Add an error image
+                .into(imgProduct, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(CreateProductActivity.this, "Image loaded successfully", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Toast.makeText(CreateProductActivity.this, "Failed to load image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private boolean validateInput() {
@@ -182,8 +161,8 @@ public class CreateProductActivity extends AppCompatActivity {
             edtPrice.setError("Price is required");
             return false;
         }
-        if (imageUri == null) {
-            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(imageUrl)) {
+            Toast.makeText(this, "Please enter and preview an image URL", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -196,30 +175,13 @@ public class CreateProductActivity extends AppCompatActivity {
         double price = Double.parseDouble(edtPrice.getText().toString());
         int selectedPosition = spnCategory.getSelectedItemPosition();
         int categoryID = categories.get(selectedPosition).getCategoryID();
-        String imageUrl = imageUri.toString();
 
+        // Use the URL directly
         Product product = new Product(name, description, price, imageUrl, LocalDateTime.now().toString(),
                 LocalDateTime.now().toString(), true, categoryID, quantity, false);
         productRepository.insertProduct(product);
         Toast.makeText(this, "Product created successfully", Toast.LENGTH_SHORT).show();
-        //finish();
-    }
-    private void checkPermissions() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                        PERMISSION_REQUEST_CODE);
-            }
-        } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_CODE);
-            }
-        }
+        finish();
     }
     @Override
     public boolean onSupportNavigateUp() {
