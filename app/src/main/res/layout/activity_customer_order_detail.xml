@@ -9,54 +9,17 @@
     android:background="#F9E6E6"
     tools:context=".activities.CustomerOrderDetailActivity">
 
-    <!-- Header Section -->
-    <LinearLayout
-        android:id="@+id/header_layout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarOrderDetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:background="@android:color/white"
-        android:elevation="4dp">
-
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="80dp"
-            android:layout_height="85dp"
-            android:src="@drawable/logopage"
-            android:contentDescription="Logo" />
-
-        <!-- Spacer -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <!-- Icons (Menu, Search, Cart) -->
-        <ImageView
-            android:id="@+id/menu_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="16dp"
-            android:src="@android:drawable/ic_menu_more"
-            android:contentDescription="Menu" />
-
-        <ImageView
-            android:id="@+id/search_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="16dp"
-            android:src="@android:drawable/ic_menu_search"
-            android:contentDescription="Search" />
-
-        <ImageView
-            android:id="@+id/cart_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_add"
-            android:contentDescription="Cart" />
-    </LinearLayout>
+        android:layout_height="40dp"
+        android:background="#F9E6E6"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="#F9E6E6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Order Details Section -->
     <androidx.cardview.widget.CardView

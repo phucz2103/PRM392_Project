@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.prm392_project.activities.CustomerOrderDetailActivity;
@@ -131,6 +136,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         }
 
         private void showUpdateStatusDialog(OrderWithUser orderWithUser, int position){
+            // Tạo dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Update Order Status");
             String[] statusOptions = {"Confirm", "Reject"};
@@ -150,9 +156,48 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     orderWithUser.order.setStatus(newStatus);
                     orderListAdapter.notifyItemChanged(position);
                 }
+                });
+            builder.setTitle("Update order status");
+            builder.setMessage("Please choose new status for this order:");
+
+            // Tạo SpannableString cho nút Confirm với icon tick
+            SpannableString confirmText = new SpannableString(" Confirm");
+            ImageSpan confirmIcon = new ImageSpan(context, R.drawable.tick_icon_resize);
+            confirmText.setSpan(confirmIcon, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            // Tạo SpannableString cho nút Reject với icon X
+            SpannableString rejectText = new SpannableString(" Reject");
+            ImageSpan rejectIcon = new ImageSpan(context, R.drawable.cross_icon_resize);
+            rejectText.setSpan(rejectIcon, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            // Tạo SpannableString cho nút Cancel
+            SpannableString cancelText = new SpannableString("Cancel");
+
+            // Thiết lập các nút
+            builder.setPositiveButton(confirmText, (dialog, which) -> {
+                orderRepository = new OrderRepository(context);
+                orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), 1); // 1: Confirmed
+                orderWithUser.order.setStatus(1);
+                orderListAdapter.notifyItemChanged(position);
             });
-            builder.setNegativeButton("Cancel", null);
-            builder.show();
+
+            builder.setNegativeButton(rejectText, (dialog, which) -> {
+                orderRepository = new OrderRepository(context);
+                orderRepository.updateOrderStatus(orderWithUser.order.getOrderID(), 2); // 2: Rejected
+                orderWithUser.order.setStatus(2);
+                orderListAdapter.notifyItemChanged(position);
+            });
+
+            builder.setNeutralButton(cancelText, null);
+
+            // Hiển thị dialog và tùy chỉnh màu sắc nút
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            // Tùy chỉnh màu sắc cho các nút
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_dark));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(context, android.R.color.black));
         }
 
         private String changeTextColor(int status) {

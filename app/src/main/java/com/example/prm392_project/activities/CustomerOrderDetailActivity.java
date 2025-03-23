@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -45,6 +46,12 @@ public class CustomerOrderDetailActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress);
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
         tvTotalAmountFooter = findViewById(R.id.tvTotalAmountFooter);
+        // them toolbar cho order detail
+        Toolbar toolbar = findViewById(R.id.toolbarOrderDetail);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         // khởi tạo repository
         orderRepository = new OrderRepository(this);
         recyclerViewProductList = findViewById(R.id.recyclerViewProductList);
@@ -118,6 +125,12 @@ public class CustomerOrderDetailActivity extends AppCompatActivity {
                 break;
         }
         return color;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }
