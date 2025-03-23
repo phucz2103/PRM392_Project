@@ -11,13 +11,20 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/logopage" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="30dp">
+            >
 
 
             <androidx.appcompat.widget.Toolbar
@@ -132,7 +139,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewduoc"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:padding="8dp"
                 android:layout_marginTop="8dp" />
 

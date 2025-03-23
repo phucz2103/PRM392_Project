@@ -118,7 +118,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             else{
                 txtPrice.setText("Price: " + formatMoney(productPrice) + " VND");
             }
-
             // New Cart o day
             if(product.getIsSaled()){
                 newcart = new Cart(product.getPrice() * 80/100, 1, productId,userId);
@@ -186,15 +185,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         recyclerView.setAdapter(radapter);
                         Toast.makeText(this, "Review sent!", Toast.LENGTH_SHORT).show();
                         edtReview.setText("");
-                        edtRate.setRating(0);
+                        edtRate.setRating(4);
                     } else {
-                        Toast.makeText(this, "Please enter a review!", Toast.LENGTH_SHORT).show();
+                        edtReview.setError("Please enter a review!");
                     }
                 });
             }
-
-
-
         }
         recyclerView = findViewById(R.id.recyclerViewduoc);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
