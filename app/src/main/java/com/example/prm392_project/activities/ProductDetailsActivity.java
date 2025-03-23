@@ -18,6 +18,7 @@ import java.util.List;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -67,7 +68,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
 
         txtCartCount = findViewById(R.id.txtCartCount);
-
         btnAddToCart = findViewById(R.id.btnAddToCart);
         txtProductName = findViewById(R.id.product_name);
         txtDescription = findViewById(R.id.product_des);
@@ -187,11 +187,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
 
         }
-
         userRepository = new UserRepository(this);
         reviewRepository = new ReviewRepository(this);
         String duoc = userRepository.getUserByID(String.valueOf(userId)).getFullName();
         recyclerView = findViewById(R.id.recyclerViewduoc);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Review> getReviews = reviewRepository.getReviewsByProduct(productId);
         if(getReviews.size() > 0){
             radapter = new ReviewAdapter(this, getReviews, duoc);
@@ -201,14 +201,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     }
 
-
-//    private void updateQuantity(int change) {
-//        int quantity = Integer.parseInt(txtQuantity.getText().toString());
-//        quantity += change;
-//
-//        if (quantity < 0) quantity = 0;
-//        txtQuantity.setText(String.valueOf(quantity));
-//    }
 
 
     private void addToCart() {
