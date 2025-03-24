@@ -56,7 +56,7 @@ public class OrderRepository implements IOrderRepository {
     }
 
     @Override
-    public List<OrderWithUser>  getOrderWithUserByStatus(int status) {
+    public List<OrderWithUser> getOrderWithUserByStatus(int status) {
         return orderDao.getOrderWithUserByStatus(status);
     }
 

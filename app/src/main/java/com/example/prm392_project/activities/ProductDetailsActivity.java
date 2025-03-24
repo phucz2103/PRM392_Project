@@ -25,12 +25,14 @@ import com.bumptech.glide.Glide;
 import com.example.prm392_project.adapter.OrderHistoryAdapter;
 import com.example.prm392_project.adapter.ReviewAdapter;
 import com.example.prm392_project.bean.Cart;
+import com.example.prm392_project.bean.OrderDetail;
 import com.example.prm392_project.bean.Product;
 import com.example.prm392_project.R;
 import com.example.prm392_project.bean.Review;
 import com.example.prm392_project.bean.User;
 import com.example.prm392_project.bean.pojo.OrderWithUser;
 import com.example.prm392_project.repositories.CartRepository;
+import com.example.prm392_project.repositories.OrderDetailRepository;
 import com.example.prm392_project.repositories.OrderRepository;
 import com.example.prm392_project.repositories.ProductRepository;
 import com.example.prm392_project.repositories.ReviewRepository;
@@ -76,7 +78,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         edtReview = findViewById(R.id.edtReview);
         edtRate = findViewById(R.id.edtRate);
-
         int productId = getIntent().getIntExtra("product_id", -1);
         cartRepository = new CartRepository(this);
         userRepository = new UserRepository(this);
@@ -151,11 +152,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
             finish();
         });
             List<OrderWithUser> list1 = orderRepository.getOrderWithUserByStatus(1);
+            OrderDetailRepository orderDetailRepository = new OrderDetailRepository(this);
+
             boolean canReview = false;
 
             for (OrderWithUser tmp: list1) {
                 if (userId == tmp.user.getUserID()) {
-                    canReview = true;
+                    List<OrderDetail> orderDetailtmp = orderDetailRepository.getOrderDetailsByOrder(tmp.order.getOrderID());
+                    for (OrderDetail x:orderDetailtmp) {
+                        if(x.getProductID() == productId){
+                            canReview = true;
+                        }
+                    }
+
                 }
             }
             if (canReview) {
@@ -174,11 +183,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         recyclerView.setAdapter(radapter);
                         Toast.makeText(this, "Review sent!", Toast.LENGTH_SHORT).show();
                         edtReview.setText("");
-                        edtRate.setRating(0);
+                        edtRate.setRating(4);
                     } else {
                         Toast.makeText(this, "Please enter a review!", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+            else {
+                edtReview.setVisibility(View.INVISIBLE);
+                edtRate.setVisibility(View.INVISIBLE);
             }
 
 

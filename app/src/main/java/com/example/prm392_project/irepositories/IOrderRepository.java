@@ -15,8 +15,7 @@ public interface IOrderRepository {
     List<Order> getOrderPurchasedByUser(int userID);
     void updateOrderStatus(int orderID, int status);
     List<Order> getOrderByUser(int userID);
-
-    List<OrderWithUser>  getOrderWithUserByStatus(int status);
+    List<OrderWithUser> getOrderWithUserByStatus(int status);
     OrderWithUser getOderWithUserByID(int orderID);
     List<OrderDetailWithProduct> getOrderDetailsWithProduct(int orderID);
     List<OrderWithUser> getAllOrderWithUser();
