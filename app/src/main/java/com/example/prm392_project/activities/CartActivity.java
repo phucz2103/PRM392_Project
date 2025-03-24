@@ -3,6 +3,7 @@ package com.example.prm392_project.activities;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -36,13 +37,14 @@ import com.example.prm392_project.repositories.ProductRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends BaseActivity implements CartAdapter.OnCartItemClickListener {
 
     private RecyclerView recyclerView;
     private CartAdapter cartAdapter;
-    private List<Cart> cartList;
+    private List<Cart> cartList = new ArrayList<>();
     private CartRepository cartRepository;
     private static double totalCost = 0;
     private OrderRepository orderRepository;
@@ -52,7 +54,6 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private Button btnOrder;
     private ProductRepository productRepository;
     private boolean addQuantity = true;
-
     private int userId = 0;
 
     @Override
@@ -66,16 +67,32 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
             return insets;
         });
         setupBottomNavigation();
+
+        cartRepository = new CartRepository(this);
+        productRepository = new ProductRepository(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        userId = sharedPreferences.getInt("userId", 1);
         //totalCost = productPrice;
 
         recyclerView = findViewById(R.id.recyclerCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         btnOrder = findViewById(R.id.btnOrder);
-        btnOrder.setOnClickListener(v -> showLoadingAndOrder());
+        cartList = cartRepository.getCartByUser(userId);
+        if(cartList.size() == 0){
+            btnOrder.setEnabled(false);
+            btnOrder.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        }else{
+            btnOrder.setEnabled(true);
+            btnOrder.setBackgroundColor(Color.parseColor("#27AE60"));
+        }
+        btnOrder.setOnClickListener(v ->{
+            showLoadingAndOrder();
+            btnOrder.setEnabled(false);
+            btnOrder.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        });
 
-        cartRepository = new CartRepository(this);
-        productRepository = new ProductRepository(this);
         btnBack = findViewById(R.id.btnBack);
         //xu li nut quay lai
         btnBack.setOnClickListener(v -> {
@@ -90,18 +107,12 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
         });
         int id = getIntent().getIntExtra("product_id", -1);
 
-
-
         btnClearCart = findViewById(R.id.btnClearCart);
-        btnClearCart.setOnClickListener(v -> deleteCartByUserId());
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        userId = sharedPreferences.getInt("userId", 1);
-
-        // Lấy danh sách sản phẩm trong giỏ hàng bo sung UserID o day
-        cartList = cartRepository.getCartByUser(userId);
-
+        btnClearCart.setOnClickListener(v ->{
+            deleteCartByUserId();
+            btnOrder.setEnabled(false);
+            btnOrder.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        });
 
         if (cartList == null || cartList.isEmpty()) {
             Log.e("CartActivity", "Giỏ hàng trống!");
@@ -109,7 +120,6 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
             addQuantity = true;
             calculateTotalCost();
         }
-
         // Khởi tạo Adapter và gán vào RecyclerView
         cartAdapter = new CartAdapter(this, cartList, this, productRepository);
         recyclerView.setAdapter(cartAdapter);
@@ -176,16 +186,18 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private void calculateTotalCost() {
         totalCost = 0;
         TextView txtTotalCost = findViewById(R.id.txtTotalCost);
+        if(cartList.size() == 0){
+            txtTotalCost.setText("Total Cost: 0 VND");
+        }
         for (Cart cart : cartList) {
             if (addQuantity) {
                 totalCost += cart.getQTY_int() * cart.getPrice();
-                txtTotalCost.setText("Total Cost: " + String.format("%.1f", totalCost) + " VND");
+                txtTotalCost.setText("Total Cost: " + String.format("%,d", (long)totalCost) + " VND");
             } else{
                 totalCost += cart.getQTY_int() * (-cart.getPrice());
-                txtTotalCost.setText("Total Cost: " + String.format("%.1f", -totalCost) + " VND");
+                txtTotalCost.setText("Total Cost: " + String.format("%,d", (long)-totalCost) + " VND");
             }
         }
-
     }
 
     private void deleteCartByUserId() {
@@ -204,7 +216,4 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
         //totalCost = getIntent().getIntExtra("product_price", -1);
         calculateTotalCost();
     }
-
-
-
 }

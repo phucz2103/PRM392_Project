@@ -3,7 +3,6 @@ package com.example.prm392_project.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaleActivity extends BaseActivity {
+    // Các thành phần UI
     private RecyclerView recyclerCategories, recyclerProducts;
     private HomepageAdapter homepageAdapter;
     private ProductAdapter productAdapter;
@@ -40,13 +40,16 @@ public class SaleActivity extends BaseActivity {
     private UserRepository userRepository;
     private EditText edtSearch;
     private Button btnSearch;
+
+    // Dữ liệu và trạng thái
     private List<Product> allProducts = new ArrayList<>();
-    private int currentCategoryId = 0; // 0 means "All Products"
+    private int currentCategoryId = 0; // 0 nghĩa là "Tất cả sản phẩm"
     private String currentSearchQuery = "";
     private static final int PAGE_SIZE = 6;
     private boolean isLoading = false;
     private int currentPage = 0;
     private User user;
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,35 +58,38 @@ public class SaleActivity extends BaseActivity {
         setContentView(R.layout.activity_sale);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // Set bottom padding to 0
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Initialize repositories
+        // Khởi tạo các repository
         categoryRepository = new CategoryRepository(this);
         productRepository = new ProductRepository(this);
         userRepository = new UserRepository(this);
 
-        // Initialize UI components
+        // Khởi tạo giao diện
         initViews();
         setupRecyclerViews();
+        checkAdminStatus();
 
-        // Load data
+        // Tải dữ liệu
         currentPage = 0;
         loadCategories();
         loadProducts(currentPage);
 
-        // Setup listeners
+        // Thiết lập listeners
         setupListeners();
-
         setupBottomNavigation();
     }
 
+    // Khởi tạo các thành phần UI
     private void initViews() {
         recyclerCategories = findViewById(R.id.recyclerCategories);
         recyclerProducts = findViewById(R.id.recyclerProducts);
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
+
+        // Thiết lập toolbar với nút quay lại
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -91,21 +97,20 @@ public class SaleActivity extends BaseActivity {
         }
     }
 
+    // Thiết lập RecyclerViews
     private void setupRecyclerViews() {
-        // Setup Category RecyclerView
+        // Thiết lập RecyclerView cho danh mục
         LinearLayoutManager categoryLayoutManager = new LinearLayoutManager(
                 this, LinearLayoutManager.HORIZONTAL, false);
         recyclerCategories.setLayoutManager(categoryLayoutManager);
 
         homepageAdapter = new HomepageAdapter(this, new ArrayList<>(), category -> {
-            // Handle category click
             filterProductsByCategory(category.getCategoryID());
         });
         recyclerCategories.setAdapter(homepageAdapter);
 
-        // Setup Product RecyclerView (Grid with 2 columns)
+        // Thiết lập RecyclerView cho sản phẩm (dạng lưới 2 cột)
         GridLayoutManager productLayoutManager = new GridLayoutManager(this, 2);
-        // Allow the Load More button to span full width
         productLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -116,14 +121,11 @@ public class SaleActivity extends BaseActivity {
         recyclerProducts.setLayoutManager(productLayoutManager);
 
         productAdapter = new ProductAdapter(this, new ArrayList<>(), product -> {
-            // Handle product click
             Intent intent = new Intent(SaleActivity.this, ProductDetailsActivity.class);
             SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
             int userId = sharedPreferences.getInt("userId", -1);
             intent.putExtra("userId", userId);
             intent.putExtra("product_id", product.getProductID());
-            //Can userid chuyen sang
-            //intent.putExtra("user_id", );
             startActivity(intent);
         });
 
@@ -141,13 +143,13 @@ public class SaleActivity extends BaseActivity {
         recyclerProducts.setAdapter(productAdapter);
     }
 
+    // Tải danh sách danh mục
     private void loadCategories() {
         List<Category> categories = categoryRepository.getAllCategories();
-        homepageAdapter.setCategoryList(categories);
 
-        // Add "All" category at the beginning
-        Category allCategory = new Category("All Sale Products", true);
-        allCategory.setCategoryID(0); // Special ID for "All"
+        // Thêm danh mục "Tất cả" vào đầu danh sách
+        Category allCategory = new Category("All Categories", true);
+        allCategory.setCategoryID(0);
 
         List<Category> categoriesWithAll = new ArrayList<>();
         categoriesWithAll.add(allCategory);
@@ -156,23 +158,36 @@ public class SaleActivity extends BaseActivity {
         homepageAdapter.setCategoryList(categoriesWithAll);
     }
 
-    private void loadProducts(int page) {
+    // Kiểm tra quyền admin
+    private void checkAdminStatus() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
         user = new User();
-        if(userId != -1){user = userRepository.getUserByID(String.valueOf(userId));}
-        int offset = page * PAGE_SIZE;
-        // Use getSaleProducts instead of getProducts
-        List<Product> newProducts = new ArrayList<>();
-        if(user.getIsAdmin()){
-             newProducts = productRepository.getAllSaleProducts(PAGE_SIZE, offset);
-        }else{
-             newProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
+        if (userId != -1) {
+            user = userRepository.getUserByID(String.valueOf(userId));
+            isAdmin = user.getIsAdmin();
         }
+    }
+
+    // Tải danh sách sản phẩm khuyến mãi theo trang
+    private void loadProducts(int page) {
+        int offset = page * PAGE_SIZE;
+        // Yêu cầu PAGE_SIZE + 1 sản phẩm để kiểm tra xem có còn sản phẩm nữa không
+        List<Product> newProducts = productRepository.getFilteredProducts(0,
+                "", isAdmin ? 0 : 1, 1, PAGE_SIZE + 1, offset);
+
         if (newProducts != null && !newProducts.isEmpty()) {
+            // Kiểm tra xem còn sản phẩm để tải hay không
+            boolean hasMoreItems = newProducts.size() > PAGE_SIZE;
+
+            // Chỉ hiển thị PAGE_SIZE sản phẩm
+            if (hasMoreItems) {
+                newProducts = newProducts.subList(0, PAGE_SIZE);
+            }
+
             allProducts.addAll(newProducts);
             productAdapter.setProductList(allProducts);
-            productAdapter.setShowLoadingButton(newProducts.size() == PAGE_SIZE);
+            productAdapter.setShowLoadingButton(hasMoreItems);
         } else {
             productAdapter.setShowLoadingButton(false);
         }
@@ -180,55 +195,35 @@ public class SaleActivity extends BaseActivity {
         isLoading = false;
     }
 
+    // Tải danh sách sản phẩm khuyến mãi đã lọc theo trang
     private void loadFilteredProducts(int page) {
         isLoading = true;
         int offset = page * PAGE_SIZE;
 
-        // If this is the first page, clear existing items
+        // Nếu là trang đầu tiên, xóa các mục hiện có
         if (page == 0) {
             allProducts.clear();
         }
 
-        // Use repository methods directly instead of filtering with streams
-        List<Product> filteredProducts;
-        if(user.getIsAdmin()){
-            if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
-                // No filters applied, get all sale products
-                filteredProducts = productRepository.getAllSaleProducts(PAGE_SIZE, offset);
-            } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
-                // Only filter by category
-                filteredProducts = productRepository.getAllSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
-            } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
-                // Only filter by search query
-                filteredProducts = productRepository.searchAllSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
-            } else {
-                // Filter by both category and search query
-                filteredProducts = productRepository.searchAllSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
-            }
-        }else{
-            if (currentCategoryId == 0 && currentSearchQuery.isEmpty()) {
-                // No filters applied, get all sale products
-                filteredProducts = productRepository.getSaleProducts(PAGE_SIZE, offset);
-            } else if (currentCategoryId != 0 && currentSearchQuery.isEmpty()) {
-                // Only filter by category
-                filteredProducts = productRepository.getSaleProductsByCategory(currentCategoryId, PAGE_SIZE, offset);
-            } else if (currentCategoryId == 0 && !currentSearchQuery.isEmpty()) {
-                // Only filter by search query
-                filteredProducts = productRepository.searchSaleProducts(currentSearchQuery, PAGE_SIZE, offset);
-            } else {
-                // Filter by both category and search query
-                filteredProducts = productRepository.searchSaleProductsByCategory(currentSearchQuery, currentCategoryId, PAGE_SIZE, offset);
-            }
-        }
+        // Yêu cầu PAGE_SIZE + 1 sản phẩm để kiểm tra xem có còn sản phẩm nữa không
+        List<Product> filteredProducts = productRepository.getFilteredProducts(currentCategoryId,
+                currentSearchQuery, isAdmin ? 0 : 1, 1, PAGE_SIZE + 1, offset);
+
         if (filteredProducts != null && !filteredProducts.isEmpty()) {
+            // Kiểm tra xem còn sản phẩm để tải hay không
+            boolean hasMoreItems = filteredProducts.size() > PAGE_SIZE;
+
+            // Chỉ hiển thị PAGE_SIZE sản phẩm
+            if (hasMoreItems) {
+                filteredProducts = filteredProducts.subList(0, PAGE_SIZE);
+            }
+
             allProducts.addAll(filteredProducts);
             productAdapter.setProductList(allProducts);
-
-            // Show load more button if we got a full page
-            productAdapter.setShowLoadingButton(filteredProducts.size() == PAGE_SIZE);
+            productAdapter.setShowLoadingButton(hasMoreItems);
 
             if (page == 0 && filteredProducts.isEmpty()) {
-                Toast.makeText(SaleActivity.this, "No sale products found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SaleActivity.this, "Cannot found sale products", Toast.LENGTH_SHORT).show();
             }
         } else {
             productAdapter.setShowLoadingButton(false);
@@ -237,6 +232,7 @@ public class SaleActivity extends BaseActivity {
         isLoading = false;
     }
 
+    // Thiết lập các sự kiện
     private void setupListeners() {
         btnSearch.setOnClickListener(v -> performSearch());
 
@@ -249,35 +245,35 @@ public class SaleActivity extends BaseActivity {
         });
     }
 
+    // Lọc sản phẩm theo danh mục
     private void filterProductsByCategory(int categoryId) {
         currentCategoryId = categoryId;
         applyFilters();
     }
 
+    // Thực hiện tìm kiếm
     private void performSearch() {
         currentSearchQuery = edtSearch.getText().toString().trim().toLowerCase();
         applyFilters();
     }
 
+    // Áp dụng bộ lọc
     private void applyFilters() {
-        // Clear current products and reset pagination when applying new filters
         allProducts.clear();
         currentPage = 0;
-
-        // Reset adapter with empty list
         productAdapter.setProductList(new ArrayList<>());
-
-        // Load the first page with filters
         loadFilteredProducts(currentPage);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        checkAdminStatus();
         currentPage = 0;
         allProducts.clear();
         loadProducts(currentPage);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         finish(); // Đóng Activity và quay lại màn hình trước đó

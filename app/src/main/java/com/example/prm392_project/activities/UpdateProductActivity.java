@@ -1,18 +1,18 @@
 package com.example.prm392_project.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -31,15 +31,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateProductActivity extends AppCompatActivity {
+public class UpdateProductActivity extends BaseActivity {
+    // Các thành phần UI
     private EditText edtProductName, edtDescription, edtQuantity, edtImageUrl, edtPrice;
     private Spinner spnCategory;
     private Button btnUpdate, btnPreviewImage;
     private ImageView imgProduct;
     private RadioGroup rgIsSaled, rgIsAvailable;
+    private RadioButton rbSaledTrue, rbSaledFalse, rbAvailableTrue, rbAvailableFalse;
+
+    // Dữ liệu và repository
     private ICategoryRepository categoryRepository;
     private IProductRepository productRepository;
     private List<Category> categories;
+    private Product currentProduct;
     private int productId;
     private String imageUrl;
 
@@ -54,21 +59,37 @@ public class UpdateProductActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Thiết lập toolbar với nút quay lại
         Toolbar toolbar = findViewById(R.id.toolbarUpdateProduct);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // Lấy ID sản phẩm từ intent
+        Intent intent = getIntent();
+        productId = intent.getIntExtra("product_id", -1);
+
+        if (productId == -1) {
+            Toast.makeText(this, "Product ID not found", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Khởi tạo và thiết lập các thành phần
         initViews();
         loadCategories();
         loadProductData();
         setupListeners();
     }
 
+    // Khởi tạo các thành phần UI và repository
     private void initViews() {
+        // Khởi tạo repository
         categoryRepository = new CategoryRepository(this);
         productRepository = new ProductRepository(this);
+
+        // Ánh xạ các thành phần giao diện
         edtProductName = findViewById(R.id.edtProductName);
         edtDescription = findViewById(R.id.edtDescription);
         edtQuantity = findViewById(R.id.edtQuantity);
@@ -80,16 +101,25 @@ public class UpdateProductActivity extends AppCompatActivity {
         edtPrice = findViewById(R.id.edtPrice);
         edtImageUrl = findViewById(R.id.edtImageUrl);
         btnPreviewImage = findViewById(R.id.btnPreviewImage);
+
+        // Ánh xạ các RadioButton
+        rbSaledTrue = findViewById(R.id.rbSaledTrue);
+        rbSaledFalse = findViewById(R.id.rbSaledFalse);
+        rbAvailableTrue = findViewById(R.id.rbAvailableTrue);
+        rbAvailableFalse = findViewById(R.id.rbAvailableFalse);
     }
 
+    // Tải danh sách danh mục cho spinner
     private void loadCategories() {
         categories = categoryRepository.getAllCategories();
 
+        // Tạo danh sách tên danh mục cho spinner
         List<String> categoryNames = new ArrayList<>();
         for (Category category : categories) {
             categoryNames.add(category.getCategoryName());
         }
 
+        // Thiết lập adapter cho spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -99,57 +129,61 @@ public class UpdateProductActivity extends AppCompatActivity {
         spnCategory.setAdapter(adapter);
     }
 
+    // Tải thông tin sản phẩm hiện tại
     private void loadProductData() {
-        productId = getIntent().getIntExtra("product_id", 1);
-        if (productId != -1) {
-            Product product = productRepository.getProductById(productId);
-            edtProductName.setText(product.getProductName());
-            edtDescription.setText(product.getDescription());
-            edtQuantity.setText(String.valueOf(product.getQuantity()));
-            edtPrice.setText(String.valueOf(product.getPrice()));
+        currentProduct = productRepository.getProductById(productId);
 
-            if (product.getIMAGE_URL() != null && !product.getIMAGE_URL().isEmpty()) {
-                imageUrl = product.getIMAGE_URL();
-                edtImageUrl.setText(imageUrl);
+        if (currentProduct == null) {
+            Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-                try {
-                    Picasso.get()
-                            .load(imageUrl)
-                            .placeholder(R.drawable.avatar)
-                            .error(R.drawable.error)
-                            .into(imgProduct);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        // Điền thông tin sản phẩm vào các trường
+        edtProductName.setText(currentProduct.getProductName());
+        edtDescription.setText(currentProduct.getDescription());
+        edtQuantity.setText(String.valueOf(currentProduct.getQuantity()));
+        edtPrice.setText(String.valueOf(currentProduct.getPrice()));
+        edtImageUrl.setText(currentProduct.getIMAGE_URL());
+        imageUrl = currentProduct.getIMAGE_URL();
 
-            int categoryPosition = 0;
-            for (int i = 0; i < categories.size(); i++) {
-                if (categories.get(i).getCategoryID() == product.getCategoryID()) {
-                    categoryPosition = i;
-                    break;
-                }
-            }
-            spnCategory.setSelection(categoryPosition);
+        // Thiết lập trạng thái từ dữ liệu sản phẩm
+        if (currentProduct.getIsSaled()) {
+            rbSaledTrue.setChecked(true);
+        } else {
+            rbSaledFalse.setChecked(true);
+        }
 
-            // Set radio buttons
-            if (product.getIsSaled()) {
-                rgIsSaled.check(R.id.rbSaledTrue);
-            } else {
-                rgIsSaled.check(R.id.rbSaledFalse);
-            }
+        if (currentProduct.getIsAvailable()) {
+            rbAvailableTrue.setChecked(true);
+        } else {
+            rbAvailableFalse.setChecked(true);
+        }
 
-            if (product.getIsAvailable()) {
-                rgIsAvailable.check(R.id.rbAvailableTrue);
-            } else {
-                rgIsAvailable.check(R.id.rbAvailableFalse);
+        // Tải hình ảnh sản phẩm
+        if (!TextUtils.isEmpty(imageUrl)) {
+            Picasso.get()
+                    .load(imageUrl)
+                    .placeholder(R.drawable.avatar)
+                    .error(R.drawable.error)
+                    .into(imgProduct);
+        }
+
+        // Chọn danh mục tương ứng trong spinner
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getCategoryID() == currentProduct.getCategoryID()) {
+                spnCategory.setSelection(i);
+                break;
             }
         }
     }
 
+    // Thiết lập các sự kiện lắng nghe
     private void setupListeners() {
+        // Xử lý sự kiện xem trước hình ảnh
         btnPreviewImage.setOnClickListener(v -> previewImage());
 
+        // Xử lý sự kiện cập nhật sản phẩm
         btnUpdate.setOnClickListener(v -> {
             if (validateInput()) {
                 updateProduct();
@@ -157,6 +191,7 @@ public class UpdateProductActivity extends AppCompatActivity {
         });
     }
 
+    // Xem trước hình ảnh từ URL
     private void previewImage() {
         imageUrl = edtImageUrl.getText().toString().trim();
 
@@ -165,6 +200,7 @@ public class UpdateProductActivity extends AppCompatActivity {
             return;
         }
 
+        // Tải và hiển thị hình ảnh bằng Picasso
         Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.avatar)
@@ -182,6 +218,7 @@ public class UpdateProductActivity extends AppCompatActivity {
                 });
     }
 
+    // Kiểm tra đầu vào hợp lệ
     private boolean validateInput() {
         if (edtProductName.getText().toString().trim().isEmpty()) {
             edtProductName.setError("Product name is required");
@@ -202,39 +239,38 @@ public class UpdateProductActivity extends AppCompatActivity {
         return true;
     }
 
+    // Cập nhật sản phẩm và lưu vào cơ sở dữ liệu
     private void updateProduct() {
+        // Lấy dữ liệu từ form
         String name = edtProductName.getText().toString();
         String description = edtDescription.getText().toString();
         int quantity = Integer.parseInt(edtQuantity.getText().toString());
         double price = Double.parseDouble(edtPrice.getText().toString());
         int selectedPosition = spnCategory.getSelectedItemPosition();
         int categoryID = categories.get(selectedPosition).getCategoryID();
-        boolean isSaled = rgIsSaled.getCheckedRadioButtonId() == R.id.rbSaledTrue;
-        boolean isAvailable = rgIsAvailable.getCheckedRadioButtonId() == R.id.rbAvailableTrue;
+        boolean isSaled = rbSaledTrue.isChecked();
+        boolean isAvailable = rbAvailableTrue.isChecked();
 
-        Category category = categoryRepository.getCategoryById(categoryID);
-        if(!category.getIsAvailable() && isAvailable){
-            new AlertDialog.Builder(UpdateProductActivity.this)
-                    .setTitle("Error")
-                    .setMessage("Can't active this product because category is unactive!")
-                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                    .setIcon(R.drawable.error)
-                    .show();
-            return;
-        }
+        // Cập nhật đối tượng sản phẩm
+        currentProduct.setProductName(name);
+        currentProduct.setDescription(description);
+        currentProduct.setQuantity(quantity);
+        currentProduct.setPrice(price);
+        currentProduct.setCategoryID(categoryID);
+        currentProduct.setIMAGE_URL(imageUrl);
+        currentProduct.setIsSaled(isSaled);
+        currentProduct.setIsAvailable(isAvailable);
+        currentProduct.setUpdatedAt(LocalDateTime.now().toString());
 
-        Product updatedProduct = new Product(name, description, price, imageUrl,
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), isAvailable, categoryID, quantity, isSaled);
-        updatedProduct.setProductID(productId);
-
-        productRepository.updateProduct(updatedProduct);
+        // Lưu sản phẩm vào cơ sở dữ liệu
+        productRepository.updateProduct(currentProduct);
         Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish(); // Close activity and return to previous screen
+        finish(); // Đóng Activity và quay lại màn hình trước đó
         return true;
     }
 }

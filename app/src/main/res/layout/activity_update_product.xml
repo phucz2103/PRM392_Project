@@ -39,7 +39,6 @@
             android:background="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Description -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +53,6 @@
             android:background="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Category -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +67,6 @@
             android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Image URL -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +105,6 @@
             android:layout_marginBottom="16dp"
             android:background="#F5F5F5"/>
 
-        <!-- Quantity -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +120,6 @@
             android:background="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Price -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,7 +135,6 @@
             android:background="@android:color/white"
             android:layout_marginBottom="16dp"/>
 
-        <!-- IsSaled -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -168,7 +162,6 @@
                 android:text="False"/>
         </RadioGroup>
 
-        <!-- IsAvailable -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,7 +189,6 @@
                 android:text="False"/>
         </RadioGroup>
 
-        <!-- Update Button -->
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"

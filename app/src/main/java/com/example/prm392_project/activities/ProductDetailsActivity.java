@@ -2,6 +2,8 @@ package com.example.prm392_project.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +41,7 @@ import com.example.prm392_project.repositories.ReviewRepository;
 import com.example.prm392_project.repositories.UserRepository;
 
 public class ProductDetailsActivity extends AppCompatActivity {
-    TextView txtCartCount,txtProductName, txtDescription, txtPrice;
+    TextView txtCartCount,txtProductName, txtDescription, txtPrice, txtDiscountPrice;
     Button btnAddToCart,btnSend;
     ImageView productimage;
     private static int quantity = 0;
@@ -56,6 +58,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
     private List<Review> reviewList;
+
+    private String cmt;
     EditText edtReview;
     RatingBar edtRate;
 
@@ -74,6 +78,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         txtProductName = findViewById(R.id.product_name);
         txtDescription = findViewById(R.id.product_des);
         txtPrice= findViewById(R.id.product_price);
+        txtDiscountPrice = findViewById(R.id.product_discount_price);
+
         productimage = findViewById(R.id.imgProduct);
         btnSend = findViewById(R.id.btnSend);
         edtReview = findViewById(R.id.edtReview);
@@ -85,7 +91,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         orderRepository = new OrderRepository(this);
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         userId = sharedPreferences.getInt("userId", -1);
-        String cmt = userRepository.getUserByID(String.valueOf(userId)).getFullName();
+        if(userId != -1){
+            cmt = userRepository.getUserByID(String.valueOf(userId)).getFullName();
+        }
         boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
         List<Cart> list = cartRepository.getCartByUser(userId);
 
@@ -103,15 +111,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
         if (product != null) {
             txtProductName.setText(product.getProductName());
             txtDescription.setText(product.getDescription());
+            double productPrice = product.getPrice();
             if(product.getIsSaled()){
-                txtPrice.setText("Price: " + product.getPrice()*80/100 + " VND");
+                txtPrice.setText("Price: " + formatMoney(productPrice) + " VND");
+                txtPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                txtPrice.setVisibility(View.VISIBLE);
+                txtPrice.setTextColor(Color.BLACK);
+                double discountPrice = productPrice*80/100;
+                txtDiscountPrice.setText("Price: " + formatMoney(discountPrice) + " VND");
             }
-            else txtPrice.setText("Price: " + product.getPrice() + " VND");
-
+            else{
+                txtPrice.setText("Price: " + formatMoney(productPrice) + " VND");
+            }
             // New Cart o day
             if(product.getIsSaled()){
                 newcart = new Cart(product.getPrice() * 80/100, 1, productId,userId);
-
             }
             else newcart = new Cart(product.getPrice(), 1, productId,userId);
             // Load ảnh bằng Glide
@@ -131,18 +145,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
         }
         else{
-            btnAddToCart.setOnClickListener(v -> addToCart());
-            if(userId == -1){
-                new AlertDialog.Builder(ProductDetailsActivity.this)
-                        .setTitle("Login")
-                        .setMessage("Login to continue")
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            dialog.dismiss();
-                            startActivity(new Intent(this, LoginActivity.class));
-                        })
-                        .setIcon(R.drawable.admin_panel_settings)
-                        .show();
-            }
+            btnAddToCart.setOnClickListener(v ->{
+                if(userId == -1){
+                    new AlertDialog.Builder(ProductDetailsActivity.this)
+                            .setTitle("Login")
+                            .setMessage("Login to continue")
+                            .setPositiveButton("OK", (dialog, which) -> {
+                                dialog.dismiss();
+                                startActivity(new Intent(this, LoginActivity.class));
+                            })
+                            .setIcon(R.drawable.admin_panel_settings)
+                            .show();
+                }else{
+                    addToCart(productId);
+                }
+            });
+
             ImageView btnCart = findViewById(R.id.btnCart);
 
         btnCart.setOnClickListener(v -> {
@@ -185,17 +203,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         edtReview.setText("");
                         edtRate.setRating(4);
                     } else {
-                        Toast.makeText(this, "Please enter a review!", Toast.LENGTH_SHORT).show();
+                        edtReview.setError("Please enter a review!");
                     }
                 });
             }
-            else {
-                edtReview.setVisibility(View.INVISIBLE);
-                edtRate.setVisibility(View.INVISIBLE);
-            }
-
-
-
         }
         recyclerView = findViewById(R.id.recyclerViewduoc);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -204,23 +215,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
             radapter = new ReviewAdapter(this, getReviews, cmt);
             recyclerView.setAdapter(radapter);
         }
-
-
     }
-
-
-
-    private void addToCart() {
+    private void addToCart(int productId) {
         cartRepository = new CartRepository(this);
         curQuantity++;
-        int productId = getIntent().getIntExtra("product_id", -1);
-        List<Cart> list = cartRepository.getCartByProductID(productId);
-        if(curQuantity > 1 || list.size() == 1){
-            //curQuantity++;
-            cartRepository.increaseQuantity(newcart);
-            int x = newcart.getQTY_int();
+        List<Cart> listcart = cartRepository.getCartByUser(userId);
+            Cart cart = cartRepository.getCartByProductID(productId);
+            if(cart != null){
+            cartRepository.increaseQuantity(cart);
             //Toast.makeText(this, "You have already added this product to your cart!", Toast.LENGTH_SHORT).show();
-
         }
         else {
             // Insert new cart
@@ -229,10 +232,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
             // truyen UserId vao
             quantity = cartRepository.countDistinctCategoriesInCart(userId);
             txtCartCount.setText(String.valueOf(quantity));
-            
         }
+    }
+    private String formatMoney(double price){
+        String originalPriceFormatted = String.format("%,d", (long)price);
+        return  originalPriceFormatted;
+    }
 
-
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
 
