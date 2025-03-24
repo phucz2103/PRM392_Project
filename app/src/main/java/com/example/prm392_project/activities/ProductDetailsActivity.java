@@ -56,6 +56,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ReviewAdapter reviewAdapter;
     private List<Review> reviewList;
+
+    private String cmt;
     EditText edtReview;
     RatingBar edtRate;
 
@@ -88,7 +90,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         orderRepository = new OrderRepository(this);
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         userId = sharedPreferences.getInt("userId", -1);
-        String cmt = userRepository.getUserByID(String.valueOf(userId)).getFullName();
+        if(userId != -1){
+            cmt = userRepository.getUserByID(String.valueOf(userId)).getFullName();
+        }
         boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
         List<Cart> list = cartRepository.getCartByUser(userId);
 
@@ -140,24 +144,27 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
         }
         else{
-            btnAddToCart.setOnClickListener(v -> addToCart(productId));
-            if(userId == -1){
-                new AlertDialog.Builder(ProductDetailsActivity.this)
-                        .setTitle("Login")
-                        .setMessage("Login to continue")
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            dialog.dismiss();
-                            startActivity(new Intent(this, LoginActivity.class));
-                        })
-                        .setIcon(R.drawable.admin_panel_settings)
-                        .show();
-            }
+            btnAddToCart.setOnClickListener(v ->{
+                if(userId == -1){
+                    new AlertDialog.Builder(ProductDetailsActivity.this)
+                            .setTitle("Login")
+                            .setMessage("Login to continue")
+                            .setPositiveButton("OK", (dialog, which) -> {
+                                dialog.dismiss();
+                                startActivity(new Intent(this, LoginActivity.class));
+                            })
+                            .setIcon(R.drawable.admin_panel_settings)
+                            .show();
+                }else{
+                    addToCart(productId);
+                }
+            });
+
             ImageView btnCart = findViewById(R.id.btnCart);
 
         btnCart.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
             startActivity(intent);
             finish();
         });
@@ -204,9 +211,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartRepository = new CartRepository(this);
         curQuantity++;
         List<Cart> listcart = cartRepository.getCartByUser(userId);
-        if(listcart.size() >0){
-            //curQuantity++;
             Cart cart = cartRepository.getCartByProductID(productId);
+            if(cart != null){
             cartRepository.increaseQuantity(cart);
             //Toast.makeText(this, "You have already added this product to your cart!", Toast.LENGTH_SHORT).show();
         }

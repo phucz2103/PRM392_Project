@@ -76,6 +76,7 @@ public abstract class AppDatabase  extends RoomDatabase{
         User admin = new User("Nguyen Van A", "0987654329",
                 "user2@gmail.com", "Huyen Thach That, Xa Thach Hoa",
                 "Male",BCrypt.hashpw("Abc123456@",BCrypt.gensalt()),true,true);
+        db.userDao().insert(admin);
 
         // Khởi tạo các danh mục sản phẩm
         Category[] categories = new Category[] {

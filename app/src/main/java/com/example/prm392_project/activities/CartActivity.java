@@ -87,7 +87,11 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
             btnOrder.setEnabled(true);
             btnOrder.setBackgroundColor(Color.parseColor("#27AE60"));
         }
-        btnOrder.setOnClickListener(v -> showLoadingAndOrder());
+        btnOrder.setOnClickListener(v ->{
+            showLoadingAndOrder();
+            btnOrder.setEnabled(false);
+            btnOrder.setBackgroundColor(Color.parseColor("#A9A9A9"));
+        });
 
         btnBack = findViewById(R.id.btnBack);
         //xu li nut quay lai
